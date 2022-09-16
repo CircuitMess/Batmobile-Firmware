@@ -37,6 +37,7 @@ include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/Wire
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/FS/src)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/SD/src)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/SPI/src)
+include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/AsyncTCP/src)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/WiFi/src)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/SPIFFS/src)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/JPEGDecoder/src)
@@ -44,6 +45,8 @@ include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/Open
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/LovyanGFX/src)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/Update/src)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/libraries/CircuitOS/src)
+include_directories(${Arduino15}/packages/cm/hardware/esp32/1.5.1/tools/sdk/include/esp32-camera/)
+
 
 
 include_directories(${ArduinoLibs}/Batmobile-Library/src)
