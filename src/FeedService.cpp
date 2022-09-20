@@ -130,10 +130,9 @@ FeedService::State FeedService::getState() const{
 void FeedService::loop(uint micros){
 	if(state != Connected) return;
 
-	if(!controller->canSend()) return;
-
-
 	cam->loadFrame();
+
+	if(!controller->canSend()) return;
 
 	auto f = cam->getFrame();
 	CamFrame frame { static_cast<uint32_t>(f->len), f->buf, { 0, 0, 0, 0 }, LineStatus::OffLine, {{ 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }},
