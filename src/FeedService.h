@@ -31,6 +31,8 @@ private:
 	const uint16_t port = 5000;
 
 	AsyncClient* controller;
+
+	volatile bool canSend = true; //ack is pending or not
 };
 
 extern FeedService Feed;

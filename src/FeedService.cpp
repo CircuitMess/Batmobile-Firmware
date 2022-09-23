@@ -6,6 +6,7 @@
 
 const uint8_t frameStart[FRAME_LEN] = { 0x18, 0x20, 0x55, 0xf2, 0x5a, 0xc0, 0x4d, 0xaa };
 const uint8_t frameEnd[FRAME_LEN] = { 0x42, 0x2c, 0xd9, 0xe3, 0xff, 0xa0, 0x11, 0x01 };
+const uint8_t frameAck[FRAME_LEN] = { 0xba, 0x14, 0x05, 0xb0, 0x21, 0xa2, 0x03, 0x83 };
 
 FeedService Feed;
 
@@ -28,10 +29,6 @@ void FeedService::connect(){
 		controller = client;
 		Serial.println("new client connected");
 
-		controller->onDisconnect([this](void* arg, AsyncClient* client){
-			state = Connecting;
-		});
-
 		client->onConnect([this](void*, AsyncClient* server){
 			state = Connected;
 			Serial.println("client connected to port");
@@ -50,6 +47,11 @@ void FeedService::connect(){
 			connect();
 		}, nullptr);
 
+		client->onData([this](void* arg, AsyncClient* server, void* data, size_t len){
+			if(len == FRAME_LEN && memcmp((uint8_t*)data, frameAck, FRAME_LEN) == 0){
+				canSend = true;
+			}
+		});
 
 		client->onTimeout([this](void*, AsyncClient*, uint32_t time){
 			state = Connecting;
@@ -132,20 +134,19 @@ void FeedService::loop(uint micros){
 
 	cam->loadFrame();
 
-	if(!controller->canSend()) return;
+	while(!controller->canSend() || !canSend) yield();
 
 	auto f = cam->getFrame();
 	CamFrame frame { static_cast<uint32_t>(f->len), f->buf, { 0, 0, 0, 0 }, LineStatus::OffLine, {{ 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }},
 					 {{ 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }}, MarkerAction::None };
 
-	if(!controller->canSend()){
-		Serial.println("cant send");
-		return;
-	}
 
 
 	bool s = sendFrame(frame);
 	if(!s){
 		Serial.println("send frame failed");
 	}
+
+	canSend = false;
+
 }
