@@ -134,7 +134,9 @@ void FeedService::loop(uint micros){
 
 	cam->loadFrame();
 
-	while(!controller->canSend() || !canSend) yield();
+	while(!controller->canSend() || !canSend){
+		delay(50);
+	}
 
 	auto f = cam->getFrame();
 	CamFrame frame { static_cast<uint32_t>(f->len), f->buf, { 0, 0, 0, 0 }, LineStatus::OffLine, {{ 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }},
