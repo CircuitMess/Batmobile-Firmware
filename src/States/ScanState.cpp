@@ -30,8 +30,7 @@ void Pair::ScanState::loop(uint micros) {
                                                          static_cast<Color *>(testSprite->frameBuffer(0)));
     cam->releaseFrame();
     if(!markers.empty()){
-        Serial.printf("%d\n",markers[0].id);
-//        pairService->setState(new Pair::WiFiConState(pairService, (uint16_t)markers[0].id));
+        pairService->setState(new Pair::WiFiConState(pairService, (uint16_t)markers[0].id));
     }
 
 }

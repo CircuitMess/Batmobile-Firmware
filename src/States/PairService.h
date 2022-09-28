@@ -8,7 +8,7 @@ namespace Pair{
     class PairService;
     class ScanState;
     class WiFiConState;
-    class SteamConState;
+    class StreamConState;
 }
 class Pair::PairService {
 public:

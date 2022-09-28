@@ -1,4 +1,3 @@
-#include <Display/Sprite.h>
 #include "PairService.h"
 #include "State.h"
 #include "ScanState.h"
