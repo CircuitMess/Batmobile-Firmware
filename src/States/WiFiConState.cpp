@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <Loop/LoopManager.h>
 #include "WiFi.h"
+#include "StreamConState.h"
+
 
 Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : State(pairService) {
     char numChar[3];
@@ -9,14 +11,13 @@ Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : 
     ssid += numChar;
     Serial.printf("\nconnecting to: %s", ssid.c_str());
 
-    std::string batmobile = "Batmobile";
-    int i = 0;
-    for(char& c: batmobile){
-        int temp = (int) c;
+    char batmobile[8];
+    strncpy(batmobile,"Batmobil", sizeof(batmobile));
+    for(int i = 0; i < 8; i++){
+        char temp = batmobile[i];
         temp = temp + id * 5 + 16;
-        temp = temp % (121 - 64) + 64;
-        password[i] = (char) temp;
-        i++;
+        temp = temp % ('z' - 'A') + 'A';
+        password[i] = temp;
     }
     Serial.printf("\nPass: %s\n",password);
 }

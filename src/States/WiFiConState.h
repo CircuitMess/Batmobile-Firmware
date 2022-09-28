@@ -17,9 +17,10 @@ protected:
 private:
     void startConnection();
     std::string ssid = "Batmobile ";
-    char password[9];
+    char password[8];
     uint32_t timeCounter = 0;
     uint8_t secondCounter = 0;
+    int id;
 };
 
 
