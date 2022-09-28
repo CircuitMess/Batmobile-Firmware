@@ -15,10 +15,11 @@ protected:
     void onStart() override;
     void onStop() override;
 private:
-    std::string batmobile = "Batmobile";
+    void startConnection();
     std::string ssid = "Batmobile ";
     char password[9];
-    uint16_t id;
+    uint32_t timeCounter = 0;
+    uint8_t secondCounter = 0;
 };
 
 
