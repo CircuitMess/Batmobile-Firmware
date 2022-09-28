@@ -5,7 +5,15 @@
 #include "StreamConState.h"
 
 
-Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : State(pairService) {
+Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : State(pairService), id(id) {
+
+}
+
+Pair::WiFiConState::~WiFiConState() {
+
+}
+
+void Pair::WiFiConState::onStart() {
     char numChar[3];
     std::sprintf(numChar, "%d", id);
     ssid += numChar;
@@ -20,13 +28,8 @@ Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : 
         password[i] = temp;
     }
     Serial.printf("\nPass: %s\n",password);
-}
 
-Pair::WiFiConState::~WiFiConState() {
-
-}
-
-void Pair::WiFiConState::onStart() {
+    WiFi.mode(WIFI_STA);
     startConnection();
     LoopManager::addListener(this);
 }
@@ -46,9 +49,9 @@ void Pair::WiFiConState::loop(uint micros) {
             startConnection();
         }
         if(WiFi.status() == WL_CONNECTED){
-            Serial.println(WiFi.localIP());
+            Serial.println(WiFi.gatewayIP());
             LoopManager::removeListener(this);
-            //TODO: Switch to the StreamConState
+            pairService->setState(new StreamConState(pairService));
         }
     }
 }
