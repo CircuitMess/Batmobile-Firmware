@@ -40,18 +40,19 @@ void Pair::WiFiConState::onStop() {
 
 void Pair::WiFiConState::loop(uint micros) {
     timeCounter += micros;
-    if(timeCounter >= 1000000){
-        timeCounter -= 1000000;
-        secondCounter++;
-        Serial.print('.');
-        if(secondCounter == 5){
-            secondCounter = 0;
-            startConnection();
-        }
+    if(timeCounter >= checkInterval){
+        timeCounter -= checkInterval;
+        Serial.printf(".");
         if(WiFi.status() == WL_CONNECTED){
             Serial.println(WiFi.gatewayIP());
-            LoopManager::removeListener(this);
             pairService->setState(new StreamConState(pairService));
+        }
+
+        connectionTries++;
+        if(connectionTries == 10){
+            connectionTries = 0;
+            WiFi.disconnect(true, true);
+            startConnection();
         }
     }
 }
