@@ -14,15 +14,15 @@ Pair::WiFiConState::~WiFiConState() {
 }
 
 void Pair::WiFiConState::onStart() {
-    char numChar[3];
-    std::sprintf(numChar, "%d", id);
-    ssid += numChar;
-    Serial.printf("\nconnecting to: %s", ssid.c_str());
+    String ssidString = "Batmobile ";
+    ssidString += String(id);
+    ssid = ssidString.c_str();
+    Serial.printf("\nconnecting to: %s", ssid);
 
-    char batmobile[8];
-    strncpy(batmobile,"Batmobil", sizeof(batmobile));
-    for(int i = 0; i < 8; i++){
-        char temp = batmobile[i];
+    memset(password, 0, 10);
+    String batmobile = "Batmobile";
+    for(int i = 0; i < 9; i++){
+        char temp =  batmobile[i];
         temp = temp + id * 5 + 16;
         temp = temp % ('z' - 'A') + 'A';
         password[i] = temp;
@@ -57,6 +57,6 @@ void Pair::WiFiConState::loop(uint micros) {
 }
 
 void Pair::WiFiConState::startConnection() {
-    WiFi.begin(ssid.c_str(), password);
+    WiFi.begin(ssid, password);
     Serial.print("Connecting to WiFi ..");
 }

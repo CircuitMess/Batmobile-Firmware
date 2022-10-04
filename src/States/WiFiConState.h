@@ -16,8 +16,8 @@ protected:
     void onStop() override;
 private:
     void startConnection();
-    std::string ssid = "Batmobile ";
-    char password[8];
+    const char* ssid;
+    char password[10];
     uint32_t timeCounter = 0;
     uint8_t secondCounter = 0;
     int id;
