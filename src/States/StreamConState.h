@@ -13,6 +13,9 @@ public:
 protected:
     void onStart() override;
     void onStop() override;
+    AsyncClient *client;
+    uint32_t time = 0;
+    char dummyData[10];
 private:
 };
 
