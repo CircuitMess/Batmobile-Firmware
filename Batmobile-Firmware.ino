@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <freertos/FreeRTOS.h>
+#include <BatCommon.h>
+#include <Batmobile.h>
 #include <CircuitOS.h>
 #include <Wheelson.h>
 #include <Camera.h>
@@ -12,6 +15,7 @@ void setup() {
     Serial.begin(115200);
     Nuvo.begin();
 
+    Batmobile.begin();
     Wheelson.begin();
 
     display = &Wheelson.getDisplay();
