@@ -16,7 +16,7 @@ protected:
     void onStop() override;
 private:
     void startConnection();
-    const char* ssid;
+    char ssid[14];
     char password[10];
     uint32_t timeCounter = 0;
     uint8_t connectionTries = 0;

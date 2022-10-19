@@ -1,8 +1,10 @@
 #include "WiFiConState.h"
 #include <cstdio>
 #include <Loop/LoopManager.h>
-#include "WiFi.h"
+#include <WiFi.h>
 #include "StreamConState.h"
+#include <NetworkConfig.h>
+
 
 
 Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : State(pairService), id(id) {
@@ -14,9 +16,11 @@ Pair::WiFiConState::~WiFiConState() {
 }
 
 void Pair::WiFiConState::onStart() {
-    String ssidString = "Batmobile ";
-    ssidString += String(id);
-    ssid = ssidString.c_str();
+    memcpy(ssid, "Batmobile ", 10);
+    ssid[10] = (id / 100) + '0';
+    ssid[11] = ((id / 10) % 10) + '0';
+    ssid[12] = (id % 10) + '0';
+    ssid[13] = '\0';
     Serial.printf("\nconnecting to: %s", ssid);
 
     memset(password, 0, 10);
@@ -30,6 +34,7 @@ void Pair::WiFiConState::onStart() {
     Serial.printf("\nPass: %s\n",password);
 
     WiFi.mode(WIFI_STA);
+    WiFi.config(batmobileIP, gateway, subnet);
     startConnection();
     LoopManager::addListener(this);
 }
