@@ -31,19 +31,14 @@ void Pair::StreamConState::loop(uint micros) {
 
     if(time >= 1000000){
         time -= 1000000;
-        Serial.printf("Second passed: ");
         if(client->connected()){
             pairService->setState(new DoneState(pairService));
         }else{
-            Serial.println("Client connecting");
-            if(client->connect(controllerIP, port)) Serial.printf("onConnect\n");
+            client->connect(controllerIP, port);
+            connectTries++;
         }
-        client->add(dummyData,sizeof(dummyData));
-        if(client->canSend()){
-            client->send();
-            Serial.println("Data sent");
-        }else{
-            Serial.printf("non va piu\n");
+        if(connectTries == 5){
+            pairService->setState(new ScanState(pairService));
         }
     }
 

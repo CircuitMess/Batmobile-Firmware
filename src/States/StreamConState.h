@@ -13,6 +13,8 @@ public:
 protected:
     void onStart() override;
     void onStop() override;
+private:
+    uint8_t connectTries = 0;
     AsyncClient *client;
     uint32_t time = 0;
 };
