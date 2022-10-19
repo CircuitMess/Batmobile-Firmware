@@ -6,7 +6,6 @@
 #include "DoneState.h"
 
 Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService) {
-    strncpy(dummyData, "Hello", sizeof(dummyData));
     client = new AsyncClient;
 }
 
@@ -60,9 +59,8 @@ void Pair::StreamConState::onStart() {
 void Pair::StreamConState::onStop() {
     LoopManager::removeListener(this);
 }
+
 void Pair::StreamConState::loop(uint micros) {
-    //TODO: Try and pair with the controller
-    //if you can't, go back to scan state
     time += micros;
 
     if(time >= 1000000){

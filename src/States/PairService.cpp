@@ -6,7 +6,6 @@
 Pair::PairService::PairService() {
     currentState = new Pair::ScanState(this);
     currentState->start();
-    strncpy(dummyData, "Hello", sizeof(dummyData));
 }
 
 Pair::PairService::~PairService(){
@@ -25,7 +24,6 @@ void Pair::PairService::doneCallback(AsyncClient *client) {
     this->client = client;
     currentState->stop();
     delete currentState;
-    client->write(dummyData);
 }
 
 AsyncClient *Pair::PairService::getClient() {
