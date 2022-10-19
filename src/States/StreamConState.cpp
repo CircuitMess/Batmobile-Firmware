@@ -1,9 +1,8 @@
 #include <Loop/LoopManager.h>
 #include "StreamConState.h"
-#include "../NetworkConfig.h"
 #include <AsyncTCP.h>
 #include "ScanState.h"
-
+#include <NetworkConfig.h>
 
 Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService) {
     strncpy(dummyData, "Hello", sizeof(dummyData));
