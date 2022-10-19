@@ -11,6 +11,7 @@ namespace Pair{
     class ScanState;
     class WiFiConState;
     class StreamConState;
+    class DoneState;
 }
 class Pair::PairService {
 public:

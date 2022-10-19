@@ -3,6 +3,7 @@
 #include <AsyncTCP.h>
 #include "ScanState.h"
 #include <NetworkConfig.h>
+#include "DoneState.h"
 
 Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService) {
     strncpy(dummyData, "Hello", sizeof(dummyData));
@@ -68,7 +69,7 @@ void Pair::StreamConState::loop(uint micros) {
         time -= 1000000;
         Serial.printf("Second passed: ");
         if(client->connected()){
-            Serial.println("Client connected. ");
+            pairService->setState(new DoneState(pairService));
         }else{
             Serial.println("Client connecting");
             if(client->connect(controllerIP, port)) Serial.printf("onConnect\n");
