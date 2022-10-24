@@ -5,8 +5,7 @@
 #include <Communication/Communication.h>
 #include <NetworkConfig.h>
 
-Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService) {
-    client = new AsyncClient;
+Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService), client(std::make_unique<AsyncClient>()) {
 }
 
 Pair::StreamConState::~StreamConState() {
@@ -31,7 +30,8 @@ void Pair::StreamConState::loop(uint micros) {
     if(time >= 1000000){
         time -= 1000000;
         if(client->connected()){
-
+			pairService->paringDone(std::move(client));
+			return;
         }else{
             client->connect(controllerIP, port);
             connectTries++;

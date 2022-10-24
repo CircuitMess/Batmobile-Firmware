@@ -4,6 +4,8 @@
 
 #include <freertos/FreeRTOS.h> //if not included an error pops up
 #include <AsyncTCP.h>
+#include <memory>
+#include <functional>
 
 namespace Pair{
     class State;
@@ -20,8 +22,11 @@ public:
     void doneCallback(AsyncClient *client);
     AsyncClient* getClient();
 private:
-    Pair::State* currentState;
-    AsyncClient* client;
-    char dummyData[10];
+	void paringDone(std::unique_ptr<AsyncClient> client);
+	Pair::State* currentState;
+	std::function<void()> callback = {};
+
+	friend class StreamConState;
+
 };
 #endif //BATMOBILE_FIRMWARE_PAIRSERVICE_H

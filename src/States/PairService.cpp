@@ -1,7 +1,7 @@
 #include "PairService.h"
 #include "State.h"
 #include "ScanState.h"
-#include "WiFiConState.h"
+#include <Communication/Communication.h>
 
 Pair::PairService::PairService() {
     currentState = new Pair::ScanState(this);
@@ -19,11 +19,13 @@ void Pair::PairService::setState(Pair::State* state){
     currentState->start();
 }
 
-void Pair::PairService::doneCallback(AsyncClient *client) {
-    delete this->client;
-    this->client = client;
-    currentState->stop();
-    delete currentState;
+
+void Pair::PairService::paringDone(std::unique_ptr<AsyncClient> client){
+	currentState->stop();
+	delete currentState;
+	currentState = nullptr;
+	Com.setClient(std::move(client));
+	if(callback) callback();
 }
 
 AsyncClient *Pair::PairService::getClient() {

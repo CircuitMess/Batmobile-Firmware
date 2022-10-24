@@ -15,7 +15,7 @@ protected:
     void onStop() override;
 private:
     uint8_t connectTries = 0;
-    AsyncClient *client;
+    std::unique_ptr<AsyncClient> client;
     uint32_t time = 0;
 };
 
