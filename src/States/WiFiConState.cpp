@@ -21,7 +21,6 @@ void Pair::WiFiConState::onStart() {
     ssid[11] = ((id / 10) % 10) + '0';
     ssid[12] = (id % 10) + '0';
     ssid[13] = '\0';
-    Serial.printf("\nconnecting to: %s", ssid);
 
     memset(password, 0, 10);
     String batmobile = "Batmobile";
@@ -31,7 +30,6 @@ void Pair::WiFiConState::onStart() {
         temp = temp % ('z' - 'A') + 'A';
         password[i] = temp;
     }
-    Serial.printf("\nPass: %s\n",password);
 
     WiFi.mode(WIFI_STA);
     WiFi.config(batmobileIP, gateway, subnet);
@@ -47,7 +45,6 @@ void Pair::WiFiConState::loop(uint micros) {
     timeCounter += micros;
     if(timeCounter >= checkInterval){
         timeCounter -= checkInterval;
-        Serial.printf(".");
         if(WiFi.status() == WL_CONNECTED){
             Serial.println(WiFi.gatewayIP());
             pairService->setState(new StreamConState(pairService));
@@ -64,5 +61,4 @@ void Pair::WiFiConState::loop(uint micros) {
 
 void Pair::WiFiConState::startConnection() {
     WiFi.begin(ssid, password);
-    Serial.print("Connecting to WiFi ..");
 }
