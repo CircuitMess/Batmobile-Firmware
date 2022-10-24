@@ -2,7 +2,6 @@
 #include "StreamConState.h"
 #include <AsyncTCP.h>
 #include "ScanState.h"
-#include <Communication/Communication.h>
 #include <NetworkConfig.h>
 
 Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService), client(std::make_unique<AsyncClient>()) {
@@ -14,7 +13,6 @@ Pair::StreamConState::~StreamConState() {
 
 
 void Pair::StreamConState::onStart() {
-    Com.setClient(client);
     client->connect(controllerIP, port);
     delay(100);
     LoopManager::addListener(this);
