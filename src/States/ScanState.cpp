@@ -18,7 +18,8 @@ void Pair::ScanState::onStart() {
 
 void Pair::ScanState::onStop() {
     delete cam;
-    cam = NULL;
+    cam = nullptr;
+	testSprite = nullptr;
     LoopManager::removeListener(this);
 }
 
