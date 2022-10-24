@@ -4,7 +4,6 @@
 #include "ScanState.h"
 #include <Communication/Communication.h>
 #include <NetworkConfig.h>
-#include "DoneState.h"
 
 Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService) {
     client = new AsyncClient;
@@ -32,7 +31,7 @@ void Pair::StreamConState::loop(uint micros) {
     if(time >= 1000000){
         time -= 1000000;
         if(client->connected()){
-            pairService->setState(new DoneState(pairService));
+
         }else{
             client->connect(controllerIP, port);
             connectTries++;
