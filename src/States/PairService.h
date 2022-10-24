@@ -19,8 +19,8 @@ public:
     PairService();
     ~PairService();
     void setState(Pair::State* state);
-    void doneCallback(AsyncClient *client);
-    AsyncClient* getClient();
+    void setDoneCallback(std::function<void()> callback);
+
 private:
 	void paringDone(std::unique_ptr<AsyncClient> client);
 	Pair::State* currentState;

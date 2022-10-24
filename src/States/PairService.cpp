@@ -28,6 +28,6 @@ void Pair::PairService::paringDone(std::unique_ptr<AsyncClient> client){
 	if(callback) callback();
 }
 
-AsyncClient *Pair::PairService::getClient() {
-    return client;
+void Pair::PairService::setDoneCallback(std::function<void()> callback){
+	this->callback = callback;
 }
