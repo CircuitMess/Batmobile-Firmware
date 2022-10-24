@@ -7,10 +7,7 @@
 Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService), client(std::make_unique<AsyncClient>()) {
 }
 
-Pair::StreamConState::~StreamConState() {
-
-}
-
+Pair::StreamConState::~StreamConState() {}
 
 void Pair::StreamConState::onStart() {
     client->connect(controllerIP, port);
@@ -33,9 +30,9 @@ void Pair::StreamConState::loop(uint micros) {
         }else{
             client->connect(controllerIP, port);
             connectTries++;
-        }
-        if(connectTries == 5){
-            pairService->setState(new ScanState(pairService));
+			if(connectTries == 5){
+				pairService->setState(new ScanState(pairService));
+			}
         }
     }
 
