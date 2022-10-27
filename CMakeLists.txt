@@ -47,6 +47,7 @@ include_directories(${Arduino15}/packages/cm/hardware/esp32/1.6.1/libraries/Circ
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.6.1/tools/sdk/include/esp32-camera/)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.6.1/libraries/glm)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.6.1/libraries/AsyncUDP/src)
+include_directories(${Arduino15}/packages/cm/hardware/esp32/1.6.1/libraries/AsyncTCP/src)
 
 
 

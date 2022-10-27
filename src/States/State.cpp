@@ -1,4 +1,6 @@
 #include "State.h"
+#include <Arduino.h>
+#include "DriveState.h"
 #include "DriveState.h"
 #include "PairState.h"
 #include "IdleState.h"
@@ -15,6 +17,10 @@ void State::stop(){
 	if(!started) return;
 	started = false;
 	onStop();
+}
+
+bool State::isStarted() const{
+	return started;
 }
 
 void State::pairState(){
@@ -43,5 +49,4 @@ void State::idleState(){
 	}
 	currentState = new IdleState();
 	currentState->start();
-
 }
