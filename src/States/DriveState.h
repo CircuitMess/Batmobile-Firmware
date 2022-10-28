@@ -4,7 +4,6 @@
 #include "State.h"
 #include "../Driver/Driver.h"
 #include <memory>
-#include <DriveMode.h>
 #include <Loop/LoopListener.h>
 
 class Feed {

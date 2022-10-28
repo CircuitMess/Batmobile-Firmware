@@ -3,6 +3,8 @@
 
 #include "Driver.h"
 
+//TODO - register to Comms and forward controls to motors, taking boost into account
+
 class ManualDriver : public Driver {
 public:
 	void onFrame(DriveInfo& driveInfo) override;

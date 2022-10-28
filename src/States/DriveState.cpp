@@ -21,14 +21,14 @@ void DriveState::onStop(){
 
 void DriveState::setMode(DriveMode mode){
 	switch(mode){
-		case Manual:
+		case DriveMode::Manual:
 			driver = std::make_unique<ManualDriver>();
 			break;
-		case Ball:
+		case DriveMode::Ball:
 			break;
-		case Line:
+		case DriveMode::Line:
 			break;
-		case Marker:
+		case DriveMode::Marker:
 			break;
 	}
 }
