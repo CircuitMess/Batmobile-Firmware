@@ -15,8 +15,10 @@ protected:
     void onStop() override;
 private:
     uint8_t connectTries = 0;
-    std::unique_ptr<AsyncClient> client;
-    uint32_t time = 0;
+	std::unique_ptr<AsyncClient> client;
+	uint32_t time = 0;
+	const uint8_t maxTries = 5;
+	const uint32_t second = 1000000;
 };
 
 

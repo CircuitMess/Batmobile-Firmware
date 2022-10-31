@@ -22,17 +22,17 @@ void Pair::StreamConState::onStop() {
 void Pair::StreamConState::loop(uint micros) {
     time += micros;
 
-    if(time >= 1000000){
-        time -= 1000000;
+    if(time >= second){
+        time = 0;
         if(client->connected()){
 			pairService->paringDone(std::move(client));
 			return;
         }else{
             client->connect(controllerIP, port);
-            connectTries++;
-			if(connectTries == 5){
+			if(connectTries == maxTries){
 				pairService->setState(new ScanState(pairService));
 			}
+			connectTries++;
         }
     }
 
