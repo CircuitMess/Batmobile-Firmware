@@ -2,7 +2,7 @@
 #ifndef BATMOBILE_FIRMWARE_PAIRSERVICE_H
 #define BATMOBILE_FIRMWARE_PAIRSERVICE_H
 
-#include <freertos/FreeRTOS.h> //if not included an error pops up
+#include <Arduino.h>
 #include <AsyncTCP.h>
 #include <memory>
 #include <functional>
