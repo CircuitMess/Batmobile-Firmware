@@ -9,7 +9,8 @@ Pair::PairService::PairService() {
 }
 
 Pair::PairService::~PairService(){
-
+	currentState->stop();
+	delete currentState;
 }
 
 void Pair::PairService::setState(Pair::State* state){
