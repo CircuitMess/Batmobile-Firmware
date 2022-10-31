@@ -18,10 +18,10 @@ class Pair::PairService {
 public:
     PairService();
     ~PairService();
-    void setState(Pair::State* state);
     void setDoneCallback(std::function<void()> callback);
 
 private:
+	void setState(Pair::State* state);
 	void paringDone(std::unique_ptr<AsyncClient> client);
 	Pair::State* currentState;
 	std::function<void()> callback = {};
