@@ -27,6 +27,8 @@ private:
 	std::function<void()> callback = {};
 
 	friend class StreamConState;
+	friend class WiFiConState;
+	friend class ScanState;
 
 };
 #endif //BATMOBILE_FIRMWARE_PAIRSERVICE_H
