@@ -52,7 +52,7 @@ void Pair::WiFiConState::loop(uint micros) {
         }
 
         connectionTries++;
-        if(connectionTries == 10){
+        if(connectionTries == maxChecks){
             connectionTries = 0;
             WiFi.disconnect(true, true);
             startConnection();

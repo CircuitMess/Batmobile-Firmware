@@ -21,6 +21,7 @@ private:
     uint32_t timeCounter = 0;
     uint8_t connectionTries = 0;
     static constexpr uint32_t checkInterval = 1000000;
+	const uint8_t maxChecks = 5;
 };
 
 
