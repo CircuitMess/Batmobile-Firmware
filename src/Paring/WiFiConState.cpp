@@ -44,7 +44,7 @@ void Pair::WiFiConState::onStop() {
 void Pair::WiFiConState::loop(uint micros) {
     timeCounter += micros;
     if(timeCounter >= checkInterval){
-        timeCounter -= checkInterval;
+        timeCounter = 0;
         if(WiFi.status() == WL_CONNECTED){
             pairService->setState(new StreamConState(pairService));
 			return;
