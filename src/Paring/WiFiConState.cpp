@@ -46,7 +46,6 @@ void Pair::WiFiConState::loop(uint micros) {
     if(timeCounter >= checkInterval){
         timeCounter -= checkInterval;
         if(WiFi.status() == WL_CONNECTED){
-            Serial.println(WiFi.gatewayIP());
             pairService->setState(new StreamConState(pairService));
 			return;
         }
