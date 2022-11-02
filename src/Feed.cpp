@@ -4,8 +4,8 @@
 
 const char* tag = "Feed";
 
-Feed::Feed() : txBuf(static_cast<uint8_t*>(malloc(BufSize))){
-	memset(txBuf, 0, BufSize);
+Feed::Feed() : txBuf(static_cast<uint8_t*>(malloc(TxBufSize))){
+	memset(txBuf, 0, TxBufSize);
 }
 
 Feed::~Feed(){
@@ -15,8 +15,8 @@ Feed::~Feed(){
 void Feed::sendFrame(const DriveInfo& frame){
 	auto frameSize = frame.size();
 	auto sendSize = frameSize + sizeof(FrameHeader) + sizeof(FrameTrailer) + sizeof(size_t);
-	if(sendSize > BufSize){
-		ESP_LOGW(tag, "Data frame buffer than send buffer. %zu > %zu\n", sendSize, BufSize);
+	if(sendSize > TxBufSize){
+		ESP_LOGW(tag, "Data frame buffer than send buffer. %zu > %zu\n", sendSize, TxBufSize);
 		return;
 	}
 

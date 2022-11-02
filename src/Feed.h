@@ -14,9 +14,9 @@ public:
 
 private:
 	AsyncUDP udp;
-	constexpr static uint16_t port = 5000;
 
-	static constexpr size_t BufSize = 6000;
+	constexpr static size_t JpgMaxSize = 4500;
+	static constexpr size_t TxBufSize = 3 * (sizeof(DriveInfo) + JpgMaxSize);
 	uint8_t* txBuf;
 
 };
