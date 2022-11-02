@@ -10,7 +10,7 @@ Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pai
 Pair::StreamConState::~StreamConState() {}
 
 void Pair::StreamConState::onStart() {
-    client->connect(controllerIP, port);
+    client->connect(controllerIP, controlPort);
     delay(100);
     LoopManager::addListener(this);
 }
@@ -28,7 +28,7 @@ void Pair::StreamConState::loop(uint micros) {
 			pairService->paringDone(std::move(client));
 			return;
         }else{
-            client->connect(controllerIP, port);
+            client->connect(controllerIP, controlPort);
 			if(connectTries == maxTries){
 				pairService->setState(new ScanState(pairService));
 			}
