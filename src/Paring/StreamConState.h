@@ -7,18 +7,17 @@
 
 class Pair::StreamConState : public Pair::State, private LoopListener{
 public:
-    StreamConState(Pair::PairService *pairService);
-    ~StreamConState();
-    void loop(uint micros) override;
+    StreamConState(Pair::PairService* pairService);
+
 protected:
     void onStart() override;
     void onStop() override;
+
 private:
-    uint8_t connectTries = 0;
 	std::unique_ptr<AsyncClient> client;
-	uint32_t time = 0;
-	const uint8_t maxTries = 5;
-	const uint32_t second = 1000000;
+
+	void loop(uint micros) override;
+
 };
 
 

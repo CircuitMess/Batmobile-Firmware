@@ -11,15 +11,16 @@
 class Pair::ScanState : public Pair::State, private LoopListener{
 public:
     ScanState(Pair::PairService *pairService);
-    ~ScanState();
-    void loop(uint micros) override;
+
 protected:
     void onStart() override;
     void onStop() override;
+
 private:
-    Camera *cam;
-    Sprite* testSprite;
-    Aruco::Marker marker;
+    Camera *cam = nullptr;
+
+	void loop(uint micros) override;
+
 };
 
 

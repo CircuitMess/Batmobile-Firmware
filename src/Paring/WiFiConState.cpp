@@ -4,10 +4,9 @@
 #include <WiFi.h>
 #include "StreamConState.h"
 #include <NetworkConfig.h>
+#include "ScanState.h"
 
-
-
-Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : State(pairService) {
+Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : State(pairService) {
 	memcpy(ssid, "Batmobile ", 10);
 	ssid[10] = (id / 100) + '0';
 	ssid[11] = ((id / 10) % 10) + '0';
@@ -22,19 +21,14 @@ Pair::WiFiConState::WiFiConState(Pair::PairService *pairService, uint16_t id) : 
 		temp = temp % ('z' - 'A') + 'A';
 		password[i] = temp;
 	}
-
-	WiFi.mode(WIFI_STA);
-	WiFi.config(batmobileIP, gateway, subnet);
-	startConnection();
-	LoopManager::addListener(this);
-}
-
-Pair::WiFiConState::~WiFiConState() {
-
 }
 
 void Pair::WiFiConState::onStart() {
+	retryCounter = 0;
+	retryCount = 0;
 
+	startConnection();
+	LoopManager::addListener(this);
 }
 
 void Pair::WiFiConState::onStop() {
@@ -42,23 +36,28 @@ void Pair::WiFiConState::onStop() {
 }
 
 void Pair::WiFiConState::loop(uint micros) {
-    timeCounter += micros;
-    if(timeCounter >= checkInterval){
-        timeCounter = 0;
-        if(WiFi.status() == WL_CONNECTED){
-            pairService->setState(new StreamConState(pairService));
+	if(WiFi.status() == WL_CONNECTED){
+		pairService->setState(new StreamConState(pairService));
+		return;
+	}
+
+	retryCounter += micros;
+    if(retryCounter >= RetryInterval){
+		retryCounter = 0;
+        retryCount++;
+
+        if(retryCount >= RetryTries){
+			pairService->setState(new ScanState(pairService));
 			return;
         }
 
-        connectionTries++;
-        if(connectionTries == maxChecks){
-            connectionTries = 0;
-            WiFi.disconnect(true, true);
-            startConnection();
-        }
+		WiFi.disconnect(true, true);
+		startConnection();
     }
 }
 
 void Pair::WiFiConState::startConnection() {
+	WiFi.mode(WIFI_STA);
+	WiFi.config(batmobileIP, gateway, subnet);
     WiFi.begin(ssid, password);
 }
