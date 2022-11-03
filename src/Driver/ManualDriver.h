@@ -13,15 +13,17 @@ public:
 
 private:
 	void onBoost(bool boost) override;
-	void onDriveDir(DriveDirection dir) override;
+	void onDriveDir(uint8_t dir) override;
 	void setMotors();
 
 	bool boosting = false;
-	DriveDirection direction{};
+	uint8_t direction = 0;
 
 	static constexpr uint8_t speedStraight = 100;
 	static constexpr uint8_t speedTurnOuter = 100;
-	static constexpr uint8_t speedTurnInner = 20;
+	static constexpr uint8_t speedTurnInner = -20;
+	static constexpr uint8_t speedLightTurnOuter = 100;
+	static constexpr uint8_t speedLightTurnInner = 20;
 	static constexpr float noBoostMultiplier = 0.7;
 };
 
