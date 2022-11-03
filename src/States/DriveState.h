@@ -5,11 +5,7 @@
 #include "../Driver/Driver.h"
 #include <memory>
 #include <Loop/LoopListener.h>
-
-class Feed {
-public:
-	void sendFrame(const DriveInfo& driveInfo);
-};
+#include "../Feed.h"
 
 class DriveState : public State, private LoopListener {
 public:
