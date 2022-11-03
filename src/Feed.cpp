@@ -16,7 +16,7 @@ void Feed::sendFrame(const DriveInfo& frame){
 	auto frameSize = frame.size();
 	auto sendSize = frameSize + sizeof(FrameHeader) + sizeof(FrameTrailer) + sizeof(size_t);
 	if(sendSize > TxBufSize){
-		ESP_LOGW(tag, "Data frame buffer than send buffer. %zu > %zu\n", sendSize, TxBufSize);
+		ESP_LOGW(tag, "Data frame buffer larger than send buffer. %zu > %zu\n", sendSize, TxBufSize);
 		return;
 	}
 
