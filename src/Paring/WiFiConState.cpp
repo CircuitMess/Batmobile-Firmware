@@ -54,10 +54,12 @@ void Pair::WiFiConState::loop(uint micros) {
 		WiFi.disconnect(true, true);
 		startConnection();
     }
+
+	delay(10);
 }
 
 void Pair::WiFiConState::startConnection() {
-	WiFi.mode(WIFI_STA);
+	WiFi.begin(ssid, password);
+	delay(100);
 	WiFi.config(batmobileIP, gateway, subnet);
-    WiFi.begin(ssid, password);
 }
