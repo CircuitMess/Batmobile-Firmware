@@ -9,10 +9,8 @@
 
 class DriveState : public State, private LoopListener {
 public:
-	DriveState();
-	~DriveState();
-
-	void setMode(DriveMode mode);
+	DriveState(DriveMode mode);
+	void setMode(DriveMode newMode);
 
 protected:
 	void onStart() override;
@@ -20,6 +18,9 @@ protected:
 
 private:
 	void loop(uint micros) override;
+
+	DriveMode currentMode = DriveMode::Idle;
+
 	Feed feed;
 	std::unique_ptr<Driver> driver;
 };

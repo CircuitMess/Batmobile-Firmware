@@ -3,12 +3,9 @@
 #include <Batmobile.h>
 #include <Loop/LoopManager.h>
 
-DriveState::DriveState(){
-
-}
-
-DriveState::~DriveState(){
-
+DriveState::DriveState(DriveMode mode){
+	// If mode is idle, do nothing (setMode returns early)
+	setMode(mode);
 }
 
 void DriveState::onStart(){
@@ -19,18 +16,26 @@ void DriveState::onStop(){
 	LoopManager::removeListener(this);
 }
 
-void DriveState::setMode(DriveMode mode){
-	switch(mode){
-		case DriveMode::Manual:
-			driver = std::make_unique<ManualDriver>();
-			break;
-		case DriveMode::Ball:
-			break;
-		case DriveMode::Line:
-			break;
-		case DriveMode::Marker:
-			break;
+void DriveState::setMode(DriveMode newMode){
+	if(currentMode == newMode) return;
+
+	driver.reset();
+
+	static const std::function<std::unique_ptr<Driver>()> starter[5] = {
+			[](){ return nullptr; },
+			[](){ return std::make_unique<ManualDriver>(); },
+			[](){ return nullptr; },
+			[](){ return nullptr; },
+			[](){ return nullptr; },
+	};
+
+	driver = starter[(int) newMode]();
+	if(driver == nullptr){
+		currentMode = DriveMode::Idle;
+		return;
 	}
+
+	currentMode = newMode;
 }
 
 void DriveState::loop(uint micros){
