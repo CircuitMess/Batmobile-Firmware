@@ -3,7 +3,7 @@
 
 #include "State.h"
 
-class IdleState : public State{
+class IdleState : public State {
 public:
 	IdleState();
 	~IdleState();

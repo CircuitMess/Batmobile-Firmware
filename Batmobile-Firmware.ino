@@ -6,13 +6,10 @@
 #include <Wheelson.h>
 #include <Camera.h>
 #include <Loop/LoopManager.h>
-#include "src/States/State.h"
-#include "src/States/PairState.h"
+#include "src/States/StateManager.h"
 
 Sprite *baseSprite;
 Display *display;
-
-State* state = nullptr;
 
 void setup() {
     Serial.begin(115200);
@@ -27,8 +24,8 @@ void setup() {
 	display->commit();
     LED.setBacklight(true);
 
-    state = new PairState();
-	state->start();
+	auto manager = new StateManager();
+	manager->begin();
 }
 
 void loop() {
