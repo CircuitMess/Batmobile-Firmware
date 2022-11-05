@@ -9,6 +9,8 @@
 class ManualDriver : public Driver , private ComListener{
 public:
 	ManualDriver();
+	virtual ~ManualDriver();
+
 	void onFrame(DriveInfo& driveInfo) override;
 
 private:

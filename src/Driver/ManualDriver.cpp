@@ -6,6 +6,10 @@ ManualDriver::ManualDriver(){
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
 }
 
+ManualDriver::~ManualDriver(){
+	Com.removeListener(this);
+}
+
 void ManualDriver::onFrame(DriveInfo& driveInfo){
 
 }
