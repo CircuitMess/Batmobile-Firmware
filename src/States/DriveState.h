@@ -5,6 +5,7 @@
 #include "../Driver/Driver.h"
 #include <memory>
 #include <Loop/LoopListener.h>
+#include <Camera.h>
 #include "../Feed.h"
 
 class DriveState : public State, private LoopListener {
@@ -23,6 +24,9 @@ private:
 
 	Feed feed;
 	std::unique_ptr<Driver> driver;
+
+	Camera cam;
+
 };
 
 

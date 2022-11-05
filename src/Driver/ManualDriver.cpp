@@ -1,6 +1,6 @@
 #include "ManualDriver.h"
 #include <Communication/Communication.h>
-#include <Batmobile.h>
+#include <Wheelson.h>
 #include <DriveDirection.h>
 
 ManualDriver::ManualDriver(){
@@ -94,5 +94,11 @@ void ManualDriver::setMotors(){
 		rightSpeed *= noBoostMultiplier;
 	}
 
-	Motors.setAll({rightSpeed, leftSpeed, rightSpeed, leftSpeed});
+	Motors.setMotor(MOTOR_FL, leftSpeed);
+	Motors.setMotor(MOTOR_BL, leftSpeed);
+	Motors.setMotor(MOTOR_FR, rightSpeed);
+	Motors.setMotor(MOTOR_BR, rightSpeed);
+
+	// TODO: Use this when new hardware arroves
+	// Motors.setAll({rightSpeed, leftSpeed, rightSpeed, leftSpeed});
 }

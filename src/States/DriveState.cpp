@@ -1,6 +1,6 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
-#include <Batmobile.h>
+#include <Wheelson.h>
 #include <Loop/LoopManager.h>
 
 DriveState::DriveState(DriveMode mode){
@@ -39,9 +39,25 @@ void DriveState::setMode(DriveMode newMode){
 }
 
 void DriveState::loop(uint micros){
-	auto frame = S3.getFrame();
+	cam.loadFrame();
+	auto frame = cam.getFrame();
+
+	DriveInfo info;
+	info.mode = DriveMode::Manual;
+	info.frame.data = frame->buf;
+	info.frame.size = frame->len;
+
+	 driver->onFrame(info);
+	feed.sendFrame(info);
+
+	info.frame.data = nullptr;
+
+	cam.releaseFrame();
+
+	// TODO: uncomment once hardware is ready and S3 interface is implemented
+	/*auto frame = S3.getFrame();
 	if(frame->mode != currentMode) return;
 
 	driver->onFrame(*frame);
-	feed.sendFrame(*frame);
+	feed.sendFrame(*frame);*/
 }
