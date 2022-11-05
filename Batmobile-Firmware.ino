@@ -20,7 +20,7 @@ void setup() {
     Batmobile.begin();
     Wheelson.begin();
 
-    display = &Wheelson.getDisplay();
+	display = &Wheelson.getDisplay();
     baseSprite = display->getBaseSprite();
 
     baseSprite->clear(TFT_GREEN);
@@ -33,5 +33,5 @@ void setup() {
 
 void loop() {
     LoopManager::loop();
-    display->commit();
+//    display->commit();
 }
