@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <DisconnectListener.h>
+#include <Communication/ComListener.h>
 #include "State.h"
 
 class StateManager : private DisconnectListener, private ComListener {
