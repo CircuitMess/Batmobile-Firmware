@@ -39,7 +39,9 @@ void DriveState::setMode(DriveMode newMode){
 }
 
 void DriveState::loop(uint micros){
-	auto f = S3.getFrame();
-	feed.sendFrame(*f);
-	driver->onFrame(*f);
+	auto frame = S3.getFrame();
+	if(frame->mode != currentMode) return;
+
+	driver->onFrame(*frame);
+	feed.sendFrame(*frame);
 }
