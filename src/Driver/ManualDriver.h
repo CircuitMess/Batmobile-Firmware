@@ -26,7 +26,7 @@ private:
 	static constexpr uint8_t speedTurnInner = -20;
 	static constexpr uint8_t speedLightTurnOuter = 100;
 	static constexpr uint8_t speedLightTurnInner = 20;
-	static constexpr float noBoostMultiplier = 0.7;
+	static constexpr float noBoostMultiplier = 0.4;
 };
 
 
