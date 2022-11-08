@@ -21,11 +21,11 @@ private:
 	bool boosting = false;
 	uint8_t direction = 0;
 
-	static constexpr uint8_t speedStraight = 100;
-	static constexpr uint8_t speedTurnOuter = 100;
-	static constexpr uint8_t speedTurnInner = -20;
-	static constexpr uint8_t speedLightTurnOuter = 100;
-	static constexpr uint8_t speedLightTurnInner = 20;
+	static constexpr int8_t speedStraight = 100;
+	static constexpr int8_t speedTurnOuter = 100;
+	static constexpr int8_t speedTurnInner = -20;
+	static constexpr int8_t speedLightTurnOuter = 100;
+	static constexpr int8_t speedLightTurnInner = 20;
 	static constexpr float noBoostMultiplier = 0.4;
 };
 
