@@ -3,10 +3,11 @@
 
 #include "Driver.h"
 #include <Communication/ComListener.h>
+#include <Loop/LoopListener.h>
 
 //TODO - register to Comms and forward controls to motors, taking boost into account
 
-class ManualDriver : public Driver , private ComListener{
+class ManualDriver : public Driver, private ComListener, private LoopListener {
 public:
 	ManualDriver();
 	virtual ~ManualDriver();
@@ -17,6 +18,10 @@ private:
 	void onBoost(bool boost) override;
 	void onDriveDir(uint8_t dir) override;
 	void setMotors();
+
+	void loop(uint micros) override;
+	static constexpr size_t directionReceiveInterval = 1000000; //stop if no direction was received after 1s
+	size_t directionTimeout = 0;
 
 	bool boosting = false;
 	uint8_t direction = 0;

@@ -2,13 +2,16 @@
 #include <Communication/Communication.h>
 #include <Wheelson.h>
 #include <DriveDirection.h>
+#include <Loop/LoopManager.h>
 
 ManualDriver::ManualDriver(){
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
+	LoopManager::addListener(this);
 }
 
 ManualDriver::~ManualDriver(){
 	Com.removeListener(this);
+	LoopManager::removeListener(this);
 }
 
 void ManualDriver::onFrame(DriveInfo& driveInfo){
@@ -22,6 +25,7 @@ void ManualDriver::onBoost(bool boost){
 
 void ManualDriver::onDriveDir(uint8_t dir){
 	direction = dir;
+	directionTimeout = 0;
 	setMotors();
 }
 
@@ -99,6 +103,15 @@ void ManualDriver::setMotors(){
 	Motors.setMotor(MOTOR_FR, rightSpeed);
 	Motors.setMotor(MOTOR_BR, rightSpeed);
 
-	// TODO: Use this when new hardware arroves
+	// TODO: Use this when new hardware arrives
 	// Motors.setAll({rightSpeed, leftSpeed, rightSpeed, leftSpeed});
+}
+
+void ManualDriver::loop(uint micros){
+	if(directionTimeout >= directionReceiveInterval && direction != 0){
+		direction = 0;
+		setMotors();
+	}else if(directionTimeout <= directionReceiveInterval){
+		directionTimeout += micros;
+	}
 }
