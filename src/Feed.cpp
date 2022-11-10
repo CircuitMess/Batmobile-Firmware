@@ -28,7 +28,7 @@ void Feed::sendFrame(const DriveInfo& frame){
 
 	uint8_t shiftedFrame[4];
 	for(uint8_t i = 0; i < 4; i++){
-		 shiftedFrame[SizeShift[i]]  = ((uint8_t*)&frameSize)[i];
+		 shiftedFrame[FrameSizeShift[i]]  = ((uint8_t*)&frameSize)[i];
 	}
 	addData(FrameHeader, sizeof(FrameHeader));
 	addData(&frameSize, sizeof(size_t));
