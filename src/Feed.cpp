@@ -14,7 +14,7 @@ Feed::~Feed(){
 
 void Feed::sendFrame(const DriveInfo& frame){
 	auto frameSize = frame.size();
-	auto sendSize = frameSize + sizeof(FrameHeader) + sizeof(FrameTrailer) + sizeof(size_t);
+	auto sendSize = frameSize + sizeof(FrameHeader) + sizeof(FrameTrailer) + sizeof(size_t) * 2;
 	if(sendSize > TxBufSize){
 		ESP_LOGW(tag, "Data frame buffer larger than send buffer. %zu > %zu\n", sendSize, TxBufSize);
 		return;
@@ -26,8 +26,13 @@ void Feed::sendFrame(const DriveInfo& frame){
 		cursor += size;
 	};
 
+	uint8_t shiftedFrame[4];
+	for(uint8_t i = 0; i < 4; i++){
+		 shiftedFrame[FrameSizeShift[i]]  = ((uint8_t*)&frameSize)[i];
+	}
 	addData(FrameHeader, sizeof(FrameHeader));
 	addData(&frameSize, sizeof(size_t));
+	addData(shiftedFrame, sizeof(size_t));
 	frame.toData(txBuf + cursor); cursor += frameSize;
 	addData(FrameTrailer, sizeof(FrameTrailer));
 
