@@ -7,6 +7,7 @@
 #include <Camera.h>
 #include <Loop/LoopManager.h>
 #include "src/States/StateManager.h"
+#include <CMAudio.h>
 
 Sprite *baseSprite;
 Display *display;
