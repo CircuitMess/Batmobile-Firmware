@@ -1,5 +1,6 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
+#include "../Driver/BallDriver.h"
 #include <Wheelson.h>
 #include <Loop/LoopManager.h>
 
