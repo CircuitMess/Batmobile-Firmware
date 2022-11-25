@@ -5,12 +5,24 @@
 #include <Loop/LoopManager.h>
 
 ManualDriver::ManualDriver(){
-	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
-	LoopManager::addListener(this);
+
 }
 
 ManualDriver::~ManualDriver(){
 	stop();
+}
+
+void ManualDriver::onStart() {
+    Serial.println("ManualDriver started");
+    Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
+    LoopManager::addListener(this);
+}
+
+void ManualDriver::onStop() {
+//    Com.removeListener(this);
+    Com.removeListener(ComType::Boost, this);
+    Com.removeListener(ComType::DriveDir, this);
+    LoopManager::removeListener(this);
 }
 
 void ManualDriver::onFrame(DriveInfo& driveInfo){
