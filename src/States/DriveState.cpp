@@ -24,7 +24,7 @@ void DriveState::setMode(DriveMode newMode){
 	static const std::function<std::unique_ptr<Driver>()> starter[5] = {
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
-			[](){ return nullptr; },
+			[](){ return std::make_unique<BallDriver>(); },
 			[](){ return nullptr; },
 			[](){ return nullptr; },
 	};
