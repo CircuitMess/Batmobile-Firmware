@@ -2,6 +2,7 @@
 #include "../Driver/ManualDriver.h"
 #include <Wheelson.h>
 #include <Loop/LoopManager.h>
+#include <Batmobile.h>
 
 DriveState::DriveState(DriveMode mode){
 	// If mode is idle, do nothing (setMode returns early)
@@ -9,6 +10,10 @@ DriveState::DriveState(DriveMode mode){
 }
 
 void DriveState::onStart(){
+	Taillights.setSolid(255);
+	Headlights.setSolid(255);
+	Underlights.clear();
+
 	LoopManager::addListener(this);
 }
 
