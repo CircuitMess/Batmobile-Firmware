@@ -10,8 +10,7 @@ ManualDriver::ManualDriver(){
 }
 
 ManualDriver::~ManualDriver(){
-	Com.removeListener(this);
-	LoopManager::removeListener(this);
+	stop();
 }
 
 void ManualDriver::onFrame(DriveInfo& driveInfo){
