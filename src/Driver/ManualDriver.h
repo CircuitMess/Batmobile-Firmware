@@ -4,6 +4,7 @@
 #include "Driver.h"
 #include <Communication/ComListener.h>
 #include <Loop/LoopListener.h>
+#include <DriveDirection.h>
 
 //TODO - register to Comms and forward controls to motors, taking boost into account
 
@@ -25,6 +26,8 @@ private:
 
 	bool boosting = false;
 	uint8_t direction = 0;
+	DriveDirection parsedDirection = DriveDirection::None;
+	bool drifting = false;
 
 	static constexpr int8_t speedStraight = 100;
 	static constexpr int8_t speedTurnOuter = 100;

@@ -40,6 +40,8 @@ void StateManager::onConnected(){
 }
 
 void StateManager::onDisconnected(){
+	Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
+
 	if(currentState){
 		currentState->stop();
 		currentState.reset();

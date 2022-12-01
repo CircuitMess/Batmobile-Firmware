@@ -2,6 +2,7 @@
 #include "../Driver/ManualDriver.h"
 #include <Wheelson.h>
 #include <Loop/LoopManager.h>
+#include <Batmobile.h>
 
 DriveState::DriveState(DriveMode mode){
 	// If mode is idle, do nothing (setMode returns early)
@@ -9,10 +10,14 @@ DriveState::DriveState(DriveMode mode){
 }
 
 void DriveState::onStart(){
+	Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
+
 	LoopManager::addListener(this);
 }
 
 void DriveState::onStop(){
+	Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
+
 	LoopManager::removeListener(this);
 }
 

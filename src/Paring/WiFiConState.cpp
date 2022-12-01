@@ -5,6 +5,7 @@
 #include "StreamConState.h"
 #include <NetworkConfig.h>
 #include "ScanState.h"
+#include <Batmobile.h>
 
 Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : State(pairService) {
 	memcpy(ssid, "Batmobile ", 10);
@@ -24,6 +25,9 @@ Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : 
 }
 
 void Pair::WiFiConState::onStart() {
+
+	Audio.play(SPIFFS.open("/SFX/scan.aac"));
+
 	retryCounter = 0;
 	retryCount = 0;
 

@@ -1,4 +1,5 @@
 #include "PairState.h"
+#include <Batmobile.h>
 
 PairState::PairState(){
 
@@ -14,4 +15,5 @@ void PairState::onStart(){
 
 void PairState::onStop(){
 	pair.stop();
+	Audio.play(SPIFFS.open("/SFX/paired.aac"));
 }
