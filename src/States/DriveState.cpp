@@ -1,7 +1,7 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
-#include <Wheelson.h>
 #include <Loop/LoopManager.h>
+#include <Batmobile.h>
 
 DriveState::DriveState(DriveMode mode){
 	// If mode is idle, do nothing (setMode returns early)
@@ -10,6 +10,7 @@ DriveState::DriveState(DriveMode mode){
 
 void DriveState::onStart(){
 	LoopManager::addListener(this);
+	frameTime = 0;
 }
 
 void DriveState::onStop(){
@@ -39,22 +40,12 @@ void DriveState::setMode(DriveMode newMode){
 }
 
 void DriveState::loop(uint micros){
-	cam.loadFrame();
-	auto frame = cam.getFrame();
+	frameTime += micros;
+	if(frameTime < FrameInterval) return;
+	frameTime -= FrameInterval;
 
-	DriveInfo info;
-	info.mode = DriveMode::Manual;
-	info.frame.data = frame->buf;
-	info.frame.size = frame->len;
+	// TODO: Use S3 frames
 
-	 driver->onFrame(info);
-	feed.sendFrame(info);
-
-	info.frame.data = nullptr;
-
-	cam.releaseFrame();
-
-	// TODO: uncomment once hardware is ready and S3 interface is implemented
 	/*auto frame = S3.getFrame();
 	if(frame->mode != currentMode) return;
 
