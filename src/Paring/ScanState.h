@@ -4,9 +4,6 @@
 #include "PairService.h"
 #include "State.h"
 #include <Loop/LoopListener.h>
-#include <Camera.h>
-#include <Display/Sprite.h>
-#include <Markers.h>
 
 class Pair::ScanState : public Pair::State, private LoopListener{
 public:
@@ -17,9 +14,7 @@ protected:
     void onStop() override;
 
 private:
-    Camera *cam = nullptr;
-
-	void loop(uint micros) override;
+    void loop(uint micros) override;
 
 };
 

@@ -29,12 +29,12 @@ private:
 	DriveDirection parsedDirection = DriveDirection::None;
 	bool drifting = false;
 
-	static constexpr int8_t speedStraight = 100;
-	static constexpr int8_t speedTurnOuter = 100;
-	static constexpr int8_t speedTurnInner = -20;
-	static constexpr int8_t speedLightTurnOuter = 100;
-	static constexpr int8_t speedLightTurnInner = 20;
-	static constexpr float noBoostMultiplier = 0.4;
+	static constexpr int16_t speedStraight = 100;
+	static constexpr int16_t speedTurnOuter = 100;
+	static constexpr int16_t speedTurnInner = -100;
+	static constexpr int16_t speedLightTurnOuter = 140;
+	static constexpr int16_t speedLightTurnInner = 50;
+	static constexpr float noBoostMultiplier = 0.7;
 };
 
 
