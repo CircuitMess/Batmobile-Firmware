@@ -30,7 +30,7 @@ void ManualDriver::onDriveDir(uint8_t dir){
 }
 
 void ManualDriver::setMotors(){
-	int8_t leftSpeed, rightSpeed;
+	float leftSpeed, rightSpeed;
 
 	bool forward = (direction & 0b0001);
 	bool backward = (direction & 0b0010);
@@ -98,7 +98,13 @@ void ManualDriver::setMotors(){
 		rightSpeed *= noBoostMultiplier;
 	}
 
-	Motors.setAll({rightSpeed, leftSpeed, rightSpeed, leftSpeed});
+	rightSpeed = std::round(constrain(rightSpeed, -100.0f, 100.0f));
+	leftSpeed = std::round(constrain(leftSpeed, -100.0f, 100.0f));
+
+	Motors.setAll({
+		(int8_t) rightSpeed, (int8_t) leftSpeed,
+		(int8_t) rightSpeed, (int8_t) leftSpeed
+	});
 }
 
 void ManualDriver::loop(uint micros){
