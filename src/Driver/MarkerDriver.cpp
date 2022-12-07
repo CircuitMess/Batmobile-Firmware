@@ -18,10 +18,9 @@ static const std::map<uint16_t, MarkerAction> ActionMap = {
 		{ 100, MarkerAction::Bats }
 };
 
-//TODO - uncomment all motor control when HW allows it
-
 void MarkerDriver::onFrame(DriveInfo& driveInfo){
 	if(current == MarkerAction::Burnout || current == MarkerAction::Do360 || current == MarkerAction::Batsplosion){
+		driveInfo.motors = Motors.getAll();
 		driveInfo.toMarker()->action = current;
 		return;
 	}
@@ -45,19 +44,18 @@ void MarkerDriver::onFrame(DriveInfo& driveInfo){
 	}
 
 	processAction(ActionMap.at(id));
+
 	driveInfo.toMarker()->action = current;
-
-//	driveInfo.motors = Motors.getAll();
-
+	driveInfo.motors = Motors.getAll();
 }
 
 void MarkerDriver::processAction(MarkerAction action){
 	switch(action){
 		case MarkerAction::Forward:
-//			Motors.setAll({motorsSpeed, motorsSpeed, motorsSpeed, motorsSpeed});
+			Motors.setAll({motorsSpeed, motorsSpeed, motorsSpeed, motorsSpeed});
 			break;
 		case MarkerAction::Backward:
-//			Motors.setAll({-motorsSpeed, -motorsSpeed, -motorsSpeed, -motorsSpeed});
+			Motors.setAll({-motorsSpeed, -motorsSpeed, -motorsSpeed, -motorsSpeed});
 			break;
 		case MarkerAction::HeadlightOn:
 			Headlights.setValue(255);
@@ -81,17 +79,17 @@ void MarkerDriver::processAction(MarkerAction action){
 			Underlights.setValue({ 255, 0, 0 });
 			break;
 		case MarkerAction::Burnout:
-//			Motors.setAll({motorsSpeed, motorsSpeed, -motorsSpeed, -motorsSpeed});
+			Motors.setAll({motorsSpeed, motorsSpeed, -motorsSpeed, -motorsSpeed});
 			break;
 		case MarkerAction::Do360:
-//			if(rand() % 2){
-//				Motors.setAll({ motorsSpeed, -motorsSpeed, motorsSpeed, -motorsSpeed });
-//			}else{
-//				Motors.setAll({-motorsSpeed, motorsSpeed, -motorsSpeed, motorsSpeed});
-//			}
+			if(rand() % 2){
+				Motors.setAll({ motorsSpeed, -motorsSpeed, motorsSpeed, -motorsSpeed });
+			}else{
+				Motors.setAll({-motorsSpeed, motorsSpeed, -motorsSpeed, motorsSpeed});
+			}
 			break;
 		default:
-//			Motors.stopAll();
+			Motors.stopAll();
 			break;
 	}
 
@@ -111,7 +109,7 @@ void MarkerDriver::loop(uint micros){
 	   (current == MarkerAction::Batsplosion && !Audio.isPlaying())){
 		continuousActionTimer = 0;
 		current = MarkerAction::None;
-		//Motors.stopAll();
+		Motors.stopAll();
 		LoopManager::removeListener(this);
 	}else if(!(current == MarkerAction::Burnout || current == MarkerAction::Do360 || current == MarkerAction::Batsplosion)){
 		LoopManager::removeListener(this);

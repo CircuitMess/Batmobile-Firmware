@@ -21,7 +21,7 @@ private:
 	static constexpr uint32_t burnoutDuration = 3000000; //3s
 	static constexpr uint32_t do360Duration = 1750000; //1.75s
 
-	static constexpr uint32_t motorsSpeed = 100;
+	static constexpr int8_t motorsSpeed = 100;
 };
 
 
