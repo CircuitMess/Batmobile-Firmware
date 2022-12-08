@@ -1,6 +1,6 @@
 #include "ManualDriver.h"
 #include <Communication/Communication.h>
-#include <Wheelson.h>
+#include <Batmobile.h>
 #include <DriveDirection.h>
 #include <Loop/LoopManager.h>
 #include <Batmobile.h>
@@ -34,7 +34,7 @@ void ManualDriver::onDriveDir(uint8_t dir){
 }
 
 void ManualDriver::setMotors(){
-	int8_t leftSpeed, rightSpeed;
+	float leftSpeed, rightSpeed;
 
 	bool forward = (direction & 0b0001);
 	bool backward = (direction & 0b0010);
@@ -102,13 +102,13 @@ void ManualDriver::setMotors(){
 		rightSpeed *= noBoostMultiplier;
 	}
 
-	Motors.setMotor(MOTOR_FL, leftSpeed);
-	Motors.setMotor(MOTOR_BL, leftSpeed);
-	Motors.setMotor(MOTOR_FR, rightSpeed);
-	Motors.setMotor(MOTOR_BR, rightSpeed);
+	rightSpeed = std::round(constrain(rightSpeed, -100.0f, 100.0f));
+	leftSpeed = std::round(constrain(leftSpeed, -100.0f, 100.0f));
 
-	// TODO: Use this when new hardware arrives
-	// Motors.setAll({rightSpeed, leftSpeed, rightSpeed, leftSpeed});
+	Motors.setAll({
+		(int8_t) rightSpeed, (int8_t) leftSpeed,
+		(int8_t) rightSpeed, (int8_t) leftSpeed
+	});
 }
 
 void ManualDriver::loop(uint micros){

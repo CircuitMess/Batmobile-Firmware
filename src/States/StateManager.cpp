@@ -1,6 +1,5 @@
 #include <Communication/Communication.h>
 #include <Batmobile.h>
-#include <Camera.h>
 #include "StateManager.h"
 #include "IdleState.h"
 #include "DriveState.h"
@@ -63,11 +62,6 @@ void StateManager::onDriveMode(DriveMode mode){
 
 	S3.setMode(mode);
 	currentMode = mode;
-
-	// TODO: remove this once S3 interface is implemented
-	if(mode != DriveMode::Idle){
-		Camera::initialize(true);
-	}
 
 	if(mode == DriveMode::Idle){
 		currentState = std::make_unique<IdleState>();
