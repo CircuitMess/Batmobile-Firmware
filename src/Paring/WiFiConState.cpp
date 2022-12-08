@@ -37,6 +37,7 @@ void Pair::WiFiConState::onStart() {
 
 void Pair::WiFiConState::onStop() {
     LoopManager::removeListener(this);
+	Underlights.clear();
 }
 
 void Pair::WiFiConState::loop(uint micros) {

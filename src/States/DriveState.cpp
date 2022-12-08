@@ -18,6 +18,10 @@ void DriveState::onStart(){
 }
 
 void DriveState::onStop(){
+	Taillights.clear();
+	Headlights.clear();
+	Underlights.clear();
+
 	LoopManager::removeListener(this);
 }
 

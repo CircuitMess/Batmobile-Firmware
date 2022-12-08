@@ -29,7 +29,6 @@ void StateManager::onConnected(){
 		currentState.reset();
 	}
 
-	Underlights.blinkTwice({ 0, 255, 0 });
 
 	/** Controller could immediately send a setState packet. Make sure there isn't a race condition between the resulting state change
 	 * and the idleState here. TODO */
