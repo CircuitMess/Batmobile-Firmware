@@ -25,10 +25,10 @@ void ManualDriver::onBoost(bool boost){
 	if(!boosting){
 		drifting = false;
 		Audio.play(SPIFFS.open("/SFX/boostOff.aac"));
-	}else if(boosting && (parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward)){
+	}else if(boosting && drivingStraight()){
 		drifting = false;
 		Audio.play(SPIFFS.open("/SFX/boostOn.aac"));
-	}else if(boosting && !(parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward)){
+	}else if(boosting && !drivingStraight()){
 		drifting = true;
 		Audio.play(SPIFFS.open("/SFX/boostTurn.aac"));
 	}
@@ -39,15 +39,20 @@ void ManualDriver::onDriveDir(uint8_t dir){
 	directionTimeout = 0;
 	setMotors();
 
-	if(drifting && boosting && (parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward)){
+	if(drifting && boosting && drivingStraight()){
 		drifting = false;
 		Audio.play(SPIFFS.open("/SFX/boostOn.aac"));
-	}else if(!drifting && boosting && !(parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward)){
+	}else if(!drifting && boosting && !drivingStraight()){
 		drifting = true;
 		Audio.play(SPIFFS.open("/SFX/boostTurn.aac"));
 	}
 
 }
+
+bool ManualDriver::drivingStraight() const{
+	return (parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward || parsedDirection == DriveDirection::None);
+}
+
 
 void ManualDriver::setMotors(){
 	float leftSpeed, rightSpeed;

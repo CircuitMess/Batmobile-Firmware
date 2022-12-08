@@ -28,6 +28,7 @@ private:
 	uint8_t direction = 0;
 	DriveDirection parsedDirection = DriveDirection::None;
 	bool drifting = false;
+	bool drivingStraight() const;
 
 	static constexpr int16_t speedStraight = 100;
 	static constexpr int16_t speedTurnOuter = 100;
