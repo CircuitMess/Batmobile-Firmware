@@ -5,6 +5,8 @@
 
 class Driver {
 public:
+	virtual ~Driver(){ }
+
 	virtual void onFrame(DriveInfo& driveInfo) = 0;
 };
 

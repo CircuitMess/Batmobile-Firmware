@@ -10,7 +10,7 @@
 class ManualDriver : public Driver, private ComListener, private LoopListener {
 public:
 	ManualDriver();
-	virtual ~ManualDriver();
+	~ManualDriver() override;
 
 	void onFrame(DriveInfo& driveInfo) override;
 
