@@ -30,6 +30,4 @@ void Pair::StreamConState::loop(uint micros){
 	if(!client || !client->connected()) return;
 
 	pairService->paringDone(std::move(client));
-
-	Underlights.blinkTwice({ 0, 255, 0 });
 }

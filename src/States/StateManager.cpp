@@ -32,6 +32,12 @@ void StateManager::onConnected(){
 
 	/** Controller could immediately send a setState packet. Make sure there isn't a race condition between the resulting state change
 	 * and the idleState here. TODO */
+	Underlights.setValue({0,0,0});
+	Underlights.blinkTwice({ 0, 255, 0 });
+	const uint32_t m = millis();
+	while(millis() - m <= 500){
+		Underlights.loop(0);
+	}
 
 	S3.setMode(DriveMode::Idle);
 	currentMode = DriveMode::Idle;
