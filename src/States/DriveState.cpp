@@ -9,11 +9,19 @@ DriveState::DriveState(DriveMode mode){
 }
 
 void DriveState::onStart(){
+	Taillights.setSolid(255);
+	Headlights.setSolid(255);
+	Underlights.clear();
+
 	LoopManager::addListener(this);
 	frameTime = 0;
 }
 
 void DriveState::onStop(){
+	Taillights.clear();
+	Headlights.clear();
+	Underlights.clear();
+
 	LoopManager::removeListener(this);
 }
 

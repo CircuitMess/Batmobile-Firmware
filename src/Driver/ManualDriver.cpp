@@ -3,6 +3,7 @@
 #include <Batmobile.h>
 #include <DriveDirection.h>
 #include <Loop/LoopManager.h>
+#include <Batmobile.h>
 
 ManualDriver::ManualDriver(){
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
@@ -20,6 +21,9 @@ void ManualDriver::onFrame(DriveInfo& driveInfo){
 
 void ManualDriver::onBoost(bool boost){
 	boosting = boost;
+	if(!boosting){
+		Taillights.setSolid(controls.getHeadlightsToggle() ? 255 : 0);
+	}
 	setMotors();
 }
 
@@ -113,5 +117,15 @@ void ManualDriver::loop(uint micros){
 		setMotors();
 	}else if(directionTimeout <= directionReceiveInterval){
 		directionTimeout += micros;
+	}
+
+	if(boosting){
+		uint32_t currentMillis = millis();
+		if(currentMillis - fireMillis >= fireRandomDuration){
+			fireMillis = currentMillis;
+			fireRandomDuration = random(100);
+			uint8_t val = random(200) + 40;
+			Taillights.setSolid(val);
+		}
 	}
 }

@@ -26,6 +26,9 @@ private:
 	bool boosting = false;
 	uint8_t direction = 0;
 
+	uint32_t fireRandomDuration = 0;
+	uint32_t fireMillis = 0;
+
 	static constexpr int16_t speedStraight = 100;
 	static constexpr int16_t speedTurnOuter = 100;
 	static constexpr int16_t speedTurnInner = -100;

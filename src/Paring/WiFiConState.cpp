@@ -4,6 +4,7 @@
 #include <WiFi.h>
 #include "StreamConState.h"
 #include <NetworkConfig.h>
+#include <Batmobile.h>
 #include "ScanState.h"
 
 Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : State(pairService) {
@@ -24,6 +25,8 @@ Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : 
 }
 
 void Pair::WiFiConState::onStart() {
+	Underlights.blinkContinuous({ 255, 0, 0 }, 100);
+
 	retryCounter = 0;
 	retryCount = 0;
 

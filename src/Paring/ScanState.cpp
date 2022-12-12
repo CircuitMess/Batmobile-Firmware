@@ -10,11 +10,13 @@ Pair::ScanState::ScanState(Pair::PairService *pairService) : State(pairService){
 void Pair::ScanState::onStart(){
 	S3.setMode(DriveMode::Marker);
     LoopManager::addListener(this);
+	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
 }
 
 void Pair::ScanState::onStop(){
 	S3.setMode(DriveMode::Idle);
     LoopManager::removeListener(this);
+	Underlights.clear();
 }
 
 void Pair::ScanState::loop(uint micros){
