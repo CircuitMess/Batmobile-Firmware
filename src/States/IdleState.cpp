@@ -10,7 +10,7 @@ IdleState::~IdleState(){
 }
 
 void IdleState::onStart(){
-	Underlights.breathe({255, 0, 0}, {255, 122, 0}, 2000);
+	Underlights.breathe({0, 255, 50}, {120, 0, 255}, 6000);
 }
 
 void IdleState::onStop(){
