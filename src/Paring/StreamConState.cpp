@@ -10,8 +10,6 @@ Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pai
 }
 
 void Pair::StreamConState::onStart(){
-	Underlights.blinkContinuous({ 255, 0, 0 }, 100);
-
 	client = std::make_unique<AsyncClient>();
     client->connect(controllerIP, controlPort);
 

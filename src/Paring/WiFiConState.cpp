@@ -25,7 +25,6 @@ Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : 
 }
 
 void Pair::WiFiConState::onStart() {
-
 	Underlights.blinkContinuous({ 255, 0, 0 }, 100);
 
 	retryCounter = 0;
@@ -37,7 +36,6 @@ void Pair::WiFiConState::onStart() {
 
 void Pair::WiFiConState::onStop() {
     LoopManager::removeListener(this);
-	Underlights.clear();
 }
 
 void Pair::WiFiConState::loop(uint micros) {
