@@ -31,9 +31,16 @@ void StateManager::onConnected(){
 
 	Audio.play(SPIFFS.open("/SFX/paired.aac"));
 
+	Underlights.setValue({0,0,0});
+	Underlights.blinkTwice({ 0, 255, 0 });
+
+	const uint32_t m = millis();
+	while(millis() - m <= 800){
+		Underlights.loop(0);
+	}
+
 	/** Controller could immediately send a setState packet. Make sure there isn't a race condition between the resulting state change
 	 * and the idleState here. TODO */
-
 	S3.setMode(DriveMode::Idle);
 	currentMode = DriveMode::Idle;
 	currentState = std::make_unique<IdleState>();

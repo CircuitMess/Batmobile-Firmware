@@ -9,6 +9,10 @@ DriveState::DriveState(DriveMode mode){
 }
 
 void DriveState::onStart(){
+	Taillights.setSolid(255);
+	Headlights.setSolid(255);
+	Underlights.clear();
+
 	Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
 
 	LoopManager::addListener(this);
@@ -16,6 +20,10 @@ void DriveState::onStart(){
 }
 
 void DriveState::onStop(){
+	Taillights.clear();
+	Headlights.clear();
+	Underlights.clear();
+
 	Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
 
 	LoopManager::removeListener(this);

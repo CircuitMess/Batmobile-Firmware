@@ -40,12 +40,15 @@ void Pair::PairService::paringDone(std::unique_ptr<AsyncClient> client){
 	delete currentState;
 	currentState = nullptr;
 
+	const auto dc = doneCallback;
+
 	/** TODO: Potential hazard
 	 * Com.setClient calls connection state listeners -> StateManager deletes PairState, which in turn deletes the PairService.
 	 * doneCallback is called when PairService no longer exists, and probably which ever object owned the PairService too. */
 	Com.setClient(std::move(client));
-	if(doneCallback){
-		doneCallback();
+
+	if(dc){
+		dc();
 	}
 }
 

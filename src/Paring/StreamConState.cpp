@@ -3,6 +3,7 @@
 #include <AsyncTCP.h>
 #include "ScanState.h"
 #include <NetworkConfig.h>
+#include <Batmobile.h>
 
 Pair::StreamConState::StreamConState(Pair::PairService *pairService) : State(pairService){
 
@@ -16,6 +17,8 @@ void Pair::StreamConState::onStart(){
 }
 
 void Pair::StreamConState::onStop(){
+	Underlights.clear();
+
     LoopManager::removeListener(this);
 
 	client.reset();

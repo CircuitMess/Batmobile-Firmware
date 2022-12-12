@@ -15,4 +15,5 @@ void PairState::onStart(){
 
 void PairState::onStop(){
 	pair.stop();
+	Underlights.clear();
 }

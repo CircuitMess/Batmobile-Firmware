@@ -11,7 +11,7 @@
 class ManualDriver : public Driver, private ComListener, private LoopListener {
 public:
 	ManualDriver();
-	virtual ~ManualDriver();
+	~ManualDriver() override;
 
 	void onFrame(DriveInfo& driveInfo) override;
 
@@ -29,6 +29,9 @@ private:
 	DriveDirection parsedDirection = DriveDirection::None;
 	bool drifting = false;
 	bool drivingStraight() const;
+
+	uint32_t fireRandomDuration = 0;
+	uint32_t fireMillis = 0;
 
 	static constexpr int16_t speedStraight = 100;
 	static constexpr int16_t speedTurnOuter = 100;
