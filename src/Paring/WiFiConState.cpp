@@ -6,6 +6,7 @@
 #include <NetworkConfig.h>
 #include <Batmobile.h>
 #include "ScanState.h"
+#include <Batmobile.h>
 
 Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : State(pairService) {
 	memcpy(ssid, "Batmobile ", 10);

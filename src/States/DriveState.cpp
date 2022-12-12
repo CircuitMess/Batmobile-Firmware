@@ -13,6 +13,8 @@ void DriveState::onStart(){
 	Headlights.setSolid(255);
 	Underlights.clear();
 
+	Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
+
 	LoopManager::addListener(this);
 	frameTime = 0;
 }
@@ -21,6 +23,8 @@ void DriveState::onStop(){
 	Taillights.clear();
 	Headlights.clear();
 	Underlights.clear();
+
+	Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
 
 	LoopManager::removeListener(this);
 }

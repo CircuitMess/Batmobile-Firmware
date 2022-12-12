@@ -29,6 +29,7 @@ void StateManager::onConnected(){
 		currentState.reset();
 	}
 
+	Audio.play(SPIFFS.open("/SFX/paired.aac"));
 
 	Underlights.setValue({0,0,0});
 	Underlights.blinkTwice({ 0, 255, 0 });
@@ -47,6 +48,8 @@ void StateManager::onConnected(){
 }
 
 void StateManager::onDisconnected(){
+	Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
+
 	if(currentState){
 		currentState->stop();
 		currentState.reset();
