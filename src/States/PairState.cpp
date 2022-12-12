@@ -15,5 +15,4 @@ void PairState::onStart(){
 
 void PairState::onStop(){
 	pair.stop();
-	Audio.play(SPIFFS.open("/SFX/paired.aac"));
 }

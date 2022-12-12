@@ -29,6 +29,8 @@ void StateManager::onConnected(){
 		currentState.reset();
 	}
 
+	Audio.play(SPIFFS.open("/SFX/paired.aac"));
+
 	/** Controller could immediately send a setState packet. Make sure there isn't a race condition between the resulting state change
 	 * and the idleState here. TODO */
 
