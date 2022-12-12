@@ -25,9 +25,6 @@ Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : 
 }
 
 void Pair::WiFiConState::onStart() {
-
-	Audio.play(SPIFFS.open("/SFX/scan.aac"));
-
 	retryCounter = 0;
 	retryCount = 0;
 

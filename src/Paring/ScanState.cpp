@@ -20,6 +20,9 @@ void Pair::ScanState::onStop(){
 void Pair::ScanState::loop(uint micros){
 	// TODO: Use S3 frames for marker detection
 
+	// TODO: place this after scan
+	Audio.play(SPIFFS.open("/SFX/scan.aac"));
+
 /*	cam->loadFrame();
     std::vector<Aruco::Marker> markers = Markers::detect((uint8_t*)cam->getRGB565(), 160, 120, Markers::RGB565);
     cam->releaseFrame();
