@@ -16,7 +16,7 @@ public:
 private:
 	void onConnected() override;
 	void onDisconnected() override;
-
+	void onDisconnectRequest() override;
 	void onDriveMode(DriveMode mode) override;
 
 	std::unique_ptr<State> currentState;

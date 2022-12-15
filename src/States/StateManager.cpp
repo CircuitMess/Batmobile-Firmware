@@ -7,7 +7,7 @@
 
 StateManager::StateManager(){
 	Com.addDcListener(this);
-	Com.addListener(ComType::DriveMode, this);
+	Com.addListener({ComType::DriveMode, ComType::Disconnect}, this);
 
 	S3.setMode(DriveMode::Idle);
 	currentMode = DriveMode::Idle;
@@ -81,4 +81,19 @@ void StateManager::onDriveMode(DriveMode mode){
 	if(currentState){
 		currentState->start();
 	}
+}
+
+void StateManager::onDisconnectRequest(){
+	Com.setClient(nullptr);
+	Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
+
+	if(currentState){
+		currentState->stop();
+		currentState.reset();
+	}
+
+	S3.setMode(DriveMode::Idle);
+	currentMode = DriveMode::Idle;
+	currentState = std::make_unique<PairState>();
+	currentState->start();
 }
