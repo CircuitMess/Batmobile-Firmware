@@ -56,11 +56,11 @@ void DriveState::loop(uint micros){
 	if(frameTime < FrameInterval) return;
 	frameTime -= FrameInterval;
 
-	// TODO: Use S3 frames
+	auto info = S3.getFrame();
+	if(info == nullptr) return;
 
-	/*auto frame = S3.getFrame();
-	if(frame->mode != currentMode) return;
+	if(info->mode != currentMode) return;
 
-	driver->onFrame(*frame);
-	feed.sendFrame(*frame);*/
+	driver->onFrame(*info);
+	feed.sendFrame(*info);
 }
