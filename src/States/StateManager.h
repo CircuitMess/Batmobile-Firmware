@@ -13,14 +13,14 @@ public:
 
 	void begin();
 
+	static void shutdown();
+
 private:
 	void onConnected() override;
 	void onDisconnected() override;
 
 	void onDriveMode(DriveMode mode) override;
 	void onShutdown() override;
-
-	static void shutdown();
 
 	std::unique_ptr<State> currentState;
 	DriveMode currentMode;
