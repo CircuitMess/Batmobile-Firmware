@@ -13,9 +13,6 @@ protected:
 	void onStart() override;
 	void onStop() override;
 
-private:
-	void onVolume(uint8_t volume) override;
-protected:
 	void onSettingsSound() override;
 
 };

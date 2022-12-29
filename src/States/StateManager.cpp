@@ -7,7 +7,7 @@
 
 StateManager::StateManager(){
 	Com.addDcListener(this);
-	Com.addListener({ComType::DriveMode, ComType::Disconnect}, this);
+	Com.addListener({ComType::DriveMode, ComType::Disconnect, ComType::Volume}, this);
 
 	S3.setMode(DriveMode::Idle);
 	currentMode = DriveMode::Idle;
@@ -96,4 +96,8 @@ void StateManager::onDisconnectRequest(){
 	currentMode = DriveMode::Idle;
 	currentState = std::make_unique<PairState>();
 	currentState->start();
+}
+
+void StateManager::onVolume(uint8_t volume){
+	Audio.setVolume(constrain(volume, 0, 100));
 }
