@@ -1,5 +1,6 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
+#include "../Driver/LineDriver.h"
 #include <Loop/LoopManager.h>
 #include <Batmobile.h>
 
@@ -38,7 +39,7 @@ void DriveState::setMode(DriveMode newMode){
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
 			[](){ return nullptr; },
-			[](){ return nullptr; },
+			[](){ return std::make_unique<LineDriver>(); },
 			[](){ return nullptr; },
 	};
 
@@ -56,11 +57,11 @@ void DriveState::loop(uint micros){
 	if(frameTime < FrameInterval) return;
 	frameTime -= FrameInterval;
 
-	// TODO: Use S3 frames
+	auto info = S3.getFrame();
+	if(info == nullptr) return;
 
-	/*auto frame = S3.getFrame();
-	if(frame->mode != currentMode) return;
+	if(info->mode != currentMode) return;
 
-	driver->onFrame(*frame);
-	feed.sendFrame(*frame);*/
+	driver->onFrame(*info);
+	feed.sendFrame(*info);
 }
