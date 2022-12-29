@@ -7,7 +7,7 @@
 class IdleState : public State, private ComListener{
 public:
 	IdleState();
-	~IdleState();
+	~IdleState() override;
 
 protected:
 	void onStart() override;
