@@ -17,9 +17,14 @@ public:
 private:
 	void onConnected() override;
 	void onDisconnected() override;
-	void onDisconnectRequest() override;
+
 	void onDriveMode(DriveMode mode) override;
+
 	void onVolume(uint8_t volume) override;
+	void onDisconnectRequest() override;
+	void onShutdown() override;
+
+	static void shutdown();
 
 	std::unique_ptr<State> currentState;
 	DriveMode currentMode;
