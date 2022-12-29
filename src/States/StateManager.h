@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <DisconnectListener.h>
 #include <Communication/ComListener.h>
+#include <cstdint>
 #include "State.h"
 
 class StateManager : private DisconnectListener, private ComListener {
@@ -16,8 +17,9 @@ public:
 private:
 	void onConnected() override;
 	void onDisconnected() override;
-
+	void onDisconnectRequest() override;
 	void onDriveMode(DriveMode mode) override;
+	void onVolume(uint8_t volume) override;
 
 	std::unique_ptr<State> currentState;
 	DriveMode currentMode;
