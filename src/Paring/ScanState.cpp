@@ -1,6 +1,7 @@
 #include "ScanState.h"
 #include <Batmobile.h>
 #include "WiFiConState.h"
+#include "../States/StateManager.h"
 #include <Loop/LoopManager.h>
 
 Pair::ScanState::ScanState(Pair::PairService *pairService) : State(pairService){
@@ -20,6 +21,12 @@ void Pair::ScanState::onStop(){
 }
 
 void Pair::ScanState::loop(uint micros){
+
+	timeoutCounter += micros;
+	if(timeoutCounter >= pairTimeout){
+		StateManager::shutdown();
+	}
+
 	// TODO: Use S3 frames for marker detection
 
 	// TODO: place this after scan

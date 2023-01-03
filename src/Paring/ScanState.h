@@ -16,6 +16,8 @@ protected:
 private:
     void loop(uint micros) override;
 
+	static constexpr uint32_t pairTimeout = 180000000; //3min
+	uint32_t timeoutCounter = 0;
 };
 
 

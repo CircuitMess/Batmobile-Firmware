@@ -12,19 +12,10 @@ PairState::~PairState(){
 
 void PairState::onStart(){
 	pair.start();
-	LoopManager::addListener(this);
 }
 
 void PairState::onStop(){
-	LoopManager::removeListener(this);
 
 	pair.stop();
 	Underlights.clear();
-}
-
-void PairState::loop(uint micros){
-	timeoutCounter += micros;
-	if(timeoutCounter >= pairTimeout){
-		StateManager::shutdown();
-	}
 }
