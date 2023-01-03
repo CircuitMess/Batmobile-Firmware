@@ -1,5 +1,6 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
+#include "../Driver/LineDriver.h"
 #include <Loop/LoopManager.h>
 #include <Batmobile.h>
 
@@ -38,7 +39,7 @@ void DriveState::setMode(DriveMode newMode){
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
 			[](){ return nullptr; },
-			[](){ return nullptr; },
+			[](){ return std::make_unique<LineDriver>(); },
 			[](){ return nullptr; },
 	};
 
