@@ -99,7 +99,7 @@ void StateManager::onDisconnectRequest(){
 }
 
 void StateManager::onVolume(uint8_t volume){
-	Audio.setVolume(constrain(volume, 0, 100));
+	Audio.setVolume(constrain((float) volume * 2.55f, 0.0f, 255.0f));
 }
 
 void StateManager::onShutdown(){
