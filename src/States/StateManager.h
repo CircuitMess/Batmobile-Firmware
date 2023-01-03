@@ -25,9 +25,6 @@ private:
 
 	void onVolume(uint8_t volume) override;
 	void onDisconnectRequest() override;
-	void onShutdown() override;
-
-	static void shutdown();
 
 	std::unique_ptr<State> currentState;
 	DriveMode currentMode;
