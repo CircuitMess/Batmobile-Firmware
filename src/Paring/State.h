@@ -1,5 +1,5 @@
-#ifndef BATMOBILE_FIRMWARE_STATE_H
-#define BATMOBILE_FIRMWARE_STATE_H
+#ifndef BATMOBILE_FIRMWARE_SUBSTATE_H
+#define BATMOBILE_FIRMWARE_SUBSTATE_H
 
 #include "PairService.h"
 
@@ -20,4 +20,4 @@ private:
     bool started = false;
 };
 
-#endif //BATMOBILE_FIRMWARE_STATE_H
+#endif //BATMOBILE_FIRMWARE_SUBSTATE_H
