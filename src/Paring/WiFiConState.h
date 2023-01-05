@@ -8,22 +8,22 @@
 
 class Pair::WiFiConState : public Pair::State, private LoopListener {
 public:
-    WiFiConState(Pair::PairService* pairService, uint16_t id);
+	WiFiConState(Pair::PairService* pairService, std::string ssid, std::string pass);
 
 protected:
-    void onStart() override;
-    void onStop() override;
+	void onStart() override;
+	void onStop() override;
 
 private:
-    void startConnection();
+	void startConnection();
 
-    char ssid[14];
-    char password[10];
+	uint32_t retryCounter = 0;
+	uint8_t retryCount = 0;
 
-    uint32_t retryCounter = 0;
-    uint8_t retryCount = 0;
+	std::string ssid;
+	std::string pass;
 
-    static constexpr uint32_t RetryInterval = 3500000;
+	static constexpr uint32_t RetryInterval = 3500000;
 	static constexpr uint8_t RetryTries = 3;
 
 	void loop(uint micros) override;
