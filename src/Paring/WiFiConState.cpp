@@ -53,5 +53,5 @@ void Pair::WiFiConState::loop(uint micros){
 void Pair::WiFiConState::startConnection(){
 	WiFi.begin(ssid.c_str(), pass.c_str());
 	delay(100);
-	WiFi.config(batmobileIP, gateway, subnet);
+//	WiFi.config(batmobileIP, gateway, subnet);
 }
