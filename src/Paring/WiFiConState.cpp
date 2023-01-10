@@ -53,5 +53,6 @@ void Pair::WiFiConState::loop(uint micros){
 void Pair::WiFiConState::startConnection(){
 	WiFi.begin(ssid.c_str(), pass.c_str());
 	delay(100);
-//	WiFi.config(batmobileIP, gateway, subnet);
+	// TODO - check if not setting fixed IP address will cause issues during direct WiFi connection
+	// WiFi.config(batmobileIP, gateway, subnet);
 }
