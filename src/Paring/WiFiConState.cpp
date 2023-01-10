@@ -8,24 +8,12 @@
 #include "ScanState.h"
 #include <Batmobile.h>
 
-Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, uint16_t id) : State(pairService) {
-	memcpy(ssid, "Batmobile ", 10);
-	ssid[10] = (id / 100) + '0';
-	ssid[11] = ((id / 10) % 10) + '0';
-	ssid[12] = (id % 10) + '0';
-	ssid[13] = '\0';
+Pair::WiFiConState::WiFiConState(Pair::PairService* pairService, std::string ssid, std::string pass) : State(pairService), ssid(std::move(ssid)),
+																									   pass(std::move(pass)){
 
-	memset(password, 0, 10);
-	String batmobile = "Batmobile";
-	for(int i = 0; i < 9; i++){
-		char temp =  batmobile[i];
-		temp = temp + id * 5 + 16;
-		temp = temp % ('z' - 'A') + 'A';
-		password[i] = temp;
-	}
 }
 
-void Pair::WiFiConState::onStart() {
+void Pair::WiFiConState::onStart(){
 	Underlights.blinkContinuous({ 255, 0, 0 }, 100);
 
 	retryCounter = 0;
@@ -35,35 +23,36 @@ void Pair::WiFiConState::onStart() {
 	LoopManager::addListener(this);
 }
 
-void Pair::WiFiConState::onStop() {
-    LoopManager::removeListener(this);
+void Pair::WiFiConState::onStop(){
+	LoopManager::removeListener(this);
 }
 
-void Pair::WiFiConState::loop(uint micros) {
+void Pair::WiFiConState::loop(uint micros){
 	if(WiFi.status() == WL_CONNECTED){
 		pairService->setState(new StreamConState(pairService));
 		return;
 	}
 
 	retryCounter += micros;
-    if(retryCounter >= RetryInterval){
+	if(retryCounter >= RetryInterval){
 		retryCounter = 0;
-        retryCount++;
+		retryCount++;
 
-        if(retryCount >= RetryTries){
+		if(retryCount >= RetryTries){
 			pairService->setState(new ScanState(pairService));
 			return;
-        }
+		}
 
 		WiFi.disconnect(true, true);
 		startConnection();
-    }
+	}
 
 	delay(10);
 }
 
-void Pair::WiFiConState::startConnection() {
-	WiFi.begin(ssid, password);
+void Pair::WiFiConState::startConnection(){
+	WiFi.begin(ssid.c_str(), pass.c_str());
 	delay(100);
-	WiFi.config(batmobileIP, gateway, subnet);
+	// TODO - check if not setting fixed IP address will cause issues during direct WiFi connection
+	// WiFi.config(batmobileIP, gateway, subnet);
 }
