@@ -17,7 +17,7 @@ void DriveState::onStart(){
 	Headlights.setSolid(255);
 	Underlights.clear();
 
-	if(mode != DriveMode::SimpleProgramming){
+	if(currentMode != DriveMode::SimpleProgramming){
 		Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
 	}
 
@@ -30,7 +30,7 @@ void DriveState::onStop(){
 	Headlights.clear();
 	Underlights.clear();
 
-	if(mode != DriveMode::SimpleProgramming){
+	if(currentMode != DriveMode::SimpleProgramming){
 		Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
 	}
 

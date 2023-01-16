@@ -1,8 +1,8 @@
 #ifndef BATMOBILE_FIRMWARE_SIMPLEPROGDRIVER_H
 #define BATMOBILE_FIRMWARE_SIMPLEPROGDRIVER_H
 
-#include <DriveDirection.h>
 #include "Driver.h"
+#include <DriveDirection.h>
 
 class SimpleProgDriver : public Driver, private ComListener {
 public:

@@ -1,9 +1,7 @@
 #include "ManualDriver.h"
 #include <Communication/Communication.h>
 #include <Batmobile.h>
-#include <DriveDirection.h>
 #include <Loop/LoopManager.h>
-#include <Batmobile.h>
 
 ManualDriver::ManualDriver() : Driver(DriveMode::Manual){
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
