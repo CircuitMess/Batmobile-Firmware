@@ -25,7 +25,7 @@ void Pair::ScanState::loop(uint micros){
 
 	timeoutCounter += micros;
 	if(timeoutCounter >= pairTimeout){
-		StateManager::shutdown();
+		Batmobile.shutdown();
 	}
 
 	// TODO: Use S3 frames for marker detection
