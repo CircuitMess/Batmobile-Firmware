@@ -15,7 +15,7 @@ void SimpleProgDriver::onFrame(DriveInfo& driveInfo){
 }
 
 void SimpleProgDriver::onDriveDir(uint8_t dir){
-	direction = dir;
+	direction = (DriveDirection)dir;
 	setMotors();
 }
 
@@ -50,31 +50,7 @@ void SimpleProgDriver::onSoundEffect(uint8_t sample){
 void SimpleProgDriver::setMotors(){
 	float leftSpeed, rightSpeed;
 
-	bool forward = (direction & 0b0001);
-	bool backward = (direction & 0b0010);
-	bool left = (direction & 0b0100);
-	bool right = (direction & 0b1000);
-
-	parsedDirection = DriveDirection::None;
-	if(forward == backward){
-		if(left != right){
-			parsedDirection = left ? DriveDirection::Left : DriveDirection::Right;
-		}
-	}else if(forward){
-		if(left != right){
-			parsedDirection = left ? DriveDirection::ForwardLeft : DriveDirection::ForwardRight;
-		}else{
-			parsedDirection = DriveDirection::Forward;
-		}
-	}else if(backward){
-		if(left != right){
-			parsedDirection = left ? DriveDirection::BackwardLeft : DriveDirection::BackwardRight;
-		}else{
-			parsedDirection = DriveDirection::Backward;
-		}
-	}
-
-	switch(parsedDirection){
+	switch(direction){
 		case DriveDirection::Forward:
 			leftSpeed = rightSpeed = speedStraight;
 			break;

@@ -21,8 +21,7 @@ private:
 	static constexpr uint8_t NumColors = 5;
 
 	float speed = 0;
-	uint8_t direction = 0;
-	DriveDirection parsedDirection = DriveDirection::None;
+	DriveDirection direction = DriveDirection::None;
 	void setMotors();
 
 	static constexpr int16_t speedStraight = 100;
