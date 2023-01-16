@@ -1,6 +1,7 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
 #include "../Driver/LineDriver.h"
+#include "../Driver/SimpleProgDriver.h"
 #include "../Driver/MarkerDriver.h"
 #include "../Driver/BallDriver.h"
 #include <Loop/LoopManager.h>
@@ -16,7 +17,9 @@ void DriveState::onStart(){
 	Headlights.setSolid(255);
 	Underlights.clear();
 
-	Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
+	if(mode != DriveMode::SimpleProgramming){
+		Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
+	}
 
 	LoopManager::addListener(this);
 	frameTime = 0;
@@ -27,7 +30,9 @@ void DriveState::onStop(){
 	Headlights.clear();
 	Underlights.clear();
 
-	Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
+	if(mode != DriveMode::SimpleProgramming){
+		Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
+	}
 
 	LoopManager::removeListener(this);
 }
@@ -36,14 +41,16 @@ void DriveState::setMode(DriveMode newMode){
 	if(currentMode == newMode) return;
 
 	driver.reset();
+    static const std::function<std::unique_ptr<Driver>()> starter[7] = {
+            [](){ return nullptr; },
+            [](){ return std::make_unique<ManualDriver>(); },
+            [](){ return std::make_unique<BallDriver>(); },
+            [](){ return std::make_unique<LineDriver>(); },
+            [](){ return std::make_unique<MarkerDriver>(); },
+            [](){ return nullptr; },
+            [](){ return std::make_unique<SimpleProgDriver>(); }
+    };
 
-	static const std::function<std::unique_ptr<Driver>()> starter[5] = {
-			[](){ return nullptr; },
-			[](){ return std::make_unique<ManualDriver>(); },
-			[](){ return std::make_unique<BallDriver>(); },
-			[](){ return std::make_unique<LineDriver>(); },
-			[](){ return std::make_unique<MarkerDriver>(); },
-	};
 
 	driver = starter[(int) newMode]();
 	if(driver == nullptr){
