@@ -17,6 +17,7 @@ private:
 	void onDriveSpeed(uint8_t speed) override;
 
 	bool headlightsToggle = true;
+    uint8_t lightsSwitch = 0;
 	uint8_t driveSpeed = 0;
 };
 

@@ -11,9 +11,33 @@ void DriverControls::stop(){
 }
 
 void DriverControls::onHonk(){
-	headlightsToggle = !headlightsToggle;
-	Taillights.setSolid(headlightsToggle ? 255 : 0);
-	Headlights.setSolid(headlightsToggle ? 255 : 0);
+    Taillights.setSolid(0);
+    Headlights.setSolid(0);
+    Underlights.setSolid({0,0,0});
+
+	switch(lightsSwitch){
+        case 0:
+            break;
+        case 1:
+            Taillights.setSolid(255);
+            Headlights.setSolid(255);
+            break;
+        case 2:
+            Underlights.setSolid({255,0,0});
+            break;
+        case 3:
+            Underlights.setSolid({0,255,0});
+            break;
+        case 4:
+            Underlights.setSolid({0,0,255});
+            break;
+    }
+
+    if(lightsSwitch == 4){
+        lightsSwitch = 0;
+    }else{
+        lightsSwitch++;
+    }
 }
 
 bool DriverControls::getHeadlightsToggle() const{
