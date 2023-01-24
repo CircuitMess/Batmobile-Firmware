@@ -69,10 +69,12 @@ void MarkerDriver::processAction(MarkerAction action){
 			Motors.setAll({-motorsSpeed, -motorsSpeed, -motorsSpeed, -motorsSpeed});
 			break;
 		case MarkerAction::HeadlightOn:
-			Headlights.setValue(255);
+			Headlights.setSolid(255);
+			Taillights.setSolid(255);
 			break;
 		case MarkerAction::HeadlightOff:
-			Headlights.setValue(0);
+			Headlights.setSolid(0);
+			Taillights.setSolid(0);
 			break;
 		case MarkerAction::Honk:
 			if(!Audio.isPlaying()){
