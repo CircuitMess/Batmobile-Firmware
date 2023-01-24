@@ -131,8 +131,8 @@ void ManualDriver::setMotors(){
 	leftSpeed = std::round(constrain(leftSpeed, -100.0f, 100.0f));
 
 	Motors.setAll({
-		(int8_t) rightSpeed, (int8_t) leftSpeed,
-		(int8_t) rightSpeed, (int8_t) leftSpeed
+		(int8_t) leftSpeed, (int8_t) rightSpeed,
+		(int8_t) leftSpeed, (int8_t) rightSpeed,
 	});
 }
 
