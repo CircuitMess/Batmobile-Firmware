@@ -18,6 +18,17 @@ static const std::map<uint16_t, MarkerAction> ActionMap = {
 		{ 100, MarkerAction::Bats }
 };
 
+const glm::vec<3, uint16_t> MarkerDriver::Colors[8] = {
+		{ 0, 0, 0 },
+		{ 255, 0, 0 },
+		{ 0, 255, 0 },
+		{ 0, 0, 255 },
+		{ 255, 255, 0 },
+		{ 255, 0, 255 },
+		{ 0, 255, 255 },
+		{ 255, 255, 255 },
+};
+
 void MarkerDriver::onFrame(DriveInfo& driveInfo){
 	if(current == MarkerAction::Burnout || current == MarkerAction::Do360 || current == MarkerAction::Batsplosion){
 		driveInfo.motors = Motors.getAll();
@@ -79,7 +90,12 @@ void MarkerDriver::processAction(MarkerAction action){
 			//TODO - breathanje underlightsa crno-crveno
 			break;
 		case MarkerAction::RGBSolid:
-			Underlights.setValue({ 255, 0, 0 });
+			if(millis() - colorTime < ColorDuration) break;
+			colorTime = millis();
+
+			color = (color + 1) % (sizeof(Colors) / sizeof(Colors[0]));
+			Underlights.setSolid(Colors[color]);
+
 			break;
 		case MarkerAction::Burnout:
 			Motors.setAll({motorsSpeed, motorsSpeed, -motorsSpeed, -motorsSpeed});

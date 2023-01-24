@@ -23,6 +23,12 @@ private:
 	static constexpr uint32_t explosionDuration = 6000000; // [us]
 
 	static constexpr int8_t motorsSpeed = 100;
+
+	int color = 0;
+	static const glm::vec<3, uint16_t> Colors[8];
+
+	static constexpr uint32_t ColorDuration = 1000;
+	uint32_t colorTime = 0;
 };
 
 
