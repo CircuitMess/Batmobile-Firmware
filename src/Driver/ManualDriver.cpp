@@ -3,6 +3,7 @@
 #include <Batmobile.h>
 #include <DriveDirection.h>
 #include <Loop/LoopManager.h>
+#include <Batmobile.h>
 
 ManualDriver::ManualDriver(){
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
@@ -20,14 +21,42 @@ void ManualDriver::onFrame(DriveInfo& driveInfo){
 
 void ManualDriver::onBoost(bool boost){
 	boosting = boost;
+	if(!boosting){
+		Taillights.setSolid(controls.getHeadlightsToggle() ? 255 : 0);
+	}
 	setMotors();
+
+	if(!boosting){
+		drifting = false;
+		Audio.play(SPIFFS.open("/SFX/boostOff.aac"));
+	}else if(boosting && drivingStraight()){
+		drifting = false;
+		Audio.play(SPIFFS.open("/SFX/boostOn.aac"));
+	}else if(boosting && !drivingStraight()){
+		drifting = true;
+		Audio.play(SPIFFS.open("/SFX/boostTurn.aac"));
+	}
 }
 
 void ManualDriver::onDriveDir(uint8_t dir){
 	direction = dir;
 	directionTimeout = 0;
 	setMotors();
+
+	if(drifting && boosting && drivingStraight()){
+		drifting = false;
+		Audio.play(SPIFFS.open("/SFX/boostOn.aac"));
+	}else if(!drifting && boosting && !drivingStraight()){
+		drifting = true;
+		Audio.play(SPIFFS.open("/SFX/boostTurn.aac"));
+	}
+
 }
+
+bool ManualDriver::drivingStraight() const{
+	return (parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward || parsedDirection == DriveDirection::None);
+}
+
 
 void ManualDriver::setMotors(){
 	float leftSpeed, rightSpeed;
@@ -37,27 +66,27 @@ void ManualDriver::setMotors(){
 	bool left = (direction & 0b0100);
 	bool right = (direction & 0b1000);
 
-	DriveDirection actualDirection = DriveDirection::None;
+	parsedDirection = DriveDirection::None;
 	if(forward == backward){
 		if(left != right){
-			actualDirection = left ? DriveDirection::Left : DriveDirection::Right;
+			parsedDirection = left ? DriveDirection::Left : DriveDirection::Right;
 		}
 	}else if(forward){
 		if(left != right){
-			actualDirection = left ? DriveDirection::ForwardLeft : DriveDirection::ForwardRight;
+			parsedDirection = left ? DriveDirection::ForwardLeft : DriveDirection::ForwardRight;
 		}else{
-			actualDirection = DriveDirection::Forward;
+			parsedDirection = DriveDirection::Forward;
 		}
 	}else if(backward){
 		if(left != right){
-			actualDirection = left ? DriveDirection::BackwardLeft : DriveDirection::BackwardRight;
+			parsedDirection = left ? DriveDirection::BackwardLeft : DriveDirection::BackwardRight;
 		}else{
-			actualDirection = DriveDirection::Backward;
+			parsedDirection = DriveDirection::Backward;
 		}
 	}
 
 
-	switch(actualDirection){
+	switch(parsedDirection){
 		case DriveDirection::Forward:
 			leftSpeed = rightSpeed = speedStraight;
 			break;
@@ -102,8 +131,8 @@ void ManualDriver::setMotors(){
 	leftSpeed = std::round(constrain(leftSpeed, -100.0f, 100.0f));
 
 	Motors.setAll({
-		(int8_t) rightSpeed, (int8_t) leftSpeed,
-		(int8_t) rightSpeed, (int8_t) leftSpeed
+		(int8_t) leftSpeed, (int8_t) rightSpeed,
+		(int8_t) leftSpeed, (int8_t) rightSpeed,
 	});
 }
 
@@ -113,5 +142,15 @@ void ManualDriver::loop(uint micros){
 		setMotors();
 	}else if(directionTimeout <= directionReceiveInterval){
 		directionTimeout += micros;
+	}
+
+	if(boosting){
+		uint32_t currentMillis = millis();
+		if(currentMillis - fireMillis >= fireRandomDuration){
+			fireMillis = currentMillis;
+			fireRandomDuration = random(100);
+			uint8_t val = random(200) + 40;
+			Taillights.setSolid(val);
+		}
 	}
 }

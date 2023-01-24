@@ -4,10 +4,10 @@
 #include "State.h"
 #include "../Paring/PairService.h"
 
-class PairState : public State {
+class PairState : public State{
 public:
 	PairState();
-	~PairState();
+	~PairState() override;
 
 protected:
 	void onStart() override;

@@ -1,5 +1,6 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
+#include "../Driver/LineDriver.h"
 #include "../Driver/MarkerDriver.h"
 #include <Loop/LoopManager.h>
 #include <Batmobile.h>
@@ -10,11 +11,23 @@ DriveState::DriveState(DriveMode mode){
 }
 
 void DriveState::onStart(){
+	Taillights.setSolid(255);
+	Headlights.setSolid(255);
+	Underlights.clear();
+
+	Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
+
 	LoopManager::addListener(this);
 	frameTime = 0;
 }
 
 void DriveState::onStop(){
+	Taillights.clear();
+	Headlights.clear();
+	Underlights.clear();
+
+	Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
+
 	LoopManager::removeListener(this);
 }
 
@@ -27,7 +40,7 @@ void DriveState::setMode(DriveMode newMode){
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
 			[](){ return nullptr; },
-			[](){ return nullptr; },
+			[](){ return std::make_unique<LineDriver>(); },
 			[](){ return std::make_unique<MarkerDriver>(); },
 	};
 
@@ -45,11 +58,14 @@ void DriveState::loop(uint micros){
 	if(frameTime < FrameInterval) return;
 	frameTime -= FrameInterval;
 
-	// TODO: Use S3 frames
+	auto info = S3.getFrame();
+	if(info == nullptr) return;
 
-	/*auto frame = S3.getFrame();
-	if(frame->mode != currentMode) return;
+	if(info->mode != currentMode) return;
 
-	driver->onFrame(*frame);
-	feed.sendFrame(*frame);*/
+	if(driver){
+		driver->onFrame(*info);
+	}
+
+	feed.sendFrame(*info);
 }

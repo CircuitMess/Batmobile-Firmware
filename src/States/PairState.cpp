@@ -1,4 +1,6 @@
 #include "PairState.h"
+#include "StateManager.h"
+#include <Batmobile.h>
 
 PairState::PairState(){
 
@@ -13,5 +15,7 @@ void PairState::onStart(){
 }
 
 void PairState::onStop(){
+
 	pair.stop();
+	Underlights.clear();
 }

@@ -5,17 +5,22 @@
 #include "State.h"
 #include <Loop/LoopListener.h>
 
-class Pair::ScanState : public Pair::State, private LoopListener{
+class Pair::ScanState : public Pair::State, private LoopListener {
 public:
-    ScanState(Pair::PairService *pairService);
+	ScanState(Pair::PairService* pairService);
 
 protected:
-    void onStart() override;
-    void onStop() override;
+	void onStart() override;
+	void onStop() override;
 
 private:
-    void loop(uint micros) override;
+	void arucoFound(uint16_t id);
+	void qrFound(const char* data);
 
+	void loop(uint micros) override;
+
+	static constexpr uint32_t pairTimeout = 180000000; //3min
+	uint32_t timeoutCounter = 0;
 };
 
 

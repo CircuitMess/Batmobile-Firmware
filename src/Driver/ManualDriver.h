@@ -4,13 +4,14 @@
 #include "Driver.h"
 #include <Communication/ComListener.h>
 #include <Loop/LoopListener.h>
+#include <DriveDirection.h>
 
 //TODO - register to Comms and forward controls to motors, taking boost into account
 
 class ManualDriver : public Driver, private ComListener, private LoopListener {
 public:
 	ManualDriver();
-	virtual ~ManualDriver();
+	~ManualDriver() override;
 
 	void onFrame(DriveInfo& driveInfo) override;
 
@@ -25,6 +26,12 @@ private:
 
 	bool boosting = false;
 	uint8_t direction = 0;
+	DriveDirection parsedDirection = DriveDirection::None;
+	bool drifting = false;
+	bool drivingStraight() const;
+
+	uint32_t fireRandomDuration = 0;
+	uint32_t fireMillis = 0;
 
 	static constexpr int16_t speedStraight = 100;
 	static constexpr int16_t speedTurnOuter = 100;
