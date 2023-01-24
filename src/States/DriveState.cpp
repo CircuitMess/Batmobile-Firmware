@@ -62,6 +62,9 @@ void DriveState::loop(uint micros){
 
 	if(info->mode != currentMode) return;
 
-	driver->onFrame(*info);
+	if(driver){
+		driver->onFrame(*info);
+	}
+
 	feed.sendFrame(*info);
 }
