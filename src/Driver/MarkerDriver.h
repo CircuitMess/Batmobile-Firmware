@@ -29,6 +29,8 @@ private:
 
 	static constexpr uint32_t ColorDuration = 1000;
 	uint32_t colorTime = 0;
+
+	bool breathing = false;
 };
 
 

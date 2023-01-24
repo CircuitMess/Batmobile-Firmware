@@ -84,10 +84,13 @@ void MarkerDriver::processAction(MarkerAction action){
 			//TODO - jako brzo breathanje Underlightsa crno-narančasto u duljini explosion samplea
 			break;
 		case MarkerAction::RGBOff:
-			Underlights.setValue({ 0, 0, 0 });
+			Underlights.setSolid({ 0, 0, 0 });
+			breathing = false;
 			break;
 		case MarkerAction::RGBBreathe:
-			//TODO - breathanje underlightsa crno-crveno
+			if(breathing) break;
+			Underlights.breathe({ 0, 255, 255 }, { 255, 255, 100 }, 2000);
+			breathing = true;
 			break;
 		case MarkerAction::RGBSolid:
 			if(millis() - colorTime < ColorDuration) break;
@@ -95,6 +98,7 @@ void MarkerDriver::processAction(MarkerAction action){
 
 			color = (color + 1) % (sizeof(Colors) / sizeof(Colors[0]));
 			Underlights.setSolid(Colors[color]);
+			breathing = false;
 
 			break;
 		case MarkerAction::Burnout:
