@@ -67,7 +67,10 @@ void MarkerDriver::processAction(MarkerAction action){
 			//TODO - playati honk audio
 			break;
 		case MarkerAction::Batsplosion:
-			//TODO - pustiti batsplosion zvuk, jako brzo breathanje Underlightsa crno-narančasto u duljini explosion samplea
+			if(!Audio.isPlaying()){
+				Audio.play(SPIFFS.open("/SFX/explosion.aac"));
+			}
+			//TODO - jako brzo breathanje Underlightsa crno-narančasto u duljini explosion samplea
 			break;
 		case MarkerAction::RGBOff:
 			Underlights.setValue({ 0, 0, 0 });
@@ -106,7 +109,7 @@ void MarkerDriver::loop(uint micros){
 
 	if((current == MarkerAction::Burnout && continuousActionTimer >= burnoutDuration) ||
 	   (current == MarkerAction::Do360 && continuousActionTimer >= do360Duration) ||
-	   (current == MarkerAction::Batsplosion && !Audio.isPlaying())){
+	   (current == MarkerAction::Batsplosion && continuousActionTimer >= explosionDuration)){
 		continuousActionTimer = 0;
 		current = MarkerAction::None;
 		Motors.stopAll();
