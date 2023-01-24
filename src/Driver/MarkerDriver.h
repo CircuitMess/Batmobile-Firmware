@@ -18,8 +18,8 @@ private:
 	MarkerAction current = MarkerAction::None;
 
 	uint32_t continuousActionTimer = 0;
-	static constexpr uint32_t burnoutDuration = 3000000; //3s
-	static constexpr uint32_t do360Duration = 1750000; //1.75s
+	static constexpr uint32_t burnoutDuration = 3000000; // [us]
+	static constexpr uint32_t do360Duration = 2500000; // [us]
 	static constexpr uint32_t explosionDuration = 6000000; // [us]
 
 	static constexpr int8_t motorsSpeed = 100;
