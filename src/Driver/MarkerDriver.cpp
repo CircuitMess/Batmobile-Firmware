@@ -75,7 +75,9 @@ void MarkerDriver::processAction(MarkerAction action){
 			Headlights.setValue(0);
 			break;
 		case MarkerAction::Honk:
-			//TODO - playati honk audio
+			if(!Audio.isPlaying()){
+				Audio.play(SPIFFS.open("/SFX/honk.aac"));
+			}
 			break;
 		case MarkerAction::Batsplosion:
 			if(!Audio.isPlaying()){
