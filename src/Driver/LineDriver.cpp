@@ -2,7 +2,7 @@
 #include <Batmobile.h>
 #include "LineDriver.h"
 
-LineDriver::LineDriver(){
+LineDriver::LineDriver() : Driver(DriveMode::Line){
 	LoopManager::addListener(this);
 }
 

@@ -61,9 +61,7 @@ void DriveState::loop(uint micros){
 	auto info = S3.getFrame();
 	if(info == nullptr) return;
 
-	if(info->mode != currentMode) return;
-
-	if(driver){
+	if(driver && info->mode == driver->getMode()){
 		driver->onFrame(*info);
 	}
 

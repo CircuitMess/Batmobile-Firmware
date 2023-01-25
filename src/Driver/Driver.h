@@ -6,18 +6,25 @@
 
 class Driver {
 public:
-	Driver(){
-		controls.start();
-	}
-
 	virtual ~Driver(){
 		controls.stop();
 	}
 
 	virtual void onFrame(DriveInfo& driveInfo) = 0;
 
+	DriveMode getMode() const{
+		return mode;
+	}
+
 protected:
+	Driver(DriveMode mode) : mode(mode){
+		controls.start();
+	}
+
 	DriverControls controls;
+
+	DriveMode mode;
+
 };
 
 
