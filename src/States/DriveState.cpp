@@ -2,6 +2,7 @@
 #include "../Driver/ManualDriver.h"
 #include "../Driver/LineDriver.h"
 #include "../Driver/MarkerDriver.h"
+#include "../Driver/BallDriver.h"
 #include <Loop/LoopManager.h>
 #include <Batmobile.h>
 
@@ -39,7 +40,7 @@ void DriveState::setMode(DriveMode newMode){
 	static const std::function<std::unique_ptr<Driver>()> starter[5] = {
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
-			[](){ return nullptr; },
+			[](){ return std::make_unique<BallDriver>(); },
 			[](){ return std::make_unique<LineDriver>(); },
 			[](){ return std::make_unique<MarkerDriver>(); },
 	};
