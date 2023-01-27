@@ -13,6 +13,11 @@ public:
 
 private:
 	void onBallHue(uint8_t hue) override;
+	uint8_t hue = 110;
+
+	int lastX = -1;
+	uint8_t noBallCounter = 0;
+	static constexpr uint16_t StopRadius = 50;
 
 };
 
