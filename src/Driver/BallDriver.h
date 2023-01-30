@@ -7,9 +7,13 @@
 class BallDriver : public Driver, private ComListener {
 public:
 	BallDriver();
-	virtual ~BallDriver();
+	~BallDriver() override;
 
 	void onFrame(DriveInfo& driveInfo) override;
+
+protected:
+	void onStart() override;
+	void onStop() override;
 
 private:
 	void onBallHue(uint8_t hue) override;

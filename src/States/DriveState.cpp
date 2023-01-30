@@ -52,6 +52,7 @@ void DriveState::setMode(DriveMode newMode){
 	}
 
 	currentMode = newMode;
+	driver->start();
 }
 
 void DriveState::loop(uint micros){

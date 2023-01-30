@@ -31,6 +31,10 @@ const glm::vec<3, uint16_t> MarkerDriver::Colors[8] = {
 
 MarkerDriver::MarkerDriver() : Driver(DriveMode::Marker){}
 
+MarkerDriver::~MarkerDriver(){
+	stop();
+}
+
 void MarkerDriver::onFrame(DriveInfo& driveInfo){
 	if(current == MarkerAction::Burnout || current == MarkerAction::Do360 || current == MarkerAction::Batsplosion){
 		driveInfo.motors = Motors.getAll();

@@ -8,7 +8,7 @@
 class MarkerDriver : public Driver, private LoopListener {
 public:
 	MarkerDriver();
-	~MarkerDriver() override = default;
+	~MarkerDriver() override;
 
 	void onFrame(DriveInfo& driveInfo) override;
 

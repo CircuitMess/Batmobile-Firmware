@@ -3,11 +3,19 @@
 #include <ColorConverter.h>
 
 BallDriver::BallDriver() : Driver(DriveMode::Ball){
+
+}
+
+BallDriver::~BallDriver(){
+	stop();
+}
+
+void BallDriver::onStart(){
 	Com.addListener(ComType::BallHue, this);
 	Underlights.setValue(ColorConverter::toRGB(hue));
 }
 
-BallDriver::~BallDriver(){
+void BallDriver::onStop(){
 	Com.removeListener(this);
 }
 
