@@ -1,6 +1,5 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
-#include "../Driver/LineDriver.h"
 #include "../Driver/DanceDriver.h"
 #include "../Driver/MarkerDriver.h"
 #include "../Driver/BallDriver.h"
@@ -35,17 +34,16 @@ void DriveState::onStop(){
 
 void DriveState::setMode(DriveMode newMode){
 	if(currentMode == newMode) return;
-
 	driver.reset();
 
 	static const std::function<std::unique_ptr<Driver>()> starter[7] = {
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
 			[](){ return std::make_unique<BallDriver>(); },
-			[](){ return std::make_unique<LineDriver>(); },
+			[](){ return nullptr; },
 			[](){ return std::make_unique<MarkerDriver>(); },
+			[](){ return nullptr; },
 			[](){ return std::make_unique<DanceDriver>(); },
-//			[](){ return std::make_unique<MarkerDriver>(); },
 	};
 
 	driver = starter[(int) newMode]();
