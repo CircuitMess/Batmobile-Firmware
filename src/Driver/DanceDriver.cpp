@@ -4,15 +4,21 @@
 #include <Batmobile.h>
 
 
-DanceDriver::DanceDriver() {
-    Com.addListener(  ComType::Dance, this);
-    LoopManager::addListener(this);
-}
+DanceDriver::DanceDriver() : Driver(DriveMode::Dance){ }
 
 DanceDriver::~DanceDriver() {
-    Motors.setAll(0);
-    Com.removeListener(ComType::Dance, this);
-    LoopManager::removeListener(this);
+    stop();
+}
+
+void DanceDriver::onStart(){
+	Com.addListener(ComType::Dance, this);
+	LoopManager::addListener(this);
+}
+
+void DanceDriver::onStop(){
+	Motors.setAll(0);
+	Com.removeListener(this);
+	LoopManager::removeListener(this);
 }
 
 void DanceDriver::onFrame(DriveInfo &driveInfo) {

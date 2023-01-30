@@ -14,8 +14,12 @@ public:
 private:
     void onDance(DanceType dance) override;
     void loop(uint micros) override;
+protected:
+	void onStart() override;
+	void onStop() override;
+private:
 
-    MotorInfo danceInfo[4][2] = {{{0,   0,   0,   0},   {0,   0,   0,   0}},
+	MotorInfo danceInfo[4][2] = {{{0,   0,   0,   0},   {0,   0,   0,   0}},
                                  {{25,  -25, 75,  -75}, {-25, 25,  -75, 75}},
                                  {{30,  30,  30,  30},  {-30, -30, -30, -30}},
                                  {{-60, 60,  -60, 60},  {60,  -60, 60,  -60}}};
