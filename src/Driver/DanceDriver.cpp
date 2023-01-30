@@ -26,21 +26,11 @@ void DanceDriver::onFrame(DriveInfo &driveInfo) {
 }
 
 void DanceDriver::onDance(DanceType dance) {
+    currentDance = dance;
 
-    switch(dance){
-        case DanceType::Idle:
-            currentDance = DanceType::Idle;
-            break;
-        case DanceType::Wiggle:
-            currentDance = DanceType::Wiggle;
-            break;
-        case DanceType::BackNFront:
-            currentDance = DanceType::BackNFront;
-            break;
-        case DanceType::Spin:
-            currentDance = DanceType::Spin;
-            break;
-    }
+	count = 0;
+	danceFlag = false;
+	Motors.setAll(danceInfo[(uint8_t)currentDance][0]);
 }
 
 void DanceDriver::loop(uint micros) {
