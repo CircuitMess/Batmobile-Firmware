@@ -11,6 +11,7 @@ void DriverControls::stop(){
 }
 
 void DriverControls::onHonk(){
+    Audio.play(SPIFFS.open("/SFX/honk.aac"));
 	headlightsToggle = !headlightsToggle;
 	Taillights.setSolid(headlightsToggle ? 255 : 0);
 	Headlights.setSolid(headlightsToggle ? 255 : 0);

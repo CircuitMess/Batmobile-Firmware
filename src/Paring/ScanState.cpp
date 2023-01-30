@@ -3,41 +3,83 @@
 #include "WiFiConState.h"
 #include "../States/StateManager.h"
 #include <Loop/LoopManager.h>
+#include <NetworkConfig.h>
 
-Pair::ScanState::ScanState(Pair::PairService *pairService) : State(pairService){
+Pair::ScanState::ScanState(Pair::PairService* pairService) : State(pairService){
 
 }
 
 void Pair::ScanState::onStart(){
-	S3.setMode(DriveMode::Marker);
-    LoopManager::addListener(this);
+	S3.setMode(DriveMode::QRScan);
+	LoopManager::addListener(this);
 	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
 }
 
 void Pair::ScanState::onStop(){
 	S3.setMode(DriveMode::Idle);
-    LoopManager::removeListener(this);
+	LoopManager::removeListener(this);
 	Underlights.clear();
 }
 
 void Pair::ScanState::loop(uint micros){
-
 	timeoutCounter += micros;
 	if(timeoutCounter >= pairTimeout){
 		StateManager::shutdown();
 	}
 
-	// TODO: Use S3 frames for marker detection
+	auto frame = S3.getFrame();
+	if(frame == nullptr || frame->toQR() == nullptr) return;
 
-	// TODO: place this after scan
-	Audio.play(SPIFFS.open("/SFX/scan.aac"));
+	auto markers = frame->toQR();
 
-/*	cam->loadFrame();
-    std::vector<Aruco::Marker> markers = Markers::detect((uint8_t*)cam->getRGB565(), 160, 120, Markers::RGB565);
-    cam->releaseFrame();
+	if(!markers->arucoMarkers.empty()){
+		printf("Aruco %d\n", markers->arucoMarkers.front().id );
+		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		arucoFound(markers->arucoMarkers.front().id);
+	}else if(!markers->qrMarkers.empty()){
+		printf("QR %s\n", markers->qrMarkers.front().data);
+		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		qrFound((char*) markers->qrMarkers.front().data);
+	}
+}
 
-    if(!markers.empty()){
-        pairService->setState(new Pair::WiFiConState(pairService, (uint16_t) markers[0].id));
-    }*/
+void Pair::ScanState::arucoFound(uint16_t id){
+	char ssid[14];
+	char pass[10];
 
+	memcpy(ssid, "Batmobile ", 10);
+	ssid[10] = (id / 100) + '0';
+	ssid[11] = ((id / 10) % 10) + '0';
+	ssid[12] = (id % 10) + '0';
+	ssid[13] = '\0';
+
+	memset(pass, 0, 10);
+	String batmobile = "Batmobile";
+	for(int i = 0; i < 9; i++){
+		char temp = batmobile[i];
+		temp = temp + id * 5 + 16;
+		temp = temp % ('z' - 'A') + 'A';
+		pass[i] = temp;
+	}
+
+	controllerIP = defaultControllerIP;
+
+	pairService->setState(new Pair::WiFiConState(pairService, ssid, pass));
+}
+
+void Pair::ScanState::qrFound(const char* data){
+	/*
+	 * QR data is consisted of:
+	 * 24 bytes for SSID + 1 null terminator
+	 * 23 bytes for pass + 1 null terminator
+	 * 4 bytes for IP address of controller
+	 *
+	 * Total of 53 bytes
+	 */
+
+	for(int i = 0; i < 4; i++){
+		controllerIP[i] = data[49 + i];
+	}
+
+	pairService->setState(new Pair::WiFiConState(pairService, data, data + 25));
 }

@@ -2,6 +2,8 @@
 #include "../Driver/ManualDriver.h"
 #include "../Driver/LineDriver.h"
 #include "../Driver/DanceDriver.h"
+#include "../Driver/MarkerDriver.h"
+#include "../Driver/BallDriver.h"
 #include <Loop/LoopManager.h>
 #include <Batmobile.h>
 
@@ -39,10 +41,9 @@ void DriveState::setMode(DriveMode newMode){
 	static const std::function<std::unique_ptr<Driver>()> starter[7] = {
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
-			[](){ return nullptr; },
+			[](){ return std::make_unique<BallDriver>(); },
 			[](){ return std::make_unique<LineDriver>(); },
-			[](){ return nullptr; },
-			[](){ return nullptr; },
+			[](){ return std::make_unique<MarkerDriver>(); },
 			[](){ return std::make_unique<DanceDriver>(); },
 //			[](){ return std::make_unique<MarkerDriver>(); },
 	};
@@ -54,6 +55,7 @@ void DriveState::setMode(DriveMode newMode){
 	}
 
 	currentMode = newMode;
+	driver->start();
 }
 
 void DriveState::loop(uint micros){
@@ -64,8 +66,9 @@ void DriveState::loop(uint micros){
 	auto info = S3.getFrame();
 	if(info == nullptr) return;
 
-	if(info->mode != currentMode) return;
+	if(driver && info->mode == driver->getMode()){
+		driver->onFrame(*info);
+	}
 
-	driver->onFrame(*info);
 	feed.sendFrame(*info);
 }
