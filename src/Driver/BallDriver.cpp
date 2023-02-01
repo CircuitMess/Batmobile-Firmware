@@ -12,7 +12,8 @@ BallDriver::~BallDriver(){
 
 void BallDriver::onStart(){
 	Com.addListener(ComType::BallHue, this);
-	Underlights.setValue(ColorConverter::toRGB(hue));
+	S3.setHue(hue);
+	Underlights.setSolid(ColorConverter::toRGB(hue));
 }
 
 void BallDriver::onStop(){
@@ -74,6 +75,6 @@ void BallDriver::onFrame(DriveInfo& driveInfo){
 
 void BallDriver::onBallHue(uint8_t hue){
 	this->hue = hue;
-	Underlights.setValue(ColorConverter::toRGB(hue));
+	Underlights.setSolid(ColorConverter::toRGB(hue));
 	S3.setHue(hue);
 }
