@@ -20,9 +20,17 @@ void DriveState::onStart(){
 
 	LoopManager::addListener(this);
 	frameTime = 0;
+
+	if(driver){
+		driver->start();
+	}
 }
 
 void DriveState::onStop(){
+	if(driver){
+		driver->stop();
+	}
+
 	Taillights.clear();
 	Headlights.clear();
 	Underlights.clear();
@@ -34,7 +42,11 @@ void DriveState::onStop(){
 
 void DriveState::setMode(DriveMode newMode){
 	if(currentMode == newMode) return;
-	driver.reset();
+
+	if(driver){
+		driver->stop();
+		driver.reset();
+	}
 
 	static const std::function<std::unique_ptr<Driver>()> starter[7] = {
 			[](){ return nullptr; },
@@ -53,7 +65,6 @@ void DriveState::setMode(DriveMode newMode){
 	}
 
 	currentMode = newMode;
-	driver->start();
 }
 
 void DriveState::loop(uint micros){
