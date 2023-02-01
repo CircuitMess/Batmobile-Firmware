@@ -31,7 +31,7 @@ void StateManager::onConnected(){
 
 	Audio.play(SPIFFS.open("/SFX/paired.aac"));
 
-	Underlights.setValue({ 0, 0, 0 });
+	Underlights.clear();
 	Underlights.blinkTwice({ 0, 255, 0 });
 
 	const uint32_t m = millis();
