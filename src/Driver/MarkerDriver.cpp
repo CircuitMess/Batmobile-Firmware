@@ -37,7 +37,6 @@ MarkerDriver::~MarkerDriver(){
 
 void MarkerDriver::onFrame(DriveInfo& driveInfo){
 	if(current == MarkerAction::Burnout || current == MarkerAction::Do360 || current == MarkerAction::Batsplosion){
-		driveInfo.motors = Motors.getAll();
 		driveInfo.toMarker()->action = current;
 		return;
 	}
@@ -63,7 +62,6 @@ void MarkerDriver::onFrame(DriveInfo& driveInfo){
 	processAction(ActionMap.at(id));
 
 	driveInfo.toMarker()->action = current;
-	driveInfo.motors = Motors.getAll();
 }
 
 void MarkerDriver::processAction(MarkerAction action){

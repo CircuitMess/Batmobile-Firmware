@@ -79,5 +79,6 @@ void DriveState::loop(uint micros){
 		driver->onFrame(*info);
 	}
 
+	info->motors = Motors.getAll();
 	feed.sendFrame(*info);
 }
