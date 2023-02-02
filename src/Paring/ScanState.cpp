@@ -10,7 +10,7 @@ Pair::ScanState::ScanState(Pair::PairService* pairService) : State(pairService){
 }
 
 void Pair::ScanState::onStart(){
-	S3.setMode(DriveMode::Marker);
+	S3.setMode(DriveMode::QRScan);
 	LoopManager::addListener(this);
 	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
 }
@@ -22,26 +22,25 @@ void Pair::ScanState::onStop(){
 }
 
 void Pair::ScanState::loop(uint micros){
-
 	timeoutCounter += micros;
 	if(timeoutCounter >= pairTimeout){
-		StateManager::shutdown();
+		Batmobile.shutdown();
 	}
 
-	// TODO: Use S3 frames for marker detection
+	auto frame = S3.getFrame();
+	if(frame == nullptr || frame->toQR() == nullptr) return;
 
-	// TODO: place this after scan
-	Audio.play(SPIFFS.open("/SFX/scan.aac"));
+	auto markers = frame->toQR();
 
-/*	cam->loadFrame();
-    std::vector<Aruco::Marker> markers = Markers::detect((uint8_t*)cam->getRGB565(), 160, 120, Markers::RGB565);
-    cam->releaseFrame();
-
-    if(!markers.empty()){
-        pairService->setState(new Pair::WiFiConState(pairService, (uint16_t) markers[0].id));
-    }*/
-
-	//TODO - call arucoFound() or qrFound() when S3 returns something
+	if(!markers->arucoMarkers.empty()){
+		printf("Aruco %d\n", markers->arucoMarkers.front().id );
+		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		arucoFound(markers->arucoMarkers.front().id);
+	}else if(!markers->qrMarkers.empty()){
+		printf("QR %s\n", markers->qrMarkers.front().data);
+		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		qrFound((char*) markers->qrMarkers.front().data);
+	}
 }
 
 void Pair::ScanState::arucoFound(uint16_t id){
@@ -69,27 +68,18 @@ void Pair::ScanState::arucoFound(uint16_t id){
 }
 
 void Pair::ScanState::qrFound(const char* data){
-/*
- * QR data is consisted of:
- * 32 bytes for SSID + 1 null terminator
- * 63 bytes for pass + 1 null terminator
- * 4 bytes for IP address of controller
- *
- * Total of 101 bytes
- */
-
-	char ssid[33];
-	char pass[64];
-
-	uint8_t cursor = 0;
-	memcpy(ssid, data, 33);
-	cursor += 33;
-	memcpy(pass, data + cursor, 64);
-	cursor += 64;
+	/*
+	 * QR data is consisted of:
+	 * 24 bytes for SSID + 1 null terminator
+	 * 23 bytes for pass + 1 null terminator
+	 * 4 bytes for IP address of controller
+	 *
+	 * Total of 53 bytes
+	 */
 
 	for(int i = 0; i < 4; i++){
-		controllerIP[i] = data[cursor + i];
+		controllerIP[i] = data[49 + i];
 	}
 
-	pairService->setState(new Pair::WiFiConState(pairService, ssid, pass));
+	pairService->setState(new Pair::WiFiConState(pairService, data, data + 25));
 }

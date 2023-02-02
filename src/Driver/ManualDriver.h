@@ -15,6 +15,10 @@ public:
 
 	void onFrame(DriveInfo& driveInfo) override;
 
+protected:
+	void onStart() override;
+	void onStop() override;
+
 private:
 	void onBoost(bool boost) override;
 	void onDriveDir(uint8_t dir) override;

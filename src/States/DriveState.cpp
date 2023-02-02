@@ -1,6 +1,8 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
-#include "../Driver/LineDriver.h"
+#include "../Driver/DanceDriver.h"
+#include "../Driver/MarkerDriver.h"
+#include "../Driver/BallDriver.h"
 #include <Loop/LoopManager.h>
 #include <Batmobile.h>
 
@@ -18,9 +20,17 @@ void DriveState::onStart(){
 
 	LoopManager::addListener(this);
 	frameTime = 0;
+
+	if(driver){
+		driver->start();
+	}
 }
 
 void DriveState::onStop(){
+	if(driver){
+		driver->stop();
+	}
+
 	Taillights.clear();
 	Headlights.clear();
 	Underlights.clear();
@@ -33,14 +43,19 @@ void DriveState::onStop(){
 void DriveState::setMode(DriveMode newMode){
 	if(currentMode == newMode) return;
 
-	driver.reset();
+	if(driver){
+		driver->stop();
+		driver.reset();
+	}
 
-	static const std::function<std::unique_ptr<Driver>()> starter[5] = {
+	static const std::function<std::unique_ptr<Driver>()> starter[7] = {
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
+			[](){ return std::make_unique<BallDriver>(); },
 			[](){ return nullptr; },
-			[](){ return std::make_unique<LineDriver>(); },
+			[](){ return std::make_unique<MarkerDriver>(); },
 			[](){ return nullptr; },
+			[](){ return std::make_unique<DanceDriver>(); },
 	};
 
 	driver = starter[(int) newMode]();
@@ -60,8 +75,10 @@ void DriveState::loop(uint micros){
 	auto info = S3.getFrame();
 	if(info == nullptr) return;
 
-	if(info->mode != currentMode) return;
+	if(driver && info->mode == driver->getMode()){
+		driver->onFrame(*info);
+	}
 
-	driver->onFrame(*info);
+	info->motors = Motors.getAll();
 	feed.sendFrame(*info);
 }

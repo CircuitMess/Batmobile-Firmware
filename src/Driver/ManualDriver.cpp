@@ -3,14 +3,21 @@
 #include <Batmobile.h>
 #include <DriveDirection.h>
 #include <Loop/LoopManager.h>
-#include <Batmobile.h>
 
-ManualDriver::ManualDriver(){
+ManualDriver::ManualDriver() : Driver(DriveMode::Manual){
+
+}
+
+ManualDriver::~ManualDriver(){
+	stop();
+}
+
+void ManualDriver::onStart(){
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
 	LoopManager::addListener(this);
 }
 
-ManualDriver::~ManualDriver(){
+void ManualDriver::onStop(){
 	Com.removeListener(this);
 	LoopManager::removeListener(this);
 }
@@ -56,7 +63,6 @@ void ManualDriver::onDriveDir(uint8_t dir){
 bool ManualDriver::drivingStraight() const{
 	return (parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward || parsedDirection == DriveDirection::None);
 }
-
 
 void ManualDriver::setMotors(){
 	float leftSpeed, rightSpeed;
@@ -131,8 +137,8 @@ void ManualDriver::setMotors(){
 	leftSpeed = std::round(constrain(leftSpeed, -100.0f, 100.0f));
 
 	Motors.setAll({
-		(int8_t) rightSpeed, (int8_t) leftSpeed,
-		(int8_t) rightSpeed, (int8_t) leftSpeed
+		(int8_t) leftSpeed, (int8_t) rightSpeed,
+		(int8_t) leftSpeed, (int8_t) rightSpeed,
 	});
 }
 
