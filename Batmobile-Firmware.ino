@@ -17,11 +17,10 @@ void setup() {
 
     if(Battery.getPercentage() <= 2 && !Battery.charging()){
         Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
-        Underlights.breathe( {0, 0 ,0}, {255, 0, 255}, 4000 ,1);
-        uint32_t counter = 0;
-        while(counter <= 500000){
+		Underlights.breathe({ 255, 0, 0 }, { 0, 0, 0 }, 6000);
+        uint32_t t = millis();
+        while(millis() - t <= 3000){
             Underlights.loop(0);
-            counter++;
         }
         Batmobile.shutdown();
         return;
