@@ -104,6 +104,6 @@ void StateManager::onVolume(uint8_t volume){
 
 void StateManager::onShutdown(){
 	Com.sendShutdownAck();
-	delay(3000);
+	delay(2000);
 	Batmobile.shutdown();
 }
