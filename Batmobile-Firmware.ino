@@ -15,7 +15,7 @@ void setup() {
 
 	Com.begin();
 
-    if(Battery.getPercentage() <= 2 && !Battery.charging()){
+    if(Battery.getPercentage() < 1 && !Battery.charging()){
         Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
 		Underlights.breathe({ 255, 0, 0 }, { 0, 0, 0 }, 6000);
         uint32_t t = millis();
