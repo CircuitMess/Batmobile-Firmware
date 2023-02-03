@@ -3,10 +3,18 @@
 #include "LineDriver.h"
 
 LineDriver::LineDriver() : Driver(DriveMode::Line){
-	LoopManager::addListener(this);
+
 }
 
 LineDriver::~LineDriver(){
+	stop();
+}
+
+void LineDriver::onStart(){
+	LoopManager::addListener(this);
+}
+
+void LineDriver::onStop(){
 	LoopManager::removeListener(this);
 }
 

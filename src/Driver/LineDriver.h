@@ -13,6 +13,10 @@ public:
 
 	void onFrame(DriveInfo& driveInfo) override;
 
+protected:
+	void onStart() override;
+	void onStop() override;
+
 private:
 	void loop(uint micros) override;
 

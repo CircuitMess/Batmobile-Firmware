@@ -4,11 +4,19 @@
 #include <Loop/LoopManager.h>
 
 ManualDriver::ManualDriver() : Driver(DriveMode::Manual){
+
+}
+
+ManualDriver::~ManualDriver(){
+	stop();
+}
+
+void ManualDriver::onStart(){
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
 	LoopManager::addListener(this);
 }
 
-ManualDriver::~ManualDriver(){
+void ManualDriver::onStop(){
 	Com.removeListener(this);
 	LoopManager::removeListener(this);
 }
@@ -54,7 +62,6 @@ void ManualDriver::onDriveDir(uint8_t dir){
 bool ManualDriver::drivingStraight() const{
 	return (parsedDirection == DriveDirection::Forward || parsedDirection == DriveDirection::Backward || parsedDirection == DriveDirection::None);
 }
-
 
 void ManualDriver::setMotors(){
 	float leftSpeed, rightSpeed;
