@@ -2,7 +2,7 @@
 #include <Batmobile.h>
 #include <SimpleProgColors.h>
 
-SimpleProgDriver::SimpleProgDriver(){
+SimpleProgDriver::SimpleProgDriver() : Driver(DriveMode::SimpleProgramming) {
 	Com.addListener({ ComType::DriveDir, ComType::DriveSpeed, ComType::Headlights, ComType::Taillights, ComType::Underlights, ComType::SoundEffect }, this);
 }
 
@@ -25,16 +25,16 @@ void SimpleProgDriver::onDriveSpeed(uint8_t speed){
 }
 
 void SimpleProgDriver::onHeadlights(uint8_t val){
-	Headlights.setValue(val);
+	Headlights.setSolid(val);
 }
 
 void SimpleProgDriver::onTaillights(uint8_t val){
-	Taillights.setValue(val);
+	Taillights.setSolid(val);
 }
 
 void SimpleProgDriver::onUnderlights(uint8_t color){
 	color = constrain(color, 0, NumColors);
-	Underlights.setValue(SimpleProgColors[color]);
+	Underlights.setSolid(SimpleProgColors[color]);
 }
 
 void SimpleProgDriver::onSoundEffect(uint8_t sample){

@@ -53,7 +53,7 @@ void DriveState::setMode(DriveMode newMode){
 		driver.reset();
 	}
 
-	static const std::function<std::unique_ptr<Driver>()> starter[7] = {
+	static const std::function<std::unique_ptr<Driver>()> starter[8] = {
 			[](){ return nullptr; },
 			[](){ return std::make_unique<ManualDriver>(); },
 			[](){ return std::make_unique<BallDriver>(); },
@@ -61,7 +61,7 @@ void DriveState::setMode(DriveMode newMode){
 			[](){ return std::make_unique<MarkerDriver>(); },
 			[](){ return nullptr; },
 			[](){ return std::make_unique<SimpleProgDriver>(); },
-			[](){ return std::make_unique<DanceDriver>(); },
+			[](){ return std::make_unique<DanceDriver>(); }
 	};
 
 	driver = starter[(int) newMode]();
