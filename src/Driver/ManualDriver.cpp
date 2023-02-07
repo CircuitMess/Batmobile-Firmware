@@ -20,6 +20,7 @@ void ManualDriver::onStart(){
 void ManualDriver::onStop(){
 	Com.removeListener(this);
 	LoopManager::removeListener(this);
+	S3.setShake(false);
 }
 
 void ManualDriver::onFrame(DriveInfo& driveInfo){
@@ -27,7 +28,12 @@ void ManualDriver::onFrame(DriveInfo& driveInfo){
 }
 
 void ManualDriver::onBoost(bool boost){
+	if(boost != boosting){
+		S3.setShake(boost);
+	}
+
 	boosting = boost;
+
 	if(!boosting){
 		Taillights.setSolid(controls.getHeadlightsToggle() ? 255 : 0);
 	}
