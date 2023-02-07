@@ -19,10 +19,6 @@ protected:
 	void onStop() override;
 private:
 
-	MotorInfo danceInfo[4][2] = {{{0,   0,   0,   0},   {0,   0,   0,   0}},
-                                 {{40,  -40, 40,  -40}, {-40, 40,  -40, 40}},
-                                 {{60,  60,  60,  60},  {-60, -60, -60, -60}},
-                                 {{-100, 100,  -100, 100},  {100,  -100, 100,  -100}}};
     uint32_t switchDelay = 1500000;
     uint32_t count = 0;
     bool danceFlag = true;

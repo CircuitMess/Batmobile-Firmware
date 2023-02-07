@@ -3,6 +3,11 @@
 #include "DanceDriver.h"
 #include <Batmobile.h>
 
+static const MotorInfo danceInfo[5][2] = {{{ 0,    0,   0,    0 },    { 0,   0,    0,   0 }},
+								   {{ 40,   -40, 40,   -40 },  { -40, 40,   -40, 40 }},
+								   {{ 60,   60,  60,   60 },   { -60, -60,  -60, -60 }},
+								   {{ -100, 100, -100, 100 },  { 100, -100, 100, -100 }},
+								   {{ -65,  -45, -65,  -45 }, { -45, -65,  -45, -65 }}};
 
 DanceDriver::DanceDriver() : Driver(DriveMode::Dance){ }
 
