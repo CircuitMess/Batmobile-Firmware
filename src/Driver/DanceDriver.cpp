@@ -42,6 +42,7 @@ void DanceDriver::onDance(DanceType dance) {
 	danceFlag = false;
 	Motors.setAll(danceInfo[(uint8_t)currentDance][0]);
 	Underlights.blinkContinuous(colors[(uint8_t)currentDance][0]);
+	Audio.play(SPIFFS.open("/SFX/beep.aac"));
 }
 
 void DanceDriver::loop(uint micros) {
@@ -51,10 +52,12 @@ void DanceDriver::loop(uint micros) {
         if(danceFlag){
             danceFlag = false;
             Motors.setAll(danceInfo[(uint8_t)currentDance][0]);
+			Audio.play(SPIFFS.open("/SFX/beep.aac"));
 			Underlights.blinkContinuous(colors[(uint8_t)currentDance][0]);
 		}else{
             danceFlag = true;
             Motors.setAll(danceInfo[(uint8_t)currentDance][1]);
+			Audio.play(SPIFFS.open("/SFX/beep.aac"));
 			Underlights.blinkContinuous(colors[(uint8_t)currentDance][1]);
         }
     }
