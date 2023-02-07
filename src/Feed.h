@@ -15,7 +15,7 @@ public:
 private:
 	AsyncUDP udp;
 
-	static constexpr size_t TxBufSize = 8000;
+	static constexpr size_t TxBufSize = 10000;
 	uint8_t* txBuf;
 
 };
