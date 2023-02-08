@@ -31,6 +31,10 @@ void Pair::WiFiConState::loop(uint micros){
 	if(WiFi.status() == WL_CONNECTED){
 		pairService->setState(new StreamConState(pairService));
 		return;
+	}else if(WiFi.status() == WL_CONNECT_FAILED){
+		Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
+		pairService->setState(new ScanState(pairService));
+		return;
 	}
 
 	retryCounter += micros;

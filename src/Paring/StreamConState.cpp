@@ -18,7 +18,6 @@ void Pair::StreamConState::onStart(){
 
 void Pair::StreamConState::onStop(){
 	Underlights.clear();
-	Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
 
     LoopManager::removeListener(this);
 
