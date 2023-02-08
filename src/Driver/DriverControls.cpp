@@ -4,6 +4,7 @@
 
 void DriverControls::start(){
 	Com.addListener({ ComType::Honk, ComType::DriveSpeed }, this);
+	srand (time(NULL));
 }
 
 void DriverControls::stop(){
@@ -11,7 +12,9 @@ void DriverControls::stop(){
 }
 
 void DriverControls::onHonk(){
-    Audio.play(SPIFFS.open("/SFX/honk.aac"));
+	uint8_t honkRand = rand() % 6;
+    Audio.play(SPIFFS.open(String("/SFX/honk") + honkRand + ".aac"));
+	Serial.println(honkRand);
 	headlightsToggle = !headlightsToggle;
 	Taillights.setSolid(headlightsToggle ? 255 : 0);
 	Headlights.setSolid(headlightsToggle ? 255 : 0);
