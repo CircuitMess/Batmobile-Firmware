@@ -13,6 +13,7 @@ ManualDriver::~ManualDriver(){
 }
 
 void ManualDriver::onStart(){
+	controls.setLightshowDisable(false);
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
 	LoopManager::addListener(this);
 }

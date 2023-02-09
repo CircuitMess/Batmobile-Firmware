@@ -4,13 +4,17 @@
 #include "../Lightshow/BreatheLightshow.h"
 #include "../Lightshow/RainbowLightshow.h"
 #include "../Lightshow/FireLightshow.h"
+#include "../Lightshow/SolidLightshow.h"
 
 void DriverControls::start(){
 	Com.addListener({ ComType::Honk, ComType::DriveSpeed }, this);
+	prevType = LightshowType::None;
+	lightshowType = LightshowType::None;
 }
 
 void DriverControls::stop(){
 	Com.removeListener(this);
+	if(lightshowDisable) return;
 	if(lightshow) lightshow->stop();
 }
 
@@ -19,12 +23,11 @@ void DriverControls::onHonk(){
 
 	if(boosting) return;
 
+	if(lightshowDisable) return;
+
 	if(lightshow) lightshow->stop();
-
 	lightshowType = (LightshowType) ((uint8_t) (((uint8_t) lightshowType) + 1) % (uint8_t) LightshowType::Size);
-
 	lightshow = createLightshow(lightshowType);
-
 	if(lightshow) lightshow->start();
 }
 
@@ -38,6 +41,8 @@ uint8_t DriverControls::getDriveSpeed() const{
 
 void DriverControls::onBoost(bool boost){
 	boosting = boost;
+
+	if(lightshowDisable) return;
 
 	if(boost && lightshowType != LightshowType::FrontAndFire){
 		prevType = lightshowType;
@@ -53,6 +58,9 @@ void DriverControls::onBoost(bool boost){
 
 std::unique_ptr<Lightshow> DriverControls::createLightshow(LightshowType type){
 	switch(type){
+		case LightshowType::SolidFrontBack:
+			return std::make_unique<SolidLightshow>();
+			break;
 		case LightshowType::BreatheR:
 			return std::make_unique<BreatheLightshow<LightshowType::BreatheR>>();
 			break;
@@ -75,4 +83,8 @@ std::unique_ptr<Lightshow> DriverControls::createLightshow(LightshowType type){
 			return nullptr;
 			break;
 	}
+}
+
+void DriverControls::setLightshowDisable(bool lightshowDisable){
+	DriverControls::lightshowDisable = lightshowDisable;
 }

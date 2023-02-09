@@ -10,6 +10,7 @@ public:
 	void start();
 	void stop();
 	[[nodiscard]] uint8_t getDriveSpeed() const;
+	void setLightshowDisable(bool lightshowDisable);
 
 private:
 	void onHonk() override;
@@ -18,6 +19,8 @@ private:
 
 	uint8_t driveSpeed = 0;
 	bool boosting = false;
+
+	bool lightshowDisable = true;
 	std::unique_ptr<Lightshow> lightshow;
 	LightshowType lightshowType = LightshowType::None;
 	LightshowType prevType = LightshowType::None;
