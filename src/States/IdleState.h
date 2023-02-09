@@ -3,8 +3,9 @@
 
 #include "State.h"
 #include <Communication/ComListener.h>
+#include <Loop/LoopListener.h>
 
-class IdleState : public State, private ComListener{
+class IdleState : public State, private ComListener, private LoopListener{
 public:
 	IdleState();
 	~IdleState() override;
@@ -15,6 +16,8 @@ protected:
 
 	void onSettingsSound() override;
 
+private:
+	void loop(uint micros) override;
 };
 
 

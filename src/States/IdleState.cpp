@@ -11,12 +11,13 @@ IdleState::~IdleState(){
 
 void IdleState::onStart(){
 	Underlights.breathe({0, 255, 50}, {120, 0, 255}, 6000);
-
+	LoopManager::addListener(this);
 	Com.addListener(ComType::SettingsSound, this);
 }
 
 void IdleState::onStop(){
 	Com.removeListener(this);
+	LoopManager::removeListener(this);
 	Underlights.clear();
 }
 
