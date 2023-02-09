@@ -18,6 +18,8 @@ protected:
 
 private:
 	void loop(uint micros) override;
+	uint32_t counter = 0;
+	uint32_t threshold = 10000000;
 };
 
 
