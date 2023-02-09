@@ -22,6 +22,9 @@ private:
 	static constexpr uint32_t burnoutDuration = 3000000; // [us]
 	static constexpr uint32_t do360Duration = 2500000; // [us]
 	static constexpr uint32_t explosionDuration = 6000000; // [us]
+	static constexpr uint32_t batsDuration = 3000000; // [us]
+
+	static bool continuousAction(MarkerAction action);
 
 	static constexpr int8_t motorsSpeed = 100;
 
