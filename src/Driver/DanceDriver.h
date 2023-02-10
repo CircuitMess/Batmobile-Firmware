@@ -7,22 +7,22 @@
 
 class DanceDriver : public Driver, private ComListener, private LoopListener {
 public:
-    DanceDriver();
-    ~DanceDriver() override;
-    void onFrame(DriveInfo &driveInfo) override;
+	DanceDriver();
+	~DanceDriver() override;
+	void onFrame(DriveInfo& driveInfo) override;
 
-private:
-    void onDance(DanceType dance) override;
-    void loop(uint micros) override;
 protected:
 	void onStart() override;
 	void onStop() override;
-private:
 
-    uint32_t switchDelay = 1500000;
-    uint32_t count = 0;
-    bool danceFlag = true;
-    DanceType currentDance = DanceType::Idle;
+private:
+	void onDance(DanceType dance) override;
+	void loop(uint micros) override;
+
+	uint32_t switchDelay = 1500000;
+	uint32_t count = 0;
+	bool danceFlag = true;
+	DanceType currentDance = DanceType::Idle;
 };
 
 
