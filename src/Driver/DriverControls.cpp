@@ -12,7 +12,7 @@ void DriverControls::stop(){
 }
 
 void DriverControls::onHonk(){
-	uint8_t honkRand = rand() % 6;
+	uint8_t honkRand = rand() % 7;
     Audio.play(SPIFFS.open(String("/SFX/honk") + honkRand + ".aac"));
 	headlightsToggle = !headlightsToggle;
 	Taillights.setSolid(headlightsToggle ? 255 : 0);
