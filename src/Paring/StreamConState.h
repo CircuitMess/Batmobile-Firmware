@@ -17,7 +17,8 @@ private:
 	std::unique_ptr<AsyncClient> client;
 
 	void loop(uint micros) override;
-
+	static constexpr uint32_t ConTimeout = 3500000;
+	uint32_t timeoutCounter = 0;
 };
 
 
