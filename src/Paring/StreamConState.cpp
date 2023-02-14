@@ -14,6 +14,7 @@ void Pair::StreamConState::onStart(){
     client->connect(controllerIP, controlPort);
 
 	LoopManager::addListener(this);
+	timeoutCounter = 0;
 }
 
 void Pair::StreamConState::onStop(){
