@@ -14,6 +14,7 @@ void Pair::StreamConState::onStart(){
     client->connect(controllerIP, controlPort);
 
 	LoopManager::addListener(this);
+	timeoutCounter = 0;
 }
 
 void Pair::StreamConState::onStop(){
@@ -25,6 +26,12 @@ void Pair::StreamConState::onStop(){
 }
 
 void Pair::StreamConState::loop(uint micros){
+	timeoutCounter += micros;
+	if(timeoutCounter >= ConTimeout){
+		Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
+		pairService->setState(new ScanState(pairService));
+		return;
+	}
 	if(!client || !client->connected()) return;
 
 	pairService->paringDone(std::move(client));
