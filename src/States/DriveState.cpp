@@ -1,6 +1,7 @@
 #include "DriveState.h"
 #include "../Driver/ManualDriver.h"
 #include "../Driver/DanceDriver.h"
+#include "../Driver/SimpleProgDriver.h"
 #include "../Driver/MarkerDriver.h"
 #include "../Driver/BallDriver.h"
 #include <Loop/LoopManager.h>
@@ -16,7 +17,9 @@ void DriveState::onStart(){
 	Headlights.setSolid(255);
 	Underlights.clear();
 
-	Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
+	if(currentMode != DriveMode::SimpleProgramming){
+		Audio.play(SPIFFS.open("/SFX/driverStart.aac"));
+	}
 
 	LoopManager::addListener(this);
 	frameTime = 0;
@@ -35,7 +38,9 @@ void DriveState::onStop(){
 	Headlights.clear();
 	Underlights.clear();
 
-	Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
+	if(currentMode != DriveMode::SimpleProgramming){
+		Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
+	}
 
 	LoopManager::removeListener(this);
 }
@@ -55,7 +60,8 @@ void DriveState::setMode(DriveMode newMode){
 			{ DriveMode::Line,   [](){ return nullptr; }},
 			{ DriveMode::Marker, [](){ return std::make_unique<MarkerDriver>(); }},
 			{ DriveMode::QRScan, [](){ return nullptr; }},
-			{ DriveMode::Dance,  [](){ return std::make_unique<DanceDriver>(); }}
+			{ DriveMode::Dance,  [](){ return std::make_unique<DanceDriver>(); }},
+			{ DriveMode::SimpleProgramming,  [](){ return std::make_unique<SimpleProgDriver>(); }}
 	};
 
 	if(!starter.count(newMode)){
