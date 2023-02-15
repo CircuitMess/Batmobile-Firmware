@@ -7,7 +7,7 @@
 #include "../Lightshow/SolidLightshow.h"
 
 void DriverControls::start(){
-	Com.addListener({ ComType::Honk, ComType::DriveSpeed }, this);
+	Com.addListener({ ComType::Honk, ComType::DriveSpeed, ComType::Boost }, this);
 	prevType = LightshowType::None;
 	lightshowType = LightshowType::None;
 }
@@ -49,6 +49,8 @@ void DriverControls::onBoost(bool boost){
 		lightshowType = LightshowType::FrontAndFire;
 		lightshow = createLightshow(LightshowType::FrontAndFire);
 		if(lightshow) lightshow->start();
+	}else if(boost && lightshowType == LightshowType::FrontAndFire){
+		prevType = LightshowType::FrontAndFire;
 	}else if(!boost && lightshowType == LightshowType::FrontAndFire && prevType != LightshowType::FrontAndFire){
 		lightshowType = prevType;
 		lightshow = createLightshow(lightshowType);
