@@ -37,6 +37,7 @@ void DriveState::onStop(){
 	Taillights.clear();
 	Headlights.clear();
 	Underlights.clear();
+	Motors.stopAll();
 
 	if(currentMode != DriveMode::SimpleProgramming){
 		Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
