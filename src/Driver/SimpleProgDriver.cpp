@@ -50,8 +50,6 @@ void SimpleProgDriver::onSoundEffect(uint8_t sample){
 }
 
 void SimpleProgDriver::setMotors(){
-	if(motorsLocked) return;
-
 	float leftSpeed, rightSpeed;
 
 	switch(direction){
@@ -103,14 +101,13 @@ void SimpleProgDriver::setMotors(){
 }
 
 void SimpleProgDriver::loop(uint micros){
-	if(motorsTimeout == 0 || motorsLocked) return;
+	if(motorsTimeout == 0) return;
 
 	timer += micros;
 	if(timer >= motorsTimeout){
 		timer = 0;
 		direction = DriveDirection::None;
 		setMotors();
-		motorsLocked = true;
 	}
 }
 
@@ -130,6 +127,5 @@ void SimpleProgDriver::onMotorsTimeout(uint8_t duration){
 void SimpleProgDriver::onMotorsTimeoutClear(){
 	motorsTimeout = 0;
 	timer = 0;
-	motorsLocked = false;
 }
 

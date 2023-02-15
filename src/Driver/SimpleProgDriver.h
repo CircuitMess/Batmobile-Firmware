@@ -33,7 +33,6 @@ private:
 	void loop(uint micros) override;
 	size_t motorsTimeout = 0;
 	size_t timer = 0;
-	bool motorsLocked = false;
 
 	static constexpr int16_t speedStraight = 100;
 	static constexpr int16_t speedTurnOuter = 100;
