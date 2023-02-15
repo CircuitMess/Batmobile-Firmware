@@ -16,15 +16,10 @@ void setup() {
 	Com.begin();
 
     if(Battery.getPercentage() < 1 && !Battery.charging()){
-        Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
-		Underlights.breathe({ 255, 0, 0 }, { 0, 0, 0 }, 6000);
-        uint32_t t = millis();
-        while(millis() - t <= 3000){
-            Underlights.loop(0);
-        }
-        Batmobile.shutdown();
+        Batmobile.shutdownNotify();
         return;
     }
+
 	Audio.play(SPIFFS.open("/SFX/booted.aac"));
 
     auto manager = new StateManager();

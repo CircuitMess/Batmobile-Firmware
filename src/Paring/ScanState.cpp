@@ -24,7 +24,8 @@ void Pair::ScanState::onStop(){
 void Pair::ScanState::loop(uint micros){
 	timeoutCounter += micros;
 	if(timeoutCounter >= pairTimeout){
-		Batmobile.shutdown();
+		Batmobile.shutdownNotify();
+		return;
 	}
 
 	auto frame = S3.getFrame();
