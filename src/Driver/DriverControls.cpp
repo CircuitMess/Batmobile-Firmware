@@ -19,7 +19,7 @@ void DriverControls::stop(){
 }
 
 void DriverControls::onHonk(){
-	Audio.play(SPIFFS.open("/SFX/honk.aac"));
+	Audio.play(SPIFFS.open(String("/SFX/honk") + (esp_random()%7) + ".aac"));
 
 	if(boosting) return;
 
