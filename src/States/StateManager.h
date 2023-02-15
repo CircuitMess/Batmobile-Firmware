@@ -19,6 +19,7 @@ private:
 	void onDisconnected() override;
 
 	void onDriveMode(DriveMode mode) override;
+	void onOverrideSound(bool manual) override;
 	void onShutdown() override;
 
 	void onVolume(uint8_t volume) override;

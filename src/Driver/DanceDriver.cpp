@@ -11,6 +11,7 @@ DanceDriver::~DanceDriver() {
 }
 
 void DanceDriver::onStart(){
+	controls.setLightshowDisable(false);
 	Com.addListener(ComType::Dance, this);
 	LoopManager::addListener(this);
 }

@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include "Driver.h"
 
-class LineDriver : public Driver, private LoopListener {
+class [[maybe_unused]] LineDriver : public Driver, private LoopListener {
 public:
 	LineDriver();
 	~LineDriver() override;

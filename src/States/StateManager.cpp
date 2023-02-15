@@ -7,7 +7,7 @@
 
 StateManager::StateManager(){
 	Com.addDcListener(this);
-	Com.addListener({ComType::DriveMode, ComType::Disconnect, ComType::Volume, ComType::Shutdown}, this);
+	Com.addListener({ComType::DriveMode, ComType::Disconnect, ComType::Volume, ComType::Shutdown, ComType::OverrideSound}, this);
 
 	S3.setMode(DriveMode::Idle);
 	currentMode = DriveMode::Idle;
@@ -107,3 +107,9 @@ void StateManager::onShutdown(){
 	delay(2000);
 	Batmobile.shutdown();
 }
+
+void StateManager::onOverrideSound(bool manual){
+	Audio.play(SPIFFS.open( manual ? "/SFX/manualSlow.aac" : "/SFX/autopilotSlow.aac"));
+}
+
+

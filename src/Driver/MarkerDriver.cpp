@@ -19,13 +19,13 @@ static const std::map<uint16_t, MarkerAction> ActionMap = {
 };
 
 const glm::vec<3, uint16_t> MarkerDriver::Colors[8] = {
-		{ 0, 0, 0 },
-		{ 255, 0, 0 },
-		{ 0, 255, 0 },
-		{ 0, 0, 255 },
+		{ 0,   0,   0 },
+		{ 255, 0,   0 },
+		{ 0,   255, 0 },
+		{ 0,   0,   255 },
 		{ 255, 255, 0 },
-		{ 255, 0, 255 },
-		{ 0, 255, 255 },
+		{ 255, 0,   255 },
+		{ 0,   255, 255 },
 		{ 255, 255, 255 },
 };
 
@@ -36,7 +36,7 @@ MarkerDriver::~MarkerDriver(){
 }
 
 void MarkerDriver::onFrame(DriveInfo& driveInfo){
-	if(current == MarkerAction::Burnout || current == MarkerAction::Do360 || current == MarkerAction::Batsplosion){
+	if(continuousAction(current)){
 		driveInfo.toMarker()->action = current;
 		return;
 	}
@@ -67,10 +67,10 @@ void MarkerDriver::onFrame(DriveInfo& driveInfo){
 void MarkerDriver::processAction(MarkerAction action){
 	switch(action){
 		case MarkerAction::Forward:
-			Motors.setAll({motorsSpeed, motorsSpeed, motorsSpeed, motorsSpeed});
+			Motors.setAll({ motorsSpeed, motorsSpeed, motorsSpeed, motorsSpeed });
 			break;
 		case MarkerAction::Backward:
-			Motors.setAll({-motorsSpeed, -motorsSpeed, -motorsSpeed, -motorsSpeed});
+			Motors.setAll({ -motorsSpeed, -motorsSpeed, -motorsSpeed, -motorsSpeed });
 			break;
 		case MarkerAction::HeadlightOn:
 			Headlights.setSolid(255);
@@ -110,13 +110,18 @@ void MarkerDriver::processAction(MarkerAction action){
 
 			break;
 		case MarkerAction::Burnout:
-			Motors.setAll({motorsSpeed, motorsSpeed, -motorsSpeed, -motorsSpeed});
+			Motors.setAll({ motorsSpeed, motorsSpeed, -motorsSpeed, -motorsSpeed });
 			break;
 		case MarkerAction::Do360:
 			if(rand() % 2){
 				Motors.setAll({ motorsSpeed, -motorsSpeed, motorsSpeed, -motorsSpeed });
 			}else{
-				Motors.setAll({-motorsSpeed, motorsSpeed, -motorsSpeed, motorsSpeed});
+				Motors.setAll({ -motorsSpeed, motorsSpeed, -motorsSpeed, motorsSpeed });
+			}
+			break;
+		case MarkerAction::Bats:
+			if(!Audio.isPlaying()){
+				Audio.play(SPIFFS.open("/SFX/bats.aac"));
 			}
 			break;
 		default:
@@ -126,7 +131,7 @@ void MarkerDriver::processAction(MarkerAction action){
 
 	current = action;
 
-	if(action == MarkerAction::Burnout || action == MarkerAction::Do360 || action == MarkerAction::Batsplosion){
+	if(continuousAction(action)){
 		LoopManager::addListener(this);
 		continuousActionTimer = 0;
 	}
@@ -137,12 +142,17 @@ void MarkerDriver::loop(uint micros){
 
 	if((current == MarkerAction::Burnout && continuousActionTimer >= burnoutDuration) ||
 	   (current == MarkerAction::Do360 && continuousActionTimer >= do360Duration) ||
-	   (current == MarkerAction::Batsplosion && continuousActionTimer >= explosionDuration)){
+	   (current == MarkerAction::Batsplosion && continuousActionTimer >= explosionDuration) ||
+	   (current == MarkerAction::Bats && continuousActionTimer >= batsDuration)){
 		continuousActionTimer = 0;
 		current = MarkerAction::None;
 		Motors.stopAll();
 		LoopManager::removeListener(this);
-	}else if(!(current == MarkerAction::Burnout || current == MarkerAction::Do360 || current == MarkerAction::Batsplosion)){
+	}else if(!continuousAction(current)){
 		LoopManager::removeListener(this);
 	}
+}
+
+bool MarkerDriver::continuousAction(MarkerAction action){
+	return action == MarkerAction::Burnout || action == MarkerAction::Do360 || action == MarkerAction::Batsplosion || action == MarkerAction::Bats;
 }
