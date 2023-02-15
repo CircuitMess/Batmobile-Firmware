@@ -19,7 +19,7 @@ private:
 	void onDance(DanceType dance) override;
 	void loop(uint micros) override;
 
-	uint32_t switchDelay = 1500000;
+	static constexpr uint32_t switchDelay = 1500000;
 	uint32_t count = 0;
 	bool danceFlag = true;
 	DanceType currentDance = DanceType::Idle;
