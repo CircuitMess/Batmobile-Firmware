@@ -13,6 +13,7 @@ void Pair::ScanState::onStart(){
 	S3.setMode(DriveMode::QRScan);
 	LoopManager::addListener(this);
 	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
+	timeoutCounter = 0;
 }
 
 void Pair::ScanState::onStop(){
