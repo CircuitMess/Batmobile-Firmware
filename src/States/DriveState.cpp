@@ -13,8 +13,8 @@ DriveState::DriveState(DriveMode mode){
 }
 
 void DriveState::onStart(){
-	Taillights.setSolid(255);
-	Headlights.setSolid(255);
+	Taillights.clear();
+	Headlights.clear();
 	Underlights.clear();
 
 	if(currentMode != DriveMode::SimpleProgramming){
