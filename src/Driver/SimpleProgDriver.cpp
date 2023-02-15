@@ -1,8 +1,10 @@
 #include "SimpleProgDriver.h"
 #include <Batmobile.h>
+#include <Loop/LoopManager.h>
 
-SimpleProgDriver::SimpleProgDriver() : Driver(DriveMode::SimpleProgramming) {
-	Com.addListener({ ComType::DriveDir, ComType::DriveSpeed, ComType::Headlights, ComType::Taillights, ComType::Underlights, ComType::SoundEffect }, this);
+SimpleProgDriver::SimpleProgDriver() : Driver(DriveMode::SimpleProgramming){
+	Com.addListener({ ComType::DriveDir, ComType::DriveSpeed, ComType::Headlights, ComType::Taillights, ComType::Underlights, ComType::SoundEffect,
+					  ComType::MotorsTimeout, ComType::MotorsTimeoutClear }, this);
 }
 
 SimpleProgDriver::~SimpleProgDriver(){
@@ -14,7 +16,7 @@ void SimpleProgDriver::onFrame(DriveInfo& driveInfo){
 }
 
 void SimpleProgDriver::onDriveDir(uint8_t dir){
-	direction = (DriveDirection)dir;
+	direction = (DriveDirection) dir;
 	setMotors();
 }
 
@@ -33,7 +35,7 @@ void SimpleProgDriver::onTaillights(uint8_t val){
 
 void SimpleProgDriver::onUnderlights(uint8_t color){
 	glm::vec<3, uint8_t> c = { 255, 255, 255 };
-	c *= glm::vec3 { color&1, color&2, color&4 };
+	c *= glm::vec3{ color & 1, color & 2, color & 4 };
 	Underlights.setSolid(c);
 }
 
@@ -96,5 +98,34 @@ void SimpleProgDriver::setMotors(){
 						  (int8_t) rightSpeed, (int8_t) leftSpeed,
 						  (int8_t) rightSpeed, (int8_t) leftSpeed
 				  });
+}
+
+void SimpleProgDriver::loop(uint micros){
+	if(motorsTimeout == 0) return;
+
+	timer += micros;
+	if(timer >= motorsTimeout){
+		timer = 0;
+		direction = DriveDirection::None;
+		setMotors();
+	}
+}
+
+void SimpleProgDriver::onStart(){
+	LoopManager::addListener(this);
+}
+
+void SimpleProgDriver::onStop(){
+	LoopManager::removeListener(this);
+}
+
+void SimpleProgDriver::onMotorsTimeout(uint8_t duration){
+	motorsTimeout = duration * 100 * 1000;
+	timer = 0;
+}
+
+void SimpleProgDriver::onMotorsTimeoutClear(){
+	motorsTimeout = 0;
+	timer = 0;
 }
 
