@@ -25,6 +25,7 @@ void setup() {
         Batmobile.shutdown();
         return;
     }
+	Audio.play(SPIFFS.open("/SFX/booted.aac"));
 
     auto manager = new StateManager();
     manager->begin();
