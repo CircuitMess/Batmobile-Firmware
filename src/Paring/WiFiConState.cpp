@@ -39,6 +39,7 @@ void Pair::WiFiConState::loop(uint micros){
 		retryCount++;
 
 		if(retryCount >= RetryTries){
+			Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
 			pairService->setState(new ScanState(pairService));
 			return;
 		}

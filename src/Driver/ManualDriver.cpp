@@ -12,6 +12,7 @@ ManualDriver::~ManualDriver(){
 }
 
 void ManualDriver::onStart(){
+	controls.setLightshowDisable(false);
 	Com.addListener({ ComType::Boost, ComType::DriveDir }, this);
 	LoopManager::addListener(this);
 }
@@ -33,9 +34,6 @@ void ManualDriver::onBoost(bool boost){
 
 	boosting = boost;
 
-	if(!boosting){
-		Taillights.setSolid(controls.getHeadlightsToggle() ? 255 : 0);
-	}
 	setMotors();
 
 	if(!boosting){
@@ -153,15 +151,5 @@ void ManualDriver::loop(uint micros){
 		setMotors();
 	}else if(directionTimeout <= directionReceiveInterval){
 		directionTimeout += micros;
-	}
-
-	if(boosting){
-		uint32_t currentMillis = millis();
-		if(currentMillis - fireMillis >= fireRandomDuration){
-			fireMillis = currentMillis;
-			fireRandomDuration = random(100);
-			uint8_t val = random(200) + 40;
-			Taillights.setSolid(val);
-		}
 	}
 }
