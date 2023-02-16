@@ -20,6 +20,21 @@ void setup() {
         return;
     }
 
+	if(S3.hasError()){
+		Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
+
+		uint32_t t = millis();
+		while(millis() - t < 12000){
+			Underlights.setSolid({ 255, 0, 0 });
+			delay(500);
+			Underlights.setSolid({ 255, 0, 0 });
+			delay(500);
+		}
+
+		Batmobile.shutdown();
+		return;
+	}
+
 	Audio.play(SPIFFS.open("/SFX/booted.aac"));
 
     auto manager = new StateManager();
