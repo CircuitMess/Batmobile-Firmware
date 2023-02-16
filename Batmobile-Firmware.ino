@@ -25,7 +25,7 @@ void setup() {
 		while(millis() - t < 12000){
 			Underlights.setSolid({ 255, 0, 0 });
 			delay(500);
-			Underlights.setSolid({ 255, 0, 0 });
+			Underlights.setSolid({ 0, 0, 255 });
 			delay(500);
 		}
 
