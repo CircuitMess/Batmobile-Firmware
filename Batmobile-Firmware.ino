@@ -13,8 +13,6 @@ void setup() {
 
     Batmobile.begin();
 
-	Com.begin();
-
     if(Battery.getPercentage() < 1 && !Battery.charging()){
         Batmobile.shutdownNotify();
         return;
@@ -35,6 +33,7 @@ void setup() {
 		return;
 	}
 
+	Com.begin();
 	Audio.play(SPIFFS.open("/SFX/booted.aac"));
 
     auto manager = new StateManager();
