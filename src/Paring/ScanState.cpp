@@ -37,10 +37,12 @@ void Pair::ScanState::loop(uint micros){
 	if(!markers->arucoMarkers.empty()){
 		printf("Aruco %d\n", markers->arucoMarkers.front().id );
 		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		delay(300);
 		arucoFound(markers->arucoMarkers.front().id);
 	}else if(!markers->qrMarkers.empty()){
 		printf("QR %s\n", markers->qrMarkers.front().data);
 		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		delay(300);
 		qrFound((char*) markers->qrMarkers.front().data);
 	}
 }
