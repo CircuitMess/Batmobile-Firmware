@@ -30,7 +30,25 @@ void Pair::ScanState::loop(uint micros){
 	}
 
 	auto frame = S3.getFrame();
-	if(frame == nullptr || frame->toQR() == nullptr) return;
+
+	if(frame == nullptr ){
+		if(S3.hasError()){
+			Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
+
+			uint32_t t = millis();
+			while(millis() - t < 12000){
+				Underlights.setSolid({ 255, 0, 0 });
+				delay(500);
+				Underlights.setSolid({ 0, 0, 255 });
+				delay(500);
+			}
+
+			Batmobile.shutdown();
+			return;
+		}
+	}
+
+	if(frame->toQR() == nullptr) return;
 
 	auto markers = frame->toQR();
 
