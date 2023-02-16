@@ -24,7 +24,7 @@ void IdleState::onStop(){
 }
 
 void IdleState::onSettingsSound(){
-	Audio.play(SPIFFS.open("/SFX/driverExit.aac"));
+	Audio.play(SPIFFS.open("/SFX/beep.aac"));
 }
 
 void IdleState::loop(uint micros){
