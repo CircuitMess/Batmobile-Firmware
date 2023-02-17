@@ -1,0 +1,2 @@
+autopilot Resuming autopilot.
+manual Assuming manual control.
