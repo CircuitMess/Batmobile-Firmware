@@ -109,7 +109,7 @@ void StateManager::onShutdown(){
 }
 
 void StateManager::onOverrideSound(bool manual){
-	Audio.play(SPIFFS.open( manual ? "/SFX/manualSlow.aac" : "/SFX/autopilotSlow.aac"));
+	Audio.play(SPIFFS.open( manual ? "/Voice/manual.aac" : "/Voice/autopilot.aac"));
 }
 
 
