@@ -27,6 +27,5 @@ while IFS= read -r sentence; do
        "speakingRate": 0.90,
        "sampleRateHertz": 32000
      }
-  }' | jq -r '.audioContent'  | base64 -d  | ffmpeg -loglevel quiet -f mp3 -i pipe: -c:a aac -b:a 32k "data/Voice/$name.aac"
+  }' | jq -r '.audioContent'  | base64 -d  | ffmpeg -loglevel quiet -f mp3 -i pipe: -codec:a aac -b:a 32k -ar 24000 -ac 1 "data/Voice/$name.aac"
 done < sentences.txt
-#<emphasis level=\"moderate\">
