@@ -5,16 +5,25 @@
 #include <Loop/LoopListener.h>
 
 
-class MarkerDriver : public Driver, private LoopListener {
+class MarkerDriver : public Driver, private LoopListener, private ComListener {
 public:
 	MarkerDriver();
 	~MarkerDriver() override;
 
 	void onFrame(DriveInfo& driveInfo) override;
 
+protected:
+	void onStart() override;
+	void onStop() override;
+
 private:
 	void processAction(MarkerAction action);
 	void loop(uint micros) override;
+
+	void onMotorsTimeoutClear() override;
+	void onMotorsTimeout(uint8_t duration) override;
+
+	bool motorsLocked = false;
 
 	MarkerAction current = MarkerAction::None;
 

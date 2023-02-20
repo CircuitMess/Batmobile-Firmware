@@ -67,10 +67,14 @@ void MarkerDriver::onFrame(DriveInfo& driveInfo){
 void MarkerDriver::processAction(MarkerAction action){
 	switch(action){
 		case MarkerAction::Forward:
-			Motors.setAll({ motorsSpeed, motorsSpeed, motorsSpeed, motorsSpeed });
+			if(!motorsLocked){
+				Motors.setAll({ motorsSpeed, motorsSpeed, motorsSpeed, motorsSpeed });
+			}
 			break;
 		case MarkerAction::Backward:
-			Motors.setAll({ -motorsSpeed, -motorsSpeed, -motorsSpeed, -motorsSpeed });
+			if(!motorsLocked){
+				Motors.setAll({ -motorsSpeed, -motorsSpeed, -motorsSpeed, -motorsSpeed });
+			}
 			break;
 		case MarkerAction::HeadlightOn:
 			Headlights.setSolid(255);
@@ -110,13 +114,17 @@ void MarkerDriver::processAction(MarkerAction action){
 
 			break;
 		case MarkerAction::Burnout:
-			Motors.setAll({ motorsSpeed, motorsSpeed, -motorsSpeed, -motorsSpeed });
+			if(!motorsLocked){
+				Motors.setAll({ motorsSpeed, motorsSpeed, -motorsSpeed, -motorsSpeed });
+			}
 			break;
 		case MarkerAction::Do360:
-			if(rand() % 2){
-				Motors.setAll({ motorsSpeed, -motorsSpeed, motorsSpeed, -motorsSpeed });
-			}else{
-				Motors.setAll({ -motorsSpeed, motorsSpeed, -motorsSpeed, motorsSpeed });
+			if(!motorsLocked){
+				if(rand() % 2){
+					Motors.setAll({ motorsSpeed, -motorsSpeed, motorsSpeed, -motorsSpeed });
+				}else{
+					Motors.setAll({ -motorsSpeed, motorsSpeed, -motorsSpeed, motorsSpeed });
+				}
 			}
 			break;
 		case MarkerAction::Bats:
@@ -155,4 +163,21 @@ void MarkerDriver::loop(uint micros){
 
 bool MarkerDriver::continuousAction(MarkerAction action){
 	return action == MarkerAction::Burnout || action == MarkerAction::Do360 || action == MarkerAction::Batsplosion || action == MarkerAction::Bats;
+}
+
+void MarkerDriver::onMotorsTimeoutClear(){
+	motorsLocked = false;
+}
+
+void MarkerDriver::onMotorsTimeout(uint8_t duration){
+	Motors.stopAll();
+	motorsLocked = true;
+}
+
+void MarkerDriver::onStart(){
+	Com.addListener({ComType::MotorsTimeout, ComType::MotorsTimeoutClear}, this);
+}
+
+void MarkerDriver::onStop(){
+	Com.removeListener(this);
 }
