@@ -40,8 +40,8 @@ void SimpleProgDriver::onUnderlights(uint8_t color){
 }
 
 void SimpleProgDriver::onSoundEffect(uint8_t sample){
-	File root = SPIFFS.open("/SFX/");
-	File f;
+	File root = SPIFFS.open("/SFX");
+	File f = root.openNextFile();
 	for(int j = 0; j < sample + 1; ++j){
 		f = root.openNextFile();
 		if(!f) return;
