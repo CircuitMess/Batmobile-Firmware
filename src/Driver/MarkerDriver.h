@@ -20,7 +20,7 @@ private:
 
 	uint32_t continuousActionTimer = 0;
 	static constexpr uint32_t burnoutDuration = 3000000; // [us]
-	static constexpr uint32_t do360Duration = 2500000; // [us]
+	static constexpr uint32_t do360Duration = 5000000; // [us]
 	static constexpr uint32_t explosionDuration = 6000000; // [us]
 	static constexpr uint32_t batsDuration = 3000000; // [us]
 
