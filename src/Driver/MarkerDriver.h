@@ -19,8 +19,8 @@ private:
 	MarkerAction current = MarkerAction::None;
 
 	uint32_t continuousActionTimer = 0;
-	static constexpr uint32_t burnoutDuration = 3000000; // [us]
-	static constexpr uint32_t do360Duration = 5000000; // [us]
+	static constexpr uint32_t burnoutDuration = 6000000; // [us]
+	static constexpr uint32_t do360Duration = 8000000; // [us]
 	static constexpr uint32_t explosionDuration = 6000000; // [us]
 	static constexpr uint32_t batsDuration = 3000000; // [us]
 
@@ -35,6 +35,22 @@ private:
 	uint32_t colorTime = 0;
 
 	bool breathing = false;
+
+	static constexpr std::array<const char*, 13> audioFiles = { nullptr,
+																nullptr,
+																nullptr,
+																"/Voice/360.aac",
+																"/Voice/burnout.aac",
+																"/Voice/headlightOn.aac",
+																"/Voice/headlightOff.aac",
+																"/SFX/honk0.aac",
+																"/SFX/explosion.aac",
+																"/Voice/underlightOff.aac",
+																"/Voice/underlightBreathe.aac",
+																"/Voice/underlightSolid.aac",
+																"/SFX/bats.aac" };
+	MarkerAction lastPlayed = MarkerAction::None;
+	bool delayedVoiceDone = false;
 };
 
 
