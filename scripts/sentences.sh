@@ -5,7 +5,7 @@ set -e -o pipefail
 # Takes the input file sentences.txt and saves .aac files in the data folder
 
 # Google TTS api key
-KEY=
+KEY=AIzaSyALCGzlibauNN1w04JsFeZu74DWhDPVcog
 
 while IFS= read -r sentence; do
   name=$(echo "$sentence" | cut -d " " -f1)
@@ -16,7 +16,7 @@ while IFS= read -r sentence; do
   curl -s --location --request POST "https://texttospeech.googleapis.com/v1/text:synthesize?key=$KEY" \
   --header "Content-Type: application/json" \
   --data-raw '{
-    "input": { "ssml": "<speak> '"$sentence"' <break time=\"500ms\"/> </speak> " },
+    "input": { "ssml": "<speak> <emphasis level=\"moderate\">'"$sentence"' <break time=\"500ms\"/>  </emphasis> </speak> " },
    "voice": {
        "languageCode": "en-GB",
        "name": "en-GB-Standard-D"
