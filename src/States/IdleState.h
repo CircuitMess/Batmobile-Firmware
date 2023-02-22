@@ -17,6 +17,7 @@ protected:
 private:
 	void onSettingsSound() override;
 	void onIdleSounds(bool toggle) override;
+	void onSoundEffect(uint8_t sample) override;
 
 	void loop(uint micros) override;
 	uint32_t counter = 0;
