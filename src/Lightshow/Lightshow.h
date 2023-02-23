@@ -4,7 +4,7 @@
 #include <Batmobile.h>
 
 enum class LightshowType : uint8_t {
-	None, SolidFrontBack, BreatheR, BreatheG, BreatheB, Rainbow, BreatheRFrontBack, FrontAndFire, Size
+	None, SolidFrontBack, BreatheR, BreatheG, BreatheB, Rainbow, BreatheRFrontBack, FrontAndFire, Police, Size
 };
 
 class Lightshow {
