@@ -48,7 +48,12 @@ void ManualDriver::onBoost(bool boost){
 	}
 }
 
-void ManualDriver::onDriveDir(uint8_t dir){
+void ManualDriver::onDriveDir(uint8_t dir, uint8_t speed){
+	if(speed > 0 && speed <= 15){
+		gyroMultiplier = speed / 15.0f;
+	}else{
+		gyroMultiplier = 1.0f;
+	}
 	direction = dir;
 	directionTimeout = 0;
 	setMotors();
@@ -132,17 +137,15 @@ void ManualDriver::setMotors(){
 	}
 
 	if(!boosting){
-		leftSpeed *= noBoostMultiplier;
-		rightSpeed *= noBoostMultiplier;
+		leftSpeed *= noBoostMultiplier * gyroMultiplier;
+		rightSpeed *= noBoostMultiplier * gyroMultiplier;
 	}
 
 	rightSpeed = std::round(constrain(rightSpeed, -100.0f, 100.0f));
 	leftSpeed = std::round(constrain(leftSpeed, -100.0f, 100.0f));
 
-	Motors.setAll({
-		(int8_t) leftSpeed, (int8_t) rightSpeed,
-		(int8_t) leftSpeed, (int8_t) rightSpeed,
-	});
+	Motors.setAll({ (int8_t) leftSpeed, (int8_t) rightSpeed,
+					(int8_t) leftSpeed, (int8_t) rightSpeed, });
 }
 
 void ManualDriver::loop(uint micros){
