@@ -9,6 +9,7 @@ enum class LightshowType : uint8_t {
 
 class Lightshow {
 public:
+	virtual ~Lightshow();
 	void start();
 	void stop();
 

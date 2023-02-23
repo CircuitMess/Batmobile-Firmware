@@ -7,7 +7,7 @@
 #include "../Lightshow/SolidLightshow.h"
 
 void DriverControls::start(){
-	Com.addListener({ ComType::Honk, ComType::DriveSpeed }, this);
+	Com.addListener({ ComType::Honk, ComType::DriveSpeed, ComType::Boost }, this);
 	prevType = LightshowType::None;
 	lightshowType = LightshowType::None;
 }
@@ -19,7 +19,7 @@ void DriverControls::stop(){
 }
 
 void DriverControls::onHonk(){
-	Audio.play(SPIFFS.open("/SFX/honk.aac"));
+	Audio.play(SPIFFS.open(String("/SFX/honk") + (esp_random()%7) + ".aac"));
 
 	if(boosting) return;
 
@@ -49,6 +49,8 @@ void DriverControls::onBoost(bool boost){
 		lightshowType = LightshowType::FrontAndFire;
 		lightshow = createLightshow(LightshowType::FrontAndFire);
 		if(lightshow) lightshow->start();
+	}else if(boost && lightshowType == LightshowType::FrontAndFire){
+		prevType = LightshowType::FrontAndFire;
 	}else if(!boost && lightshowType == LightshowType::FrontAndFire && prevType != LightshowType::FrontAndFire){
 		lightshowType = prevType;
 		lightshow = createLightshow(lightshowType);

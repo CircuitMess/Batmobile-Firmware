@@ -13,6 +13,7 @@ void Pair::ScanState::onStart(){
 	S3.setMode(DriveMode::QRScan);
 	LoopManager::addListener(this);
 	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
+	timeoutCounter = 0;
 }
 
 void Pair::ScanState::onStop(){
@@ -24,7 +25,8 @@ void Pair::ScanState::onStop(){
 void Pair::ScanState::loop(uint micros){
 	timeoutCounter += micros;
 	if(timeoutCounter >= pairTimeout){
-		Batmobile.shutdown();
+		Batmobile.shutdownNotify();
+		return;
 	}
 
 	auto frame = S3.getFrame();
@@ -35,10 +37,12 @@ void Pair::ScanState::loop(uint micros){
 	if(!markers->arucoMarkers.empty()){
 		printf("Aruco %d\n", markers->arucoMarkers.front().id );
 		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		delay(300);
 		arucoFound(markers->arucoMarkers.front().id);
 	}else if(!markers->qrMarkers.empty()){
 		printf("QR %s\n", markers->qrMarkers.front().data);
 		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		delay(300);
 		qrFound((char*) markers->qrMarkers.front().data);
 	}
 }

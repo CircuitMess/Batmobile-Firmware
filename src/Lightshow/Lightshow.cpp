@@ -1,6 +1,10 @@
 #include "Lightshow.h"
 #include <Batmobile.h>
 
+Lightshow::~Lightshow(){
+	stop();
+}
+
 void Lightshow::start(){
 	onStart();
 }

@@ -14,9 +14,10 @@ protected:
 	void onStart() override;
 	void onStop() override;
 
-	void onSettingsSound() override;
-
 private:
+	void onSettingsSound() override;
+	void onSoundEffect(uint8_t sample) override;
+
 	void loop(uint micros) override;
 	uint32_t counter = 0;
 	uint32_t threshold = 10000000;
