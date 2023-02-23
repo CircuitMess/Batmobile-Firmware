@@ -15,7 +15,7 @@ protected:
 	void onStop() override;
 
 private:
-	void onDriveDir(uint8_t dir) override;
+	void onDriveDir(uint8_t dir, uint8_t speed) override;
 	void onDriveSpeed(uint8_t speed) override;
 	void onHeadlights(uint8_t val) override;
 	void onTaillights(uint8_t val) override;
