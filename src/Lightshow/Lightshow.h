@@ -12,7 +12,7 @@ public:
 	virtual ~Lightshow();
 	void start();
 	void stop();
-
+	static std::unique_ptr<Lightshow> createLightshow(LightshowType type);
 protected:
 	virtual void onStart(){};
 
