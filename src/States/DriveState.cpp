@@ -88,10 +88,10 @@ void DriveState::loop(uint micros){
 	frameTime -= FrameInterval;
 
 	auto info = S3.getFrame();
-	if(info == nullptr){
-		if(S3.hasError()){
+	if(info == nullptr || info->frame.size == 0 || info->frame.data == nullptr){
+		if(S3.getError() == S3Error::Camera){
 			cameraError = true;
-			Com.sendCameraError(1);
+			Com.sendError(BatError::Camera);
 		}
 		return;
 	}
