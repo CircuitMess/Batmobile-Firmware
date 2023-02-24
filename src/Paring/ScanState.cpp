@@ -14,6 +14,7 @@ void Pair::ScanState::onStart(){
 	LoopManager::addListener(this);
 	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
 	timeoutCounter = 0;
+	errorCheckTime = ErrorCheckInterval;
 }
 
 void Pair::ScanState::onStop(){
@@ -31,19 +32,9 @@ void Pair::ScanState::loop(uint micros){
 
 	auto frame = S3.getFrame();
 
-	if(frame == nullptr ){
-		if(S3.hasError()){
-			Audio.play(SPIFFS.open("/SFX/disconnect.aac"));
-
-			uint32_t t = millis();
-			while(millis() - t < 12000){
-				Underlights.setSolid({ 255, 0, 0 });
-				delay(500);
-				Underlights.setSolid({ 0, 0, 255 });
-				delay(500);
-			}
-
-			Batmobile.shutdown();
+	if(frame == nullptr){
+		if(S3.getError() == S3Error::Camera){
+			Batmobile.shutdownError();
 			return;
 		}
 	}
