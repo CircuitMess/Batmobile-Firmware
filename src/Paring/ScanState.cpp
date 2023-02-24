@@ -30,6 +30,15 @@ void Pair::ScanState::loop(uint micros){
 		return;
 	}
 
+	errorCheckTime += micros;
+	if(errorCheckTime >= ErrorCheckInterval){
+		errorCheckTime = 0;
+		if(S3.getError() == S3Error::Camera){
+			Batmobile.shutdownError();
+			return;
+		}
+	}
+
 	auto frame = S3.getFrame();
 
 	if(frame == nullptr){
