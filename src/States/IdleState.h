@@ -5,7 +5,7 @@
 #include <Communication/ComListener.h>
 #include <Loop/LoopListener.h>
 
-class IdleState : public State, private ComListener, private LoopListener{
+class IdleState : public State, private ComListener, private LoopListener {
 public:
 	IdleState();
 	~IdleState() override;
@@ -16,11 +16,14 @@ protected:
 
 private:
 	void onSettingsSound() override;
+	void onIdleSounds(bool toggle) override;
 	void onSoundEffect(uint8_t sample) override;
 
 	void loop(uint micros) override;
 	uint32_t counter = 0;
 	uint32_t threshold = 10000000;
+
+	bool soundsOn = false;
 };
 
 
