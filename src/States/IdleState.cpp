@@ -33,7 +33,11 @@ void IdleState::loop(uint micros){
 	if(counter >= threshold && !Audio.isPlaying()){
 		counter = 0;
 		uint8_t honkRand = rand() % 5;
-		Audio.play(SPIFFS.open(String("/SFX/idle") + honkRand + ".aac"));
+		if(honkRand == 0){
+			Audio.play(SPIFFS.open("/SFX/bats.aac"));
+		}else{
+			Audio.play(SPIFFS.open(String("/SFX/idle") + honkRand + ".aac"));
+		}
 		threshold = (rand() % 11 + 10) * 1000000; //10-20 sec
 	}
 }
