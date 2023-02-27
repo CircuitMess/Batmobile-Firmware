@@ -27,6 +27,8 @@ private:
 	uint32_t frameTime = 0;
 	static constexpr uint32_t FrameInterval = 50000;
 
+	bool cameraError = false;
+
 };
 
 

@@ -81,12 +81,20 @@ void DriveState::setMode(DriveMode newMode){
 }
 
 void DriveState::loop(uint micros){
+	if(cameraError) return;
+
 	frameTime += micros;
 	if(frameTime < FrameInterval) return;
 	frameTime -= FrameInterval;
 
 	auto info = S3.getFrame();
-	if(info == nullptr) return;
+	if(info == nullptr || info->frame.size == 0 || info->frame.data == nullptr){
+		if(S3.getError() == S3Error::Camera){
+			cameraError = true;
+			Com.sendError(BatError::Camera);
+		}
+		return;
+	}
 
 	if(driver && info->mode == driver->getMode()){
 		driver->onFrame(*info);
