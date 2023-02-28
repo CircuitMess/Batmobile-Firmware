@@ -9,6 +9,7 @@ Feed::Feed() : txBuf(static_cast<uint8_t*>(malloc(TxBufSize))){
 }
 
 Feed::~Feed(){
+	udp.close();
 	free(txBuf);
 }
 

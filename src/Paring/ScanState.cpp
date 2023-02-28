@@ -14,6 +14,7 @@ void Pair::ScanState::onStart(){
 	LoopManager::addListener(this);
 	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
 	timeoutCounter = 0;
+	errorCheckTime = ErrorCheckInterval;
 }
 
 void Pair::ScanState::onStop(){
@@ -29,8 +30,25 @@ void Pair::ScanState::loop(uint micros){
 		return;
 	}
 
+	errorCheckTime += micros;
+	if(errorCheckTime >= ErrorCheckInterval){
+		errorCheckTime = 0;
+		if(S3.getError() == S3Error::Camera){
+			Batmobile.shutdownError();
+			return;
+		}
+	}
+
 	auto frame = S3.getFrame();
-	if(frame == nullptr || frame->toQR() == nullptr) return;
+
+	if(frame == nullptr){
+		if(S3.getError() == S3Error::Camera){
+			Batmobile.shutdownError();
+			return;
+		}
+	}
+
+	if(frame->toQR() == nullptr) return;
 
 	auto markers = frame->toQR();
 

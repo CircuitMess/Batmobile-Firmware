@@ -59,11 +59,11 @@ void BallDriver::onFrame(DriveInfo& driveInfo){
 		amtR = 100;
 	}else{
 		if(currentX < 80){
-			amtR = 70.0f * amt + 30.0f;
+			amtR = 60.0f * amt + 40.0f;
 			amtL = 0;
 		}else{
 			amtR = 0;
-			amtL = 30.0f * amt + 30.0f;
+			amtL = 60.0f * amt + 40.0f;
 		}
 	}
 

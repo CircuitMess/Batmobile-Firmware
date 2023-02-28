@@ -21,6 +21,9 @@ private:
 
 	static constexpr uint32_t pairTimeout = 180000000; //3min
 	uint32_t timeoutCounter = 0;
+
+	static constexpr uint32_t ErrorCheckInterval = 3000000; // [us]
+	uint32_t errorCheckTime = 0;
 };
 
 
