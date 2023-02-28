@@ -15,7 +15,7 @@ private:
 
 	uint32_t counter = 0;
 	bool blue = false;
-	static constexpr uint32_t BlinkInterval = 500000;
+	static constexpr uint32_t BlinkInterval = 250000;
 };
 
 
