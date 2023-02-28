@@ -40,6 +40,7 @@ uint8_t DriverControls::getDriveSpeed() const{
 }
 
 void DriverControls::onBoost(bool boost){
+	if(boost == boosting) return;
 	boosting = boost;
 
 	if(lightshowDisable) return;
