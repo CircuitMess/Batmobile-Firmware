@@ -47,6 +47,8 @@ void DanceDriver::onDance(DanceType dance){
 	if(lightshow) lightshow->stop();
 	lightshow = Lightshow::createLightshow((LightshowType) (uint8_t) currentDance);
 	if(lightshow) lightshow->start();
+	if(currentDance == DanceType::Idle) return;
+	Audio.playRepeating(SPIFFS.open(String("/Music/music")+ (uint8_t) currentDance + ".aac"));
 }
 
 void DanceDriver::loop(uint micros){
