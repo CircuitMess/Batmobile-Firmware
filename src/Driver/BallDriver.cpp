@@ -11,7 +11,7 @@ BallDriver::~BallDriver(){
 }
 
 void BallDriver::onStart(){
-	Com.addListener(ComType::BallHue, this);
+	Com.addListener({ComType::BallHue, ComType::MotorsTimeoutClear, ComType::MotorsTimeout}, this);
 	S3.setHue(hue);
 	Underlights.setSolid(ColorConverter::toRGB(hue));
 }
@@ -26,7 +26,7 @@ void BallDriver::onFrame(DriveInfo& driveInfo){
 
 	Ball* bestBall = nullptr;
 	uint16_t maxRadius = 0;
-	for(auto &ball : ballInfo->balls){
+	for(auto& ball: ballInfo->balls){
 		if(ball.r > maxRadius){
 			maxRadius = ball.r;
 			bestBall = &ball;
@@ -52,7 +52,7 @@ void BallDriver::onFrame(DriveInfo& driveInfo){
 		noBallCounter = 0;
 	}
 
-	float amt = abs(80.0 - (float)currentX) / 80.0;
+	float amt = abs(80.0 - (float) currentX) / 80.0;
 	float amtR, amtL;
 	if(amt <= 0.1){
 		amtL = 100;
@@ -69,6 +69,8 @@ void BallDriver::onFrame(DriveInfo& driveInfo){
 
 	lastX = currentX;
 
+	if(motorsLocked) return;
+
 	Motors.setLeft(amtL);
 	Motors.setRight(amtR);
 }
@@ -77,4 +79,13 @@ void BallDriver::onBallHue(uint8_t hue){
 	this->hue = hue;
 	Underlights.setSolid(ColorConverter::toRGB(hue));
 	S3.setHue(hue);
+}
+
+void BallDriver::onMotorsTimeout(uint8_t duration){
+	Motors.stopAll();
+	motorsLocked = true;
+}
+
+void BallDriver::onMotorsTimeoutClear(){
+	motorsLocked = false;
 }

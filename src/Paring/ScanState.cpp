@@ -44,8 +44,8 @@ void Pair::ScanState::loop(uint micros){
 	if(frame == nullptr){
 		if(S3.getError() == S3Error::Camera){
 			Batmobile.shutdownError();
-			return;
 		}
+		return;
 	}
 
 	if(frame->toQR() == nullptr) return;
