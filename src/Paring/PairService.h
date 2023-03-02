@@ -6,6 +6,7 @@
 #include <AsyncTCP.h>
 #include <memory>
 #include <functional>
+#include <Communication/Communication.h>
 
 namespace Pair{
     class State;
@@ -23,6 +24,7 @@ public:
 	void stop();
 
     void setDoneCallback(std::function<void()> callback);
+	void setConnectionMode(const ComMode& type);
 
 private:
 	Pair::State* currentState = nullptr;
@@ -30,6 +32,8 @@ private:
 
 	void paringDone(std::unique_ptr<AsyncClient> client);
 	std::function<void()> doneCallback = {};
+
+	ComMode type = ComMode::Direct;
 
 	friend class StreamConState;
 	friend class WiFiConState;
