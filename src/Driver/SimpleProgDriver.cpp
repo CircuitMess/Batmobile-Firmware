@@ -15,7 +15,7 @@ void SimpleProgDriver::onFrame(DriveInfo& driveInfo){
 
 }
 
-void SimpleProgDriver::onDriveDir(uint8_t dir){
+void SimpleProgDriver::onDriveDir(uint8_t dir, uint8_t speed){
 	direction = (DriveDirection) dir;
 	setMotors();
 }
