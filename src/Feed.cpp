@@ -6,6 +6,7 @@ const char* tag = "Feed";
 
 Feed::Feed() : txBuf(static_cast<uint8_t*>(malloc(TxBufSize))){
 	memset(txBuf, 0, TxBufSize);
+	udp.writeTo(txBuf, 1, controllerIP, feedPort);
 }
 
 Feed::~Feed(){
