@@ -1,6 +1,7 @@
 #include "SimpleProgDriver.h"
 #include <Batmobile.h>
 #include <Loop/LoopManager.h>
+#include "../SFXPaths.h"
 
 SimpleProgDriver::SimpleProgDriver() : Driver(DriveMode::SimpleProgramming){
 	Com.addListener({ ComType::DriveDir, ComType::DriveSpeed, ComType::Headlights, ComType::Taillights, ComType::Underlights, ComType::SoundEffect,
@@ -40,12 +41,12 @@ void SimpleProgDriver::onUnderlights(uint8_t color){
 }
 
 void SimpleProgDriver::onSoundEffect(uint8_t sample){
-	File root = SPIFFS.open("/SFX");
-	File f = root.openNextFile();
-	for(int j = 0; j < sample + 1; ++j){
-		f = root.openNextFile();
-		if(!f) return;
-	}
+	Serial.println(sample);
+	if(sample >= SFXPaths.size()) return;
+
+	File f = SPIFFS.open(SFXPaths[sample]);
+	if(!f) return;
+
 	Audio.play(f);
 }
 

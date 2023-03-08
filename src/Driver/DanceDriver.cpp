@@ -14,7 +14,15 @@ static constexpr MotorInfo danceInfo[9][2] = {{{ 0,    0,   0,    0 },   { 0,   
 											  {{ 40,   90,  40,   90 },  { 40,   90,   40,   90 }}, //WaxOff
 											  {{ 35,   35,  35,   35 },  { 0,    0,    0,    0 }}};     //Sneak
 
-
+static constexpr glm::vec3 colors[9][2] = {{{ 0,   0,   0 },   { 0,   0,   0 }},
+										   {{ 65,  105, 225 }, { 255, 229, 180 }}, //royal blue & peach
+										   {{ 54,  69,  79 },  { 255, 255, 0 }},  //Charcoal & yellow
+										   {{ 120, 190, 33 },  { 89,  203, 232 }}, //Lime green & electric blue
+										   {{ 255, 240, 245 }, { 0,   128, 128 }}, //Lavender & teal
+										   {{ 137, 207, 240 }, { 255, 255, 255 }}, //Baby blue & white
+										   {{ 218, 112, 214 }, { 222, 192, 95 }}, //Orchid blue & Cream Gold
+										   {{ 120, 81,  169 }, { 199, 211, 212 }}, //Royal Purple & Ice Flow
+										   {{ 214, 157, 48 },  { 97,  98,  71 }}}; //Mango Mojito & Terrarium Moss
 
 DanceDriver::DanceDriver() : Driver(DriveMode::Dance){}
 

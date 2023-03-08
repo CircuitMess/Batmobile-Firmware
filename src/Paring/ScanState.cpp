@@ -66,6 +66,8 @@ void Pair::ScanState::loop(uint micros){
 }
 
 void Pair::ScanState::arucoFound(uint16_t id){
+	pairService->setConnectionMode(ComMode::Direct);
+
 	char ssid[14];
 	char pass[10];
 
@@ -90,6 +92,7 @@ void Pair::ScanState::arucoFound(uint16_t id){
 }
 
 void Pair::ScanState::qrFound(const char* data){
+	pairService->setConnectionMode(ComMode::External);
 	/*
 	 * QR data is consisted of:
 	 * 24 bytes for SSID + 1 null terminator
