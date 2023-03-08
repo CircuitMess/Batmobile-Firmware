@@ -1,5 +1,6 @@
 #include "IdleState.h"
 #include <Batmobile.h>
+#include "../SFXPaths.h"
 
 IdleState::IdleState(){
 
@@ -50,11 +51,10 @@ void IdleState::onIdleSounds(bool toggle){
 }
 
 void IdleState::onSoundEffect(uint8_t sample){
-	File root = SPIFFS.open("/SFX");
-	File f = root.openNextFile();
-	for(int j = 0; j < sample + 1; ++j){
-		f = root.openNextFile();
-		if(!f) return;
-	}
+	if(sample >= SFXPaths.size()) return;
+
+	File f = SPIFFS.open(SFXPaths[sample]);
+	if(!f) return;
+
 	Audio.play(f);
 }
