@@ -105,11 +105,11 @@ void StateManager::onVolume(uint8_t volume){
 void StateManager::onShutdown(){
 	Com.sendShutdownAck();
 	delay(2000);
-	Batmobile.shutdown();
+	Batmobile.shutdownNotify();
 }
 
 void StateManager::onOverrideSound(bool manual){
-	Audio.play(SPIFFS.open( manual ? "/SFX/manualSlow.aac" : "/SFX/autopilotSlow.aac"));
+	Audio.play(SPIFFS.open( manual ? "/Voice/manual.aac" : "/Voice/autopilot.aac"));
 }
 
 

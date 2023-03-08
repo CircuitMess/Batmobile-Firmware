@@ -13,6 +13,8 @@ void Pair::ScanState::onStart(){
 	S3.setMode(DriveMode::QRScan);
 	LoopManager::addListener(this);
 	Underlights.breathe({ 50, 0, 0 }, { 255, 0, 0 }, 2000);
+	timeoutCounter = 0;
+	errorCheckTime = ErrorCheckInterval;
 }
 
 void Pair::ScanState::onStop(){
@@ -24,26 +26,48 @@ void Pair::ScanState::onStop(){
 void Pair::ScanState::loop(uint micros){
 	timeoutCounter += micros;
 	if(timeoutCounter >= pairTimeout){
-		Batmobile.shutdown();
+		Batmobile.shutdownNotify();
+		return;
+	}
+
+	errorCheckTime += micros;
+	if(errorCheckTime >= ErrorCheckInterval){
+		errorCheckTime = 0;
+		if(S3.getError() == S3Error::Camera){
+			Batmobile.shutdownError();
+			return;
+		}
 	}
 
 	auto frame = S3.getFrame();
-	if(frame == nullptr || frame->toQR() == nullptr) return;
+
+	if(frame == nullptr){
+		if(S3.getError() == S3Error::Camera){
+			Batmobile.shutdownError();
+		}
+		return;
+	}
+
+	if(frame->toQR() == nullptr) return;
 
 	auto markers = frame->toQR();
 
 	if(!markers->arucoMarkers.empty()){
 		printf("Aruco %d\n", markers->arucoMarkers.front().id );
 		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		delay(300);
 		arucoFound(markers->arucoMarkers.front().id);
 	}else if(!markers->qrMarkers.empty()){
 		printf("QR %s\n", markers->qrMarkers.front().data);
 		Audio.play(SPIFFS.open("/SFX/scan.aac"));
+		delay(300);
 		qrFound((char*) markers->qrMarkers.front().data);
 	}
 }
 
 void Pair::ScanState::arucoFound(uint16_t id){
+	pairService->setConnectionMode(ComMode::Direct);
+
 	char ssid[14];
 	char pass[10];
 
@@ -68,6 +92,7 @@ void Pair::ScanState::arucoFound(uint16_t id){
 }
 
 void Pair::ScanState::qrFound(const char* data){
+	pairService->setConnectionMode(ComMode::External);
 	/*
 	 * QR data is consisted of:
 	 * 24 bytes for SSID + 1 null terminator

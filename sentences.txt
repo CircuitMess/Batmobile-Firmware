@@ -1,0 +1,10 @@
+autopilot Resuming autopilot.
+manual Assuming manual control.
+360 Initiating 3 60 rotation.
+burnout Initiating burnout sequence.
+headlightOn Headlights ON.
+headlightOff Headlights OFF.
+underlightOff Underlights OFF.
+underlightBreathe Underlights breathing.
+underlightSolid Underlights ON.
+unknown That is a marker I do not recognize.

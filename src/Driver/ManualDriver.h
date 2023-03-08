@@ -21,18 +21,19 @@ protected:
 
 private:
 	void onBoost(bool boost) override;
-	void onDriveDir(uint8_t dir) override;
+	void onDriveDir(uint8_t dir, uint8_t speed) override;
 	void setMotors();
 
 	void loop(uint micros) override;
-	static constexpr size_t directionReceiveInterval = 1000000; //stop if no direction was received after 1s
+	static constexpr size_t directionReceiveInterval = 3000000; //stop if no direction was received after 1s
 	size_t directionTimeout = 0;
 
 	bool boosting = false;
 	uint8_t direction = 0;
 	DriveDirection parsedDirection = DriveDirection::None;
 	bool drifting = false;
-	bool drivingStraight() const;
+	[[nodiscard]] bool drivingStraight() const;
+	float gyroMultiplier = 1.0f;
 
 	static constexpr int16_t speedStraight = 100;
 	static constexpr int16_t speedTurnOuter = 100;
