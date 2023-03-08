@@ -4,7 +4,7 @@
 #include <Batmobile.h>
 
 enum class LightshowType : uint8_t {
-	None, SolidFrontBack, BreatheR, BreatheG, BreatheB, Rainbow, BreatheRFrontBack, FrontAndFire, Size
+	None, SolidFrontBack, BreatheR, BreatheG, FrontAndFire, BreatheB, Rainbow, BreatheRFrontBack, Police, Size
 };
 
 class Lightshow {
@@ -12,7 +12,7 @@ public:
 	virtual ~Lightshow();
 	void start();
 	void stop();
-
+	static std::unique_ptr<Lightshow> createLightshow(LightshowType type);
 protected:
 	virtual void onStart(){};
 

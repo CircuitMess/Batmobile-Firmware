@@ -25,7 +25,6 @@ private:
 	LightshowType lightshowType = LightshowType::None;
 	LightshowType prevType = LightshowType::None;
 
-	std::unique_ptr<Lightshow> createLightshow(LightshowType type);
 };
 
 

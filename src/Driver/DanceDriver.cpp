@@ -49,27 +49,42 @@ void DanceDriver::onFrame(DriveInfo& driveInfo){
 void DanceDriver::onDance(DanceType dance){
 	currentDance = dance;
 
+	if(dance == DanceType::Idle){
+		Audio.play(File());
+		Motors.stopAll();
+
+		if(lightshow){
+			lightshow->stop();
+			lightshow.reset();
+		}
+
+		return;
+	}
+
 	count = 0;
 	danceFlag = false;
+
 	Motors.setAll(danceInfo[(uint8_t) currentDance][0]);
-	Underlights.blinkContinuous(colors[(uint8_t) currentDance][0]);
-	Audio.play(SPIFFS.open("/SFX/beep.aac"));
+
+	if(lightshow) lightshow->stop();
+	lightshow = Lightshow::createLightshow((LightshowType) (uint8_t) currentDance);
+	if(lightshow) lightshow->start();
+
+	Audio.playRepeating(SPIFFS.open(String("/Music/music")+ (uint8_t) currentDance + ".aac"));
 }
 
 void DanceDriver::loop(uint micros){
+	if(currentDance == DanceType::Idle) return;
+
 	count += micros;
 	if(count >= switchDelay){
 		count = 0;
 		if(danceFlag){
 			danceFlag = false;
 			Motors.setAll(danceInfo[(uint8_t) currentDance][0]);
-			Audio.play(SPIFFS.open("/SFX/beep.aac"));
-			Underlights.blinkContinuous(colors[(uint8_t) currentDance][0]);
 		}else{
 			danceFlag = true;
 			Motors.setAll(danceInfo[(uint8_t) currentDance][1]);
-			Audio.play(SPIFFS.open("/SFX/beep.aac"));
-			Underlights.blinkContinuous(colors[(uint8_t) currentDance][1]);
 		}
 	}
 }
