@@ -38,7 +38,7 @@ void setup() {
 
 	esp_log_level_set("*", ESP_LOG_NONE);
 
-	if(checkJig() || true){
+	if(checkJig()){
 		printf("Jig\n");
 		auto test = new JigHWTest();
 		test->start();
