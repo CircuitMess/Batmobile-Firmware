@@ -99,7 +99,7 @@ JigHWTest::JigHWTest(){
 	display->commit();
 	test = this;
 
-	tests.push_back({ JigHWTest::S3Test, "S3 test", [](){}});
+	tests.push_back({ JigHWTest::S3Test, "S3", [](){}});
 	tests.push_back({ JigHWTest::SPIFFSTest, "SPIFFS", [](){}});
 	tests.push_back({ JigHWTest::BatteryCalib, "Bat calib", [](){}});
 	tests.push_back({ JigHWTest::BatteryCheck, "Bat check", [](){}});
@@ -327,18 +327,23 @@ uint32_t JigHWTest::calcChecksum(File& file){
 }
 
 bool JigHWTest::S3Test(){
-	if(S3.begin()){
-		switch(S3.getError()){
-			case S3Error::None:
-				return true;
-			case S3Error::Camera:
-				test->log("Camera check", false);
-				return false;
-		}
-	}else{
-		test->log("S3.begin", false);
+	if(!S3.begin()){
+		test->log("begin", false);
 		return false;
 	}
+
+	auto err = S3.getError();
+	if(err != S3Error::None){
+		test->log("error", (int) err);
+
+		static const char* const text[3] = { "", "Camera", "Update" };
+		canvas->setTextColor(TFT_RED);
+		canvas->printf("%s ", text[(int) err]);
+
+		return false;
+	}
+
+	return true;
 }
 
 void JigHWTest::AudioVisualTest(){
