@@ -86,6 +86,8 @@ JigHWTest::JigHWTest(){
 		digitalWrite(pin, HIGH);
 	}
 
+	disableCore0WDT();
+	disableCore1WDT();
 
 	display = new Display(160, 128);
 	canvas = display->getBaseSprite();
@@ -157,34 +159,17 @@ void JigHWTest::start(){
 
 	Serial.println("TEST:passall");
 
-//------------------------------------------------------
-
-
-	canvas->clear(TFT_BLACK);
-	canvas->setTextColor(TFT_GOLD);
-	canvas->setTextWrap(false, false);
-	canvas->setTextDatum(textdatum_t::middle_center);
-
-	canvas->setTextFont(0);
-	canvas->setTextSize(1);
-	canvas->setCursor(0, 6);
-
-	canvas->printCenter("Batmobile test");
-	canvas->setCursor(canvas->width() / 2, 16);
-	canvas->println();
-	display->commit();
 	canvas->print("\n\n");
 	canvas->setTextColor(TFT_GREEN);
 	canvas->printCenter("All OK!");
 	display->commit();
 
-	delay(1000);
+	delay(500);
 
-	canvas->clear(TFT_BLACK);
-	display->commit();
+	textFrame = static_cast<Pixel*>(malloc(160 * 128 * 2));
+	memcpy(textFrame, canvas->frameBuffer(0), 160*128*2);
 
 	AudioVisualTest();
-
 }
 
 void JigHWTest::log(const char* property, const char* value){
@@ -346,14 +331,9 @@ bool JigHWTest::S3Test(){
 	return true;
 }
 
-void JigHWTest::AudioVisualTest(){
-	S3.setMode(DriveMode::Marker);
+[[noreturn]] void JigHWTest::AudioVisualTest(){
+	S3.setMode(DriveMode::Manual);
 
-	disableCore0WDT();
-	disableCore1WDT();
-//
-//	WiFi.mode(WIFI_OFF);
-//
 	Headlights.begin();
 	Taillights.begin();
 	Underlights.begin();
@@ -389,8 +369,7 @@ void JigHWTest::AudioVisualTest(){
 
 
 		auto frame = S3.getFrame();
-		if(frame == nullptr){
-			printf("Frame nullptr\n");
+		if(frame == nullptr || frame->frame.data == nullptr || frame->frame.size == 0){
 			continue;
 		}
 
@@ -406,24 +385,9 @@ void JigHWTest::AudioVisualTest(){
 		jpeg.setUserPointer(canvas->frameBuffer(0));
 		jpeg.setPixelType(RGB565_BIG_ENDIAN);
 
-		if(jpeg.decode(0, 0, 0) == 0){
-			printf("decode error: %d", jpeg.getLastError());
-		}
+		if(jpeg.decode(0, 0, 0) == 0) continue;
 
-		auto marker = frame->toMarker();
-		if(marker && !marker->markers.empty()){
-			for(const auto& m: marker->markers){
-				printf("Got marker %d\n", m.id);
-				const auto& projected = m.projected;
-				for(int i = 0; i < 5; i++){
-					canvas->drawLine(projected[i % 4].x, projected[i % 4].y, projected[(i + 1) % 4].x, projected[(i + 1) % 4].y, TFT_RED);
-				}
-
-				canvas->setCursor((projected[0].x + projected[1].x) / 2 - 5, projected[0].y - 10);
-				canvas->printf("%d", m.id);
-			}
-		}
-
+		canvas->pushImageRotateZoom(0, 0, 0, 0, 0, 1, 1, 160, 128, (uint16_t*) textFrame, (uint16_t) TFT_BLACK);
 		display->commit();
 	}
 }

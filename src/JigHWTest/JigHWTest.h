@@ -36,7 +36,7 @@ private:
 	static bool BatteryCheck();
 	static bool SPIFFSTest();
 	static bool S3Test();
-	void AudioVisualTest();
+	[[noreturn]] void AudioVisualTest();
 
 	static uint32_t calcChecksum(fs::File& file);
 
@@ -51,6 +51,8 @@ private:
 	uint8_t RGBCounter = 0;
 	static constexpr uint32_t LEDInterval = 350;
 	static constexpr uint8_t LEDBrightness = 120;
+
+	Pixel* textFrame = nullptr;
 };
 
 #endif //BATMOBILE_FIRMWARE_JIGHWTEST_H
