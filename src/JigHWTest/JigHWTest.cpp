@@ -268,7 +268,7 @@ bool JigHWTest::BatteryCheck(){
 
 bool JigHWTest::SPIFFSTest(){
 	if(!SPIFFS.begin()){
-		test->log("spiffs", false);
+		test->log("begin", false);
 		return false;
 	}
 
