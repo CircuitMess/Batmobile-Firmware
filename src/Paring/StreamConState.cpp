@@ -34,5 +34,6 @@ void Pair::StreamConState::loop(uint micros){
 	}
 	if(!client || !client->connected()) return;
 
+	client->setNoDelay(true);
 	pairService->paringDone(std::move(client));
 }
