@@ -58,7 +58,7 @@ lgfx::Panel_ST7735S* panel(){
 		cfg.panel_height = 160;
 		cfg.offset_x = 0;
 		cfg.offset_y = 0;
-		cfg.offset_rotation = 0;
+		cfg.offset_rotation = 6;
 		cfg.readable = true;
 		cfg.invert = false;
 		cfg.rgb_order = false;
@@ -93,7 +93,6 @@ JigHWTest::JigHWTest(){
 	canvas = display->getBaseSprite();
 	display->getTft()->setPanel(panel());
 	display->begin();
-	display->getTft()->setRotation(3);
 	display->swapBytes(false);
 
 	canvas = display->getBaseSprite();
